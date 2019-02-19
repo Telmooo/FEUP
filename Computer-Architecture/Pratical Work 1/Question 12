@@ -1,0 +1,10 @@
+Adress Interval
+
+ROM1: Full adress decoding, the ROM uses 6 bits as the adress and the remaining 2 bits are used in the chip select, therefore, all the bits
+from the main adress are used, which implies a full adress decoding.
+Gamma: 00 000000 (0x00) -> 00 111111 (0x3F)
+
+ROM2: Partial adress decoding, the ROM uses 5 bits as the adress, and 2 bits are used in the chip select, bit 5 from the main adress isn't
+used, which imples partial adress decoding as not all the bits are used.
+Gamma: 100 00000 (0x80) -> 100 11111 (0x9F)
+       101 00000 (0xA0) -> 101 11111 (0xBF)

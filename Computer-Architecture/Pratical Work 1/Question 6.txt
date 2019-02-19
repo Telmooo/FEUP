@@ -1,0 +1,2 @@
+The output OVF allows us to detect overflow, so it allow us detect an "error" that can occur while adding two numbers.
+If OVF is active we can use it to tell the user that the result is "wrong", and caused an Overflow error.

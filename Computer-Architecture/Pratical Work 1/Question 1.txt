@@ -1,0 +1,17 @@
+S = (!A !B Ci) + (!A B !Ci) + (A !B !Ci) + (A B Ci) (1)
+
+S = (A ⊕ B) ⊕ Ci ⇔ ((!A B) + (A !B)) ⊕ Ci ⇔ (((!A B) + (A !B)) !Ci) + (!((!A B) + (A !B)) Ci) ⇔
+⇔ (!A B !Ci) + (A !B !Ci) + ((A + !B) * (!A + B))Ci ⇔ (!A B !Ci) + (A !B !Ci) + ((A + !B) !A) + ((A + !B) B) Ci) ⇔
+⇔ (!A B !Ci) + (A !B !Ci) + ((!A!B + AB) Ci) ⇔ !A!BCi + !AB!Ci + A!B!Ci + (A B Ci) Q.E.D (2)
+
+A | B | Ci || S(1) | S(2)
+0 | 0 | 0  ||  0   |  0
+0 | 0 | 1  ||  1   |  1
+0 | 1 | 0  ||  1   |  1
+0 | 1 | 1  ||  0   |  0
+1 | 0 | 0  ||  1   |  1
+1 | 0 | 1  ||  0   |  0
+1 | 1 | 0  ||  0   |  0
+1 | 1 | 1  ||  1   |  1
+
+So, both expressions are equivalent, as we wanted to demonstrate
