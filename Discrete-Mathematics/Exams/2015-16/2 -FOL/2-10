@@ -1,0 +1,42 @@
+Mundo: Rui & Luísa -> engenheiro; Maria & Ana -> médico; João -> tem 2 cursos, é engenheiro e médico;
+       Nuno é advogado; Ana & João têm Alfaromeos; Maria tem um Alfaromeo & um Toyota; Rui tem um Volvo;
+       Luísa tem um Toytoa; Nuno tem um Toyota;
+       Alfaromeo -> Itália; Volvo -> Suécia; Toyota -> Japão;
+
+Predicados:
+- Profissão(x, y) - a profissão de x é y
+- Dono(w, z) - w é o dono de z
+
+Funções:
+- país(x) - o pais de x
+
+Constantes: rui, luísa, maria, ana, joão, nuno, engenheiro, médico, advogado, alfaromeo, toyota, volvo, itália, suécia, japão;
+
+Q2: ∀y (Profissão(y, advogado) ↔ Dono(y, toyota))
+      Falso. Por exemplo a Luísa tem um Toyota mas não é advogada, assim a frase não é verdadeira.
+
+Q3: ∃x ((Profissão(x, advogado) ∧ Dono(x, toyota)) ∧ ∀w ((Profissão(w, advogado) ∧ Dono(w, toyota)) → w=x))
+      Verdadeiro. Só há um advogado x e é dono de um toyota, ou seja, para todo (w) que for advogado este vai ser igual a x,
+      caso w não seja advogado a implicação continua verdadeira, validando assim a frase.
+
+Q4: (∀x (¬Profissão(x, engenheiro) → ¬Dono(x, volvo))) → (∀x (Profissão(x, engenheiro) → Dono(x, volvo)))
+      Falso. Só há uma pessoa que tem um volvo, e esta é engenheira, portanto conclui-se que o antecedente só pode ser verdadeiro.
+      Porém, nem todos os engenheiros tem volvo, então temos, por exemplo, a Luísa que é engenheira mas não tem Volvo, tornando a implicação falsa.
+
+Q5: ∀x (¬Profissão(x, médico) → (Profissão(x, engenheiro) → ¬Dono(x, alfaromeo)))
+      Nenhum engenheiro tem alfaromeo, a não ser que este seja médico.
+
+Q6: ∃z∃w∃y (Dono(z, w) ∧ Dono(z, y) ∧ ¬país(w) = país(y))
+      Existe pelo menos um individuo que tem dois carros de países diferentes.
+
+Q7: ∀w∃z∃y (Profissão(z, w) ∧ Dono(z, y) ∧ país(y) = itália)
+      Existe pelo menos um individuo para cada profissão que tem um carro italiano.
+
+Q8: ∃x∀w∃z∃y (Profissão(z, w) ∧ Dono(z, y) ∧ país(y) = x)
+      Existe pelo menos um país tal que todas as profissões tem pelo menos um indíviduo que tem pelo menos um carro que é desse país
+
+Q9: ∀x (∃w∃z (Profissão(w, advogado) ∧ Dono(w, z) ∧ ¬w=x ∧ Dono(x, z)) → Profissão(x, médico))
+      Quem tiver o mesmo carro que um advogado, a não ser que seja ele próprio, é médico.
+
+Q10: ∀z (∃x∃y (Dono(z, x) ∧ Dono(z, y) ∧ ¬x=y) → Profissão(z, engenheiro))
+      Quem tiver dois carros diferentes é engenheiro.

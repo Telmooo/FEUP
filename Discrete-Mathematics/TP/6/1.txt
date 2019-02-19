@@ -1,0 +1,10 @@
+∀x [(B(x) ∨ T(x)) → (M(x) ∧ G(x))]
+∀y [(S(y) ∨ M(y)) → T(y)]
+∃x S(x)
+
+Pela 2ª premissa, para todo objeto, caso S(y) ou M(y) seja verdadeira então existe um objeto tal que T(y).
+A 3ª premissa diz-nos que existe um objeto x tal que S(x), então, pela 3ª premissa conclui-se que existe um objeto tal que T(y)
+Existindo um objeto tal que T(y), então pela 1ª premissa, todos os objetos tal que T(x) então esse objeto satisfaz M(x) ∧ G(x)
+Se existe um objeto tal que M(x) ∧ G(x) seja satisfazível, então existe pelo menos um M(x).
+Se existe um M(x) a partir de um objeto S(x), então existe pelo menos um objeto tal que
+S(x) ∧ M(x) seja satisfazível, pelo que prova-se que: ∃x [S(x) ∧ M(x)]

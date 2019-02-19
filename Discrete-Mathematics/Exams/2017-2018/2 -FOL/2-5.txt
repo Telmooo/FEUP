@@ -1,0 +1,26 @@
+Mundo: João requisitou "Code Complete" de Informática e o "Computer Networks" de Telecomunicações;
+       Ana requisitou "Consuming Power" de Energia e o "TTL Cookbook" de Eletrónica;
+       Pedro não requisitou
+       
+       João & José -> DEI; Ana & Pedro -> DEEC
+       José requisitou "Discrete mathematics" mas está atrasado na sua devolução
+
+Predicados:
+- Requisita(x, y) - a pessoa x tem o livro y requisitado
+- Tema(w, z) - o tema do livro w é z
+- Atrasado(x, y) - a pessoa x encontra-se atrasada na devolução do livro y
+
+Funções:
+- departamento(x)
+
+2) ∀x (departamento(x)=dei → ∃y Requisita(x, y))
+    Verdadeiro, pois todos os indivíduos que são do DEI (João e José) tem pelo menos 1 livro requisitado
+
+3) ∀x (¬∃y Requisita(x, y) → departamento(x)=deec)
+    Verdadeiro, pois o único que não requisitou nenhum livro (Pedro) é do DEEC
+
+4) ∀x∀y∀z ((Tema(x, y) ∧ Tema(x, z)) → y=z)
+    Cada livro tem no máximo um tema
+
+5) ∀x (Tema(x, energia) → ¬∃y (Requisita(y, x) ∧ departamento(y)≠dei))
+    Livros de energia só são requisitados por indivíduos do DEI
