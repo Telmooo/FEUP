@@ -15,6 +15,7 @@
 #include <iomanip>
 #include <cmath>
 #include <string>
+#include <sstream>
 
  /**
   * Runs exercise 3: Functions
