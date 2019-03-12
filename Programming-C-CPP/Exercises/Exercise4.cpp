@@ -221,9 +221,11 @@ void runDecomposition(void) {
 	std::cout << "\nExercise 4.3\n";
 	std::cout << "Enter a chemical to decompose: ";
 	std::cin >> chemical;
-	std::cin.clear();
-	std::cin.ignore(std::numeric_limits < std::streamsize > ::max(), '\n');
-
+	if (std::cin.fail()) {
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits < std::streamsize > ::max(), '\n');
+		return;
+	}
 	decompose(chemical);
 }
 
@@ -238,16 +240,27 @@ void decompose(std::string compound) {
 	if (compound.empty())
 		return;
 
-	std::string elements = "";
+	std::string elements = "", atom = "";
 	char c;
-	for (size_t i = 0; i < compound.length(); i++) {
-		if (isupper((c = compound.at(i))))
-			elements += " " + c;
-		else if (islower(c))
-			elements += c;
-		else
-			continue;
+	for (char &c : compound) {
+		if (std::isupper(c)) {
+			if (atom.empty())
+				atom += c;
+			else if (elements.empty()) {
+				elements += atom;
+				atom = std::string(1, c);
+			} else if (elements.find(atom) == std::string::npos) {
+				elements += " " + atom;
+				atom = std::string(1, c);
+			}
+
+		} else if (std::islower(c) && !atom.empty())
+			atom += std::string(1, c);
 	}
+	if (elements.empty() && !atom.empty())
+		elements += atom;
+	else if (elements.find(atom) == std::string::npos)
+		elements += " " + atom;
 
 	std::cout << "The elements of " << compound << ": " << elements << "\n";
 }
