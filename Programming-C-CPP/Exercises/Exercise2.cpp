@@ -15,6 +15,7 @@
 #include <ios>
 #include <cmath>
 #include <ctime>
+#include <sstream>
 
  /**
   * PI CONSTANT
