@@ -14,6 +14,7 @@
 #include <limits>
 #include <iomanip>
 #include <cmath>
+#include <sstream>
 
  /**
   * Runs exercise 1: Data Types | Arithmetic Expressions | Input & Output
