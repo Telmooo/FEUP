@@ -974,7 +974,7 @@ inline double g(double x) {
 /**
  * Function h: Square root of 4 - x squared
  *
- * @brief function g: Square root of 4 - x squared
+ * @brief function h: Square root of 4 - x squared
  * @param x any real number
  * @return value of the function
  */
