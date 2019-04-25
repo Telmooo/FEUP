@@ -163,7 +163,7 @@ The only sequence with errors is B.
 
 2.
 Initial values:
-	Endereço 	Conteúdo
+	EndereÃ§o 	ConteÃºdo
 	0x7010 		0x05
 	0x7008 		0x01
 	0x7000 		0x03
@@ -254,5 +254,3 @@ The content stored at the stack is the stack pointer and the return address of Q
 and previous content if any.
 At <2>
 Only the previous content if any is in the stack (the values of stack pointer and return address are still there but it's not "available")
-
-4.
