@@ -38,8 +38,8 @@ As C = 1, ~C = 0
 So W0 - W1 - ~C = 0x00013EEF - 0x00003EEE - 0 = 0x00010001
 The instruction ADC W0, W0, W0 is evaluated as W0 = W0 + W0 + C
 As C = 1
-W0 = 0x00010001 + 0x00010001 + 1 = 0x00100011
-The final value of W0 is 0x00100011
+W0 = 0x00010001 + 0x00010001 + 1 = 0x00020003
+The final value of W0 is 0x00020003
 
 9.
 W0 = 0x12345678
