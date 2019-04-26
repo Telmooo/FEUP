@@ -250,7 +250,7 @@ For the second ... ->
 
 c.
 At <1>
-The content stored at the stack is the stack pointer and the return address of QUAD
+The content stored at the stack is the stack pointer and the return address of POLI
 and previous content if any.
 At <2>
 Only the previous content if any is in the stack (the values of stack pointer and return address are still there but it's not "available")
