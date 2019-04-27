@@ -569,3 +569,66 @@ MIN_BITS:
 	CSINC	X0, X0, XZR, NE
 	LDP		X29, X30, [SP], 16
 	RET
+
+.global INVALID_BRACKETS
+.type INVALID_BRACKETS, %function
+.text
+
+VERIFY_BRACKETS:
+	STP		X29, X30, [SP, -16]!
+	MOV		X29, SP
+	MOV		X1, XZR
+.L22:
+	LDRB	W2, [X0], 1
+	CBZ		W2, .R24
+	CMP		W2, '('
+	B.EQ	.S22
+	CMP		W2, '{'
+	B.EQ	.S22
+	CMP		W2, '['
+	B.EQ	.S22
+	CMP		W2, ')'
+	B.EQ	.V22
+	CMP		W2, '}'
+	B.EQ	.V23
+	CMP		W2, ']'
+	B.EQ	.V24
+	B		.L22
+.S22:
+	STR		W2, [SP, -16]!
+	ADD		X1, X1, 1
+	B		.L22
+.V22:
+	CBZ		X1, .R22
+	LDRB	W3, [SP], 16
+	ADD		X1, X1, -1
+	CMP		W3, '('
+	B.NE	.R22
+	B		.L22
+	
+.V23:
+	CBZ		X1, .R22
+	LDRB	W3, [SP], 16
+	ADD		X1, X1, -1
+	CMP		W3, '{'
+	B.NE	.R22
+	B		.L22
+.V24:
+	CBZ		X1, .R22
+	LDRB	W3, [SP], 16
+	ADD		X1, X1, -1
+	CMP		W3, '['
+	B.NE	.R22
+	B		.L22
+.R22:
+	MOV		X0, 1
+.R23
+	CBZ		X1, .R25
+	ADD		SP, SP, 16
+	ADD 	X1, X1, -1
+	B		.R23
+.R24:
+	MOV		X0, 0
+.R25:
+	LDP		X29, X30, [SP], 16
+	RET
