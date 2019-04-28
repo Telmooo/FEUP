@@ -192,8 +192,8 @@ STP X1, X0, [SP, #-16]!
 	-> Store into SP<-(SP-16) and SP + 16 the values of X1 and X0
 	0x7000 - 16 = 0x6FF0
 	The new value stored in 0x6FF0 is now the value of X1 (0x07)
-	0x6FF0 + 16 = 0x7000
-	The new value stored in 0x7000 is now the value of X0 (0x0E)
+	0x6FF0 + 8 = 0x6FF8
+	The new value stored in 0x6FF8 is now the value of X0 (0x0E)
 	
 3.
 Program:
