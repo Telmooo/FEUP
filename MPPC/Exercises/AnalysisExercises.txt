@@ -244,8 +244,10 @@ into the stack
 So the instructions that need to be added into the "..." are:
 For the first ... ->
 	STP X29, X30, [SP, -16]! // store the values of frame pointer (X29) and return address (X30) into the stack
+	STP X20, [SP, -16]! // store a callee save
 	MOV X29, SP // update the frame pointer to the new frame
 For the second ... ->
+	LDP X20, [SP], 16
 	LDP X29, X30, [SP], 16 // load the values from stack again, and update the stack pointer
 
 c.
