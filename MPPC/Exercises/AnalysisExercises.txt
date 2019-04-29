@@ -30,16 +30,16 @@ ADC W0, W0, W0
 -> 0xB + 0x8 = 11 + 8 = 19 = 0x13
 So after the instruction ADDS W0, W0, #0x00008000
 The value of W0 is 0x00013EEF
-Also as this instructions affects flags, and there was a carry during the operation
-So now the flag C = 1
+Also as this instructions affects flags, and there wasn't a carry at the last bit during the operation
+So now the flag C = 0
 After MOV W1, #0x00003EEE, W1 = 0x00003EEE
 The instruction SBC W0, W0, W1 is evaluated as W0 = W0 - W1 - ~C
-As C = 1, ~C = 0
-So W0 - W1 - ~C = 0x00013EEF - 0x00003EEE - 0 = 0x00010001
+As C = 0, ~C = 1
+So W0 - W1 - ~C = 0x00013EEF - 0x00003EEE - 1 = 0x00010000
 The instruction ADC W0, W0, W0 is evaluated as W0 = W0 + W0 + C
-As C = 1
-W0 = 0x00010001 + 0x00010001 + 1 = 0x00020003
-The final value of W0 is 0x00020003
+As C = 0
+W0 = 0x00010000 + 0x00010000 = 0x00020000
+The final value of W0 is 0x00020000
 
 9.
 W0 = 0x12345678
@@ -81,15 +81,15 @@ ADD X1, X1, W0, SXTB #4
 
 -> EON X1, X1, X1 is equal to X1 = X1 ^ ~X1 = 0xFFFFFFFFFFFFFFFF
 -> ADD X1, X1, W0, SXTB #4 is equal to X1 = X1 + (W0[0:3] extended to 64 bit with signal << 4)
-W0[0:3] = 0x8 (with sign extension) = 0xFFFFFFFFFFFFFFF8
-0xFFFFFFFFFFFFFFF8 << 4 = 0xFFFFFFFFFFFFFF80
+W0[0:3] = 0x78 (with sign extension) = 0x0000000000000078
+0x0000000000000078 << 4 = 0x0000000000000780
 0xF + 0x8 = 15 + 8 = 23 = 0x(1)7
-0xF + 0xF + 1 = 15 + 15 = 30 = 0x(1)F
+0xF + 0x7 + 1 = 15 + 7 + 1 = 23 = 0x(1)7
+0xF + 1 = 0x(1)0
 
-
-So W1 = 0xFFFFFFFFFFFFFFFF + 0xFFFFFFFFFFFFFF80 = 
-	  = 0xFFFFFFFFFFFFFF7F
-The final value of W1 is 0xFFFFFFFFFFFFFF7F
+So W1 = 0xFFFFFFFFFFFFFFFF + 0x0000000000000780 = 
+	  = 0x00000000000077F
+The final value of W1 is 0x00000000000077F
 	  
 10.
 a.
