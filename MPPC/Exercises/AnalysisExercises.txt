@@ -248,8 +248,7 @@ For the first ... ->
 	MOV X29, SP // update the frame pointer to the new frame
 For the second ... ->
 	LDP X29, X30, [SP], 16 // load the values from stack again, and update the stack pointer
-	LDP X20, [SP, 16]
-
+	LDP X20, [SP], 16
 c.
 At <1>
 The content stored at the stack is the stack pointer and the return address of POLI
