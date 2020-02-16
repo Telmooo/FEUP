@@ -1,8 +1,0 @@
-Premissa: ∃x (Cube(x) ∧ ∀y (Cube(y) → y=x))
-Conclusão: ∀x∀y ((Cube(x) ∧ Cube(y)) ↔ x=y)
-
-Não podemos tirar esta conclusão a partir da premissa.
-Imaginemos um mundo com apenas dois objetos, um cubo e um tetaedro.
-Neste mundo a premissa é verdadeira, já existe exatamente um cubo no mundo.
-Mas a segunda premissa diz-nos que no mundo existe no máximo um objeto e esse objeto é um cubo, porém
-neste mundo com um cubo e um tetaedro, esta frase é falsa, pelo que impossiblita de ser consequência da premissa.

@@ -1,4 +1,0 @@
-The circuit is to a certain point well built, but it isn't capable of detecting excess (overflow!).
-When doing arithmetic operations with numbers express in two's complement, we need to be careful in the result, it can exceed the range of values the system can express.
-Overflow in the representation system two's complement happen if when adding two numbers with the same sign-bit, the result has a different value for the sign-bit.
-In the given example, when adding A=10000000 and B=11111111 both expressed in two's complement, the result overflows the range of values, so the result 01111111 is invalid as it should be an overflow error.

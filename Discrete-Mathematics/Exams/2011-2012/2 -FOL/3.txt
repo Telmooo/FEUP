@@ -1,4 +1,0 @@
-3) ∃x ((Dodec(x) ∧ Medium(x)) ∧ ∀z ((Dodec(z) ∧ Medium(z)) → x=z) ∧ FrontOf(x, a)) ⇔
-   ⇔∃x∀z ((Dodec(x) ∧ Medium(x)) ∧ ((Dodec(z) ∧ Medium(z)) → x=z) ∧ FrontOf(x, a))
-   
-   Tradução: Existe apenas um dodecaedro médio e este está à frente de a.
