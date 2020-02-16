@@ -1,0 +1,22 @@
+1. ∀x (Cube(x) ∨ Tet(x) ∨ Dodec(x))
+    (B) True in all words that can be depicted using TW's, but for a world where exists spheres, this sentence can be false
+
+2. ∀x (Small(x) ∨ Medium(x) ∨ Large(x))
+    (A) Logical Truth -> There's no physical world that can falsify this sentence, and object is either small, medium or large
+
+3. ∀x∀y (Larger(x, y) → Large(x))
+    (C) Falsifiable in TW for example in a world with a medium cube and a small cube, the medium cube is larger than the small cube
+        but isn't large
+
+4. ∀x∀y (Larger(x, y) → (Large(x) ∨ Small(y)))
+    (A) Logical Truth -> There's no physical world that can falsify this sentence, if object x is larger than y
+    the combinations possible are: Large(x) & Medium(y); Medium(x) & Small(y); Large(x) & Small(y);
+    and none of those can falsify the consequence, therefore the sentence always hold the truth value
+
+5. ¬∃x∃y (Larger(x, y) ∧ Small(x) ∧ Small(y))
+    (A) Logical Truth -> There's no physical world that can falsify this sentence.
+      To falsify this sentence, it needed to exist a world where x and y are both small and x is larger than y, which is impossible
+
+6. ∀x∀y∀z ((BackOf(x, z) ∧ Between(y, x, z)) → BackOf(x, y))
+    (A) True in all words that can be depicted using TW's, but for a world where that doesn't require perfect aligned objects
+        this sentence can be false

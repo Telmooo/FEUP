@@ -1,0 +1,11 @@
+6) Sendo P(x, y) - x é progenitor de y
+   ∀x (x≠adao → (x≠eva → ∃y (P(y, x) ∧ ∃z (P(z, x) ∧ y≠z ∧ ∀w (P(w, x) →  (w=y ∨ w=z))))))
+    Tradução: Toda a gente tem exatamente 2 progenitores, exceto Adão e Eva.
+
+7) ∀x (P(x) → Q(x)) ⇔ ∀x (¬P(x) ∨ Q(x)) ⇔∀x (Q(x) ∨ ¬P(x)) ⇔ ∀x (¬Q(x) → ¬P(x))
+
+8) ∃x ¬(R(x) → ¬S(x)) ⇔ ∃x ¬(¬R(x) ∨ ¬S(x)) ⇔ ∃x (R(x) ∧ S(x)) → ∃x R(x) ∧ ∃x S(x)
+
+9) ¬∃x (P(x) ∧ ¬P(x))
+   Válida FO, mas não tautologia. Pois se substituirmos a expressão quantificada por uma letra arbitrária obtemos
+   ¬A, o que não é uma tautologia, já que pode ser falsa ou verdadeira.

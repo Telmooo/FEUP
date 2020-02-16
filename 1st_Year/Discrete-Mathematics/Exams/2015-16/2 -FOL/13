@@ -1,0 +1,10 @@
+∃x∀y P(x, y) → ¬∃y (Q(y) → ∀z R(z)) ⇔
+⇔∃x∀y P(x, y) → ∀y ¬(Q(y) → ∀z R(z)) ⇔
+⇔∃x∀y P(x, y) → ∀y ¬(¬Q(y) ∨ ∀z R(z)) ⇔
+⇔∃x∀y P(x, y) → ∀y (Q(y) ∧ ¬∀z R(z)) ⇔
+⇔∃x∀y P(x, y) → ∀y (Q(y) ∧ ∃z ¬R(z)) ⇔
+⇔∃x∀y P(x, y) → ∀y∃z (Q(y) ∧ ¬R(z)) ⇔
+⇔¬(∃x∀y P(x, y)) ∨ ∀y∃z (Q(y) ∧ ¬R(z)) ⇔
+⇔∀x∃y ¬P(x, y) ∨ ∀y∃z (Q(y) ∧ ¬R(z)) ⇔
+⇔∀x∃y∀w∃z ¬P(x, y) ∨ (Q(w) ∧ ¬R(z)) ⇔
+⇔∀x∃y∀w∃z (P(x, y) → (Q(w) ∧ ¬R(z)))

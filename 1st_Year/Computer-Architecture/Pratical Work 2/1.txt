@@ -1,0 +1,31 @@
+a) Adress where the array dimension is stored: 0x11C
+
+b) The position in adress of the 4th element: 0x10C
+
+c) Memory occupied by the array in bytes: 28
+
+d) The instruction lsl R2, R2, #1 is executed: 7 times
+
+e) Code lines that change the value of R1:
+  - ldr		R1, =arrayA
+  - add		R1, R1, #4
+
+f) Values of array A after execution:
+  - 0x00000006
+  - 0xFFFFFFF6
+  - 0x0000002A
+  - 0x00000004
+  - 0xFFFFFFEC
+  - 0x00000064
+  - 0x00000012
+
+g) With dimA = 3, the values of array A after execution:
+  - 0x00000006
+  - 0xFFFFFFF6
+  - 0x0000002A
+  - 0x00000002
+  - 0xFFFFFFF6
+  - 0x00000032
+  - 0x00000009
+
+h) If the instruction lsl R2, R2, #1 is changed to lsl R2, R2, #3: the program now has the function to multiply by 8 instaed of 2

@@ -1,0 +1,9 @@
+If A = 10011010 (0x9A) and B = 11101101 (0xEB)
+Then the result of the sum with 8 bits is R = 10000111 (0x87) and OVF = 0
+The sign bit in A and B are equal, therefore there's overflow in case the sign bit in the result is different.
+But the sign bit in the result is also equal, so there's no overflow.
+
+If A = 10000000 (0x80) and B = 11111111 (0xFF)
+Then the result with 8 bits is R = 01111111 and OVF = 1
+The sign bit in A and B are equal, so if the sign bit in the result is different than the sign bit in A and B,
+then overflow occured. As sign bit in A and B is 1 but in the result is 0, we can conclude that overflow occured.

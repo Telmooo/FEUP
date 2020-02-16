@@ -1,0 +1,50 @@
+Mundo: A Luísa convidou amigos e familiares, todos os acompanhantes dos convidados também são tratados como convidados
+
+Predicados:
+- Amiga(x) - a pessoa x é amiga da Luísa
+- Familiar(x) - a pessoa x é familiar da Luísa
+- Festa(x) - a pessoa x está na festa
+- Conversou(x, y) - a pessoa x conversou com a pessoa y no decorrer da festa
+- Acompanhante(x, y) - a pessoa x acompanhou a pessoa y (diferente de x) à festa
+- Intrusa(x) - a pessoa x está na festa sem ser convidada
+
+6) ¬∀x Festa(x) ∨ ∃x Festa(x)
+    Válida FO mas não tautologia
+
+7) ¬∀x (Festa(x) ∨ ¬Festa(x))
+    Não satisfazível
+
+8) 
+Premissas: ∃x (Familiar(x) ∧ Festa(x)) → (∃x Amiga(x) → ∃y∃x Acompanhante(y, x))
+           ∃x (Conversou(luisa, x) ∧ x≠luisa) ∨ (∃x Amiga(x) ∧ ∃x (Familiar(x) ∧ Festa(x)))
+Conclusão: ∃x (Conversou(luisa, x) ∧ x≠luisa) ∨ ∃y∃x Acompanhante(y, x)
+
+    Consequência tautológica. Substituindo todas as expressões quantificadas por letras arbitrárias temos que:
+      |P → (Q → S)
+      |R ∨ (Q ∧ P)
+      |¯¯
+      |R ∨ S
+      Assim, pela segunda premissa podemos concluir, através de uma prova por casos que:
+        -Se tivermos R, temos R ∨ S por introdução da disjunção
+        -Se tivermos Q ∧ P, então temos P, e por consequência temos (Q → S), e como temos Q, por consequência temos S
+          tendo S, temos R ∨ S por introdução da disjunção (Q.E.D)
+
+9)
+Premissas: (1) ∀x (Festa(x) → (∃y Acompanhante(x, y) ∨ Familiar(x) ∨ Amiga(x)))
+           (2) ∀x∀y∀z ((Acompanhante(x, y) ∧ Acompanhante(y, z)) → Acompanhante(x, z))
+           (3) ∀x ((Familiar(x) ∨ Amiga(x)) → ¬Intrusa(x))
+Conclusão: ∃!x Intrusa(x) → ¬∃x Intrusa(x)
+   Consequência lógica.
+   -Pelo mundo apresentado podemos tirar as seguintes informações
+   -Se é intrusa, obrigatoriamente está na festa (∀x (Intrusa(x) → Festa(x)))
+   -Uma pessoa não pode acompanhar ela mesma (∀x ∀y (Acompanhante(x,y) → x ≠ y))
+   -Só foram convidados amigas e familiares.
+   -Todos os acompanhantes dos convidados são considerados convidados
+   -Assim se alguém acompanhar um convidado não pode ser intruso (∀x ∀y ((Acompanhante(x,y)∧¬Intrusa(y)) → ¬Intrusa(x)))
+   -Alguém que está na festa, ou é acompanhante, ou é familiar, ou é amiga. (Premissa 1)
+   -Nem os familiares nem as amigas são intrusas (Premissa 3)
+   -Se existisse um intruso, por contradição, teria que ser um acompanhante de alguém, já que não pode ser nem amiga nem familiar.
+    Mas todos acompanhantes dos convidados (familiares e amigas) também são considerados convidados, portanto uma intrusa só
+    poderia estar acompanhada de outra intrusa, assim falha o antecedente, pois para haver uma intrusa na festa teria que haver outra
+    a acompanhá-la, assim a conclusão é sempre verdadeira, pois o antecedente contradiz com as premissas e implica-nos que para existir
+    uma intrusa, tem de haver outra intrusa que a acompanhou (∀x (Intrusa(x) → ∃y (x ≠ y ∧ Intrusa(y)))). Q.E.D

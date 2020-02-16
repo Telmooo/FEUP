@@ -1,0 +1,257 @@
+BASIC INSTRUCTIONS:
+
+8.
+a.
+Program:
+MOV W0, #0x66666666
+MOV W1, #0xF000000F
+AND W0, W0, W1
+EOR W0, W0, W1
+ORR W0, W0, #0x66666666
+
+-> 0x6 = 0110 and 0xF = 1111, so 0x6 & 0xF = 0110 = 0x6
+After the instruction AND W0, W0, W1
+The value of W0 is 0x60000006
+-> 0x6 ^ 0xF = 1001 = 0x9
+So after the instruction EOR W0, W0, W1
+The value of W0 is 0x90000009
+-> 0x9 | 0x6 = 1111 = 0xF
+So after the instruction ORR W0, W0, #0x66666666
+The value of W0 is 0xF666666F
+
+b.
+Program:
+MOV W0, #0x0000BEEF
+ADDS W0, W0, #0x00008000
+MOV W1, #0x00003EEE
+SBC W0, W0, W1
+ADC W0, W0, W0
+
+-> 0xB + 0x8 = 11 + 8 = 19 = 0x13
+So after the instruction ADDS W0, W0, #0x00008000
+The value of W0 is 0x00013EEF
+Also as this instructions affects flags, and there wasn't a carry at the last bit during the operation
+So now the flag C = 0
+After MOV W1, #0x00003EEE, W1 = 0x00003EEE
+The instruction SBC W0, W0, W1 is evaluated as W0 = W0 - W1 - ~C
+As C = 0, ~C = 1
+So W0 - W1 - ~C = 0x00013EEF - 0x00003EEE - 1 = 0x00010000
+The instruction ADC W0, W0, W0 is evaluated as W0 = W0 + W0 + C
+As C = 0
+W0 = 0x00010000 + 0x00010000 = 0x00020000
+The final value of W0 is 0x00020000
+
+9.
+W0 = 0x12345678
+a.
+Program:
+MOV W1, #0xABCD0000
+UBFX W2, W0, #24, #8
+BFI W1, W2, #16, #8
+
+-> UBFX W2, W0, #24, #8 is evaluated as W2 = W0[24:31] (without signal extension)
+So W0[24:31] = 0x12, so W2 = 0x12
+-> BFI W1, W2, #16, #8 is evaluated as an insertion of the first 8 bits of W2 into the interval
+[16:23] (3rd byte)
+So W1 = 0xAB[12]0000
+The final value of W1 is 0xAB120000
+
+b.
+Program:
+REV W1, W0
+AND W1, W1, W1, ASR #16
+REV W1, W1
+SUB W1, W0, W1
+
+-> REV W1, W0 is reversing all the bytes of W0
+So W1 = 0x78563412
+-> AND W1, W1, W1, ASR #16 is W1 = W1 & (W1 >> 16 (with sign extension))
+W1 >> 16 = 0x00007856, with sign extension -> 0x00007856
+So W1 = W1 & 0x00007856 = 0x00003012
+-> REV W1, W1, reverse again
+W1 = 0x12300000
+-> SUB W1, W0, W1 is W1 = W0 - W1
+So W1 = 0x12345678 - 0x12300000 = 0x00045678
+The final value of W1 is 0x00045678
+
+c.
+Program:
+EON X1, X1, X1
+ADD X1, X1, W0, SXTB #4
+
+-> EON X1, X1, X1 is equal to X1 = X1 ^ ~X1 = 0xFFFFFFFFFFFFFFFF
+-> ADD X1, X1, W0, SXTB #4 is equal to X1 = X1 + (W0[0:3] extended to 64 bit with signal << 4)
+W0[0:3] = 0x78 (with sign extension) = 0x0000000000000078
+0x0000000000000078 << 4 = 0x0000000000000780
+0xF + 0x8 = 15 + 8 = 23 = 0x(1)7
+0xF + 0x7 + 1 = 15 + 7 + 1 = 23 = 0x(1)7
+0xF + 1 = 0x(1)0
+
+So W1 = 0xFFFFFFFFFFFFFFFF + 0x0000000000000780 = 
+	  = 0x00000000000077F
+The final value of W1 is 0x00000000000077F
+	  
+10.
+a.
+Program:
+CMP X0, #0
+CNEG X0, X0, LT
+If X0 is negative, then X0 = -X0
+So the program calculates the absolute value of X0 (signed)
+
+b.
+CMP X1, X2
+CSEL X0, X1, X2, GT
+CMP X0, X3
+CSEL X0, X0, X3, GT
+If X1>X2 then X0 = X1 else X0 = X2
+The second is equal but with X0 and X3 being the compared ones
+So the program puts into X0 the greatest value (signed) of the three values stored in X0, X1, X2
+
+STACK:
+
+1.
+
+A. 4 3 2 1 0 9 8 7 6 5
+	-> Push 0, 1, 2, 3, 4
+	-> Pop 4, 3, 2, 1, 0
+	-> Push 5, 6, 7, 8, 9
+	-> Pop 9, 8, 7, 6, 5
+
+B. 4 6 8 7 5 3 2 9 0 1
+	-> Push 0, 1, 2, 3, 4
+	-> Pop 4
+	-> Push 5, 6
+	-> Pop 6
+	-> Push 7, 8
+	-> Pop 8, 7, 5, 3, 2
+	-> Push 9
+	-> Pop 9
+	-> Pop 0 and 1 (the error is here, the order of pop is reversed, the 1 was still there
+	and the 0 was popped first)
+
+C. 2 5 6 7 4 8 9 3 1 0
+	-> Push 0, 1, 2
+	-> Pop 2
+	-> Push 3, 4, 5
+	-> Pop 5
+	-> Push 6
+	-> Pop 6
+	-> Push 7
+	-> Pop 7, 4
+	-> Push 8
+	-> Pop 8
+	-> Push 9
+	-> Pop 9
+	-> Pop 3, 1, 0
+
+D. 4 3 2 1 0 5 6 7 8 9
+	-> Push 0, 1, 2, 3, 4
+	-> Pop 4, 3, 2, 1, 0
+	-> Push 5
+	-> Pop 5
+	-> Push 6
+	-> Pop 6
+	-> Push 7
+	-> Pop 7
+	-> Push 8
+	-> Pop 8
+	-> Push 9
+	-> Pop 9
+
+The only sequence with errors is B.
+
+2.
+Initial values:
+	Endereço 	Conteúdo
+	0x7010 		0x05
+	0x7008 		0x01
+	0x7000 		0x03
+	0x6FF8 		0x00
+	0x6FF0 		0x02
+
+	X0=0x0E, X1=0x07 e SP=0x7000
+	
+Sequence of Instructions:
+	STR X0, [SP, #-16]!
+	LDR X2, [SP], #16
+	STP X1, X0, [SP, #-16]!
+
+STR X0, [SP, #-16]!
+	-> Store the the value of X0 into SP<-(SP-16)
+	So 0x7000 - 0x10 = 0x6FF0
+	Therefore the value stored in 0x6FF0 (which was previously 0x02) is now 0x0E
+
+LDR X2, [SP], #16
+-> Load the value in SP into X2, then add 16
+The current value of SP is 0x6FF0, so 0x6FF0 + 0x10 = 0x7000
+Therefore the new value of X2 (previously ???) is now the value of 0x6FF0 (0x0E)
+And the new value of SP is 0x7000
+
+STP X1, X0, [SP, #-16]!
+	-> Store into SP<-(SP-16) and SP + 16 the values of X1 and X0
+	0x7000 - 16 = 0x6FF0
+	The new value stored in 0x6FF0 is now the value of X1 (0x07)
+	0x6FF0 + 8 = 0x6FF8
+	The new value stored in 0x6FF8 is now the value of X0 (0x0E)
+	
+3.
+Program:
+	// ======= prog.c =======
+	extern long int POLI(long int x);
+	int main(void) {
+		long int r;
+		...
+		r = POLI(7);
+		printf("Resultado = %d\n", r);
+		return EXIT_SUCCESS;
+	}
+	// ======= subrot.s =======
+	POLI: ... // ***
+	MOV X10, X0 // <1>
+	BL QUAD
+	MOV X20, X0
+	MOV X0, #3
+	MUL X10, X10, X0
+	ADD X0, X20, X10
+	ADD X0, X0, #1
+	... // ***
+	RET // <2>
+	QUAD: MUL X0, X0, X0
+	RET
+
+a.
+-> The QUAD subroutine calculates the square number of the input
+-> The POLI subroutine:
+	Let's call a, b, c which translates to X0, X10, X20
+	Initial: a = 7;
+	Then b = a; // 7
+	(CALL QUAD) -> a = a*a = 49
+	c = a; // 49
+	a = 3;
+	b = b * a; // 7 * 3 = 21
+	a = c + b; // 49 + 21 = 70
+	a = a + 1; // 70 + 1 = 71
+	(END)
+	So the POLI subroutine which accepts an input X0 = n; And the result returned is:
+	n^2 + 3*n + 1, so the POLI subroutine calculates the value of polynomial expression.
+	The final value printed is "Resultado = 71" (the caracther \n is not seen but corresponds to a new line)
+	
+b.
+As the subroutine POLI isn't final (calls another function)
+Before calling other subroutine, the value of the return address and frame pointer needs to be stored
+into the stack
+So the instructions that need to be added into the "..." are:
+For the first ... ->
+	STP X29, X30, [SP, -32]! // store the values of frame pointer (X29) and return address (X30) into the stack
+	STP X20, [SP, 16] // store a callee save
+	MOV X29, SP // update the frame pointer to the new frame
+For the second ... ->
+	LDP X29, X30, [SP], 16 // load the values from stack again, and update the stack pointer
+	LDP X20, [SP], 16
+c.
+At <1>
+The content stored at the stack is the stack pointer and the return address of POLI
+and previous content if any.
+At <2>
+Only the previous content if any is in the stack (the values of stack pointer and return address are still there but it's not "available")

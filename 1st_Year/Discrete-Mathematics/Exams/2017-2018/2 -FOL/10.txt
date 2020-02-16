@@ -1,0 +1,8 @@
+10)
+∀x∃y L(a, x, y) → ∃x (∀y M(y,b) → N(x)) ⇔
+⇔∀x∃y L(a, x, y) → ∃x (∃y ¬M(y, b) ∨ N(x)) ⇔
+⇔¬(∀x∃y L(a, x, y)) ∨ ∃x∃y (¬M(y, b) ∨ N(x)) ⇔
+⇔∃x∀y ¬L(a, x, y) ∨ ∃x∃y (¬M(y, b) ∨ N(x)) ⇔
+⇔∃x∀y∃w∃z (¬L(a, x, y) ∨ (¬M(z, b) ∨ N(w))) ⇔
+⇔∃x∀y∃w∃z (L(a, x, y) → (¬M(z, b) ∨ N(w))) ⇔
+⇔∃x∀y∃w∃z (L(a, x, y) → (M(z, b) → N(w)))

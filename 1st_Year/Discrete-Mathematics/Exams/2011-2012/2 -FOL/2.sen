@@ -1,0 +1,1 @@
+7.2.4.28445wnds:Windows 86.2SntFC1542497843535D1542570370481S82344@x (LeftOf(x, a) % LeftOf(x, b))@x (LeftOf(x, a) $ /y (Smaller(x, y) & @w ((Cube(w) & RightOf(w, b)) $ BackOf(y, z))))@x (Cube(x) $ /y (Dodec(y) & Smaller(x, y))) & ~/w (Cube(w) & @z (Dodec(z) $ Smaller(w, z)))@w ((@z (z#w & Larger(w, z))) $ Dodec(w))s=52323;

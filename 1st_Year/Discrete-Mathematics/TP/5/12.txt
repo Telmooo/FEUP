@@ -1,0 +1,23 @@
+a)
+altura(pai(maria)) > altura(maria) ∧ ¬(altura(pai(maria)) > altura(pai(clara)))
+
+b)
+∃x (altura(x) > altura(pai(clara))
+
+c)
+∃x  (altura(mae(x)) > altura(pai(x)))
+
+d)
+∀x∃y (altura(x) > altura(y))
+
+e)
+∀x∀y ¬((altura(x) > altura(y)) ∧ x=y)
+
+f)
+∀x (((altura(x) > altura(clara)) ∧ ¬(x=juca)) → (altura(x) > altura(juca)))
+
+g)
+∀x ((altura(clara) > altura(x)) → ∃y ((altura(y) > altura(x)) ∧ altura(pai(mariana)) > altura(y)))
+
+h)
+∃x ((altura(x) > altura(mae(pai(jonas)))) ∧ (altura(pai(mae(jonas))) > altura(x)))

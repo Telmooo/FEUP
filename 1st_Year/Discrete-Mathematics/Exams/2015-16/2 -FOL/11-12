@@ -1,0 +1,11 @@
+Q11: ∀x ((Mulher(x) ∧ Mãe(x)) → (∃y (Homem(y) ∧ FilhoDe(y, x)) ∨ ∃y (Mulher(y) ∧ FilhaDe(y, x))))
+      Consequência lógica, mas não válida FO, pois teriamos que interpretar os predicados para deduzir a consequência.
+
+Q12:
+  1. ∀x∀y∀z ((Antepassado(x, y) ∧ Antepassado(y, z)) → Antepassado(x, z))
+  2. ∀x∀y ((PaiDe(x, y) ∨ MaeDe(x, y)) → Antepassado(x, y))
+  3. ∀x∃y PaiDe(y, x) ∧ ∀x∃y MaeDe(y, x)
+
+  CON: ∀y∀x (¬Antepassado(x, y) → Antepassado(y, x));
+  Não é consequência, por exemplo, dois individuos exatamente do mesmo tempo. Um não é antepassado do outro,
+  mas o contrário também não se aplica. Falsificando assim a frase.

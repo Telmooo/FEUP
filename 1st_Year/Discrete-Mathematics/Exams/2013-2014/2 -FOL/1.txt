@@ -1,0 +1,30 @@
+Predicados:
+- x=y: x é o mesmo que y
+- x>y: x é maior que y
+- T(x, y) - a pessoa x trabalhou em y
+- MIEIC(x) - x é um estudante de MIEIC
+- Empresa(y) - y é uma empresa
+
+Funções:
+- salario(x) - o salário da pessoa x
+
+Constantes:
+- google; microsoft
+
+Afirmações:
+1. Há um estudante do MIEIC que já trabalhou numa empresa.
+2. Não há nenhum estudante do MIEIC que já tenha trabalhado numa empresa.
+3. Há um estudante do MIEIC que já trabalhou na Google e na Microsoft.
+4. Todas as empresas já tiveram um estudante do MIEIC a trabalhar lá.
+5. Pelo menos dois estudantes do MIEIC já trabalharam na Google.
+6. Os estudantes do MIEIC na Google ganham mais que os estudantes do MIEIC que estão na Microsoft.
+7. O empregado mais bem pago é da Microsoft.
+
+Traduções:
+1. ∃x∃y (MIEIC(x) ∧ Empresa(y) ∧ T(x, y))
+2. ¬∃x (MIEIC(x) ∧ ∃y (Empresa(y) ∧ T(x, y)))
+3. ∃x (MIEIC(x) ∧ T(x, google) ∧ T(x, microsoft))
+4. ∀x (Empresa(x) → ∃y (MIEIC(y) ∧ T(y, x)))
+5. ∃x∃y (MIEIC(x) ∧ MIEIC(y) ∧ ¬(x=y) ∧ T(x, google) ∧ T(y, google))
+6. ∀x∀y ((MIEIC(x) ∧ MIEIC(y) ∧ T(x, google) ∧ T(y, microsoft)) → salario(x) > salario(y))
+7. ∃x∀y∀z ((T(x, microsoft) ∧ Empresa(z) ∧ T(y, z) ∧ ¬(x=y)) → salario(x) > salario(y))

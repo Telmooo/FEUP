@@ -1,0 +1,6 @@
+P → ∀x Q ⇔ ∀x [P → Q] if x is not free on P
+
+P → ∀x Q(x) ⇔ 
+⇔¬P ∨ ∀x Q(x) ⇔
+⇔∀x [¬P ∨ Q(x)] ⇔
+⇔∀x [P → Q(x)]     Q.E.D
