@@ -13,6 +13,7 @@ public class Game {
 
     private Screen screen;
     private Terminal terminal;
+    private Hero hero;
     private int x = 10;
     private int y = 10;
 
@@ -20,6 +21,8 @@ public class Game {
         try {
             terminal = new DefaultTerminalFactory().createTerminal();
             screen = new TerminalScreen(terminal);
+
+            hero = new Hero(10, 10);
 
             screen.setCursorPosition(null);
             screen.startScreen();
@@ -31,27 +34,40 @@ public class Game {
 
     private void draw() throws IOException {
         screen.clear();
-        screen.setCharacter(x, y, new TextCharacter('X'));
+        hero.draw(screen);
         screen.refresh();
     }
 
     public void run() throws IOException {
-        draw();
-        KeyStroke key = screen.readInput();
-        processKey(key);
+        while (true) {
+            draw();
+            KeyStroke key = screen.readInput();
+            processKey(key);
+            if (key.getKeyType() == KeyType.EOF) break;
+        }
     }
 
-    private void processKey(KeyStroke key) throws IOException{
-        if (key.getKeyType() == KeyType.ArrowUp) {
-            y--;
-        } else if (key.getKeyType() == KeyType.ArrowDown) {
-            y++;
-        } else if (key.getKeyType() == KeyType.ArrowLeft) {
-            x--;
-        } else if (key.getKeyType() == KeyType.ArrowRight) {
-            x++;
-        } else if (key.getKeyType() == KeyType.Escape) {
-            throw new IOException();
+    private void processKey(KeyStroke key) throws IOException {
+        switch (key.getKeyType()) {
+            case ArrowDown:
+                hero.moveDown();
+                break;
+            case ArrowUp:
+                hero.moveUp();
+                break;
+            case ArrowLeft:
+                hero.moveLeft();
+                break;
+            case ArrowRight:
+                hero.moveRight();
+                break;
+            case Character:
+                switch (key.getCharacter()) {
+                    case 'q':
+                        screen.close();
+                        break;
+                }
+                break;
         }
     }
 }
