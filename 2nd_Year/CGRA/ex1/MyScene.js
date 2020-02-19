@@ -27,7 +27,6 @@ class MyScene extends CGFscene {
         this.triangleSmall = new MyTriangleSmall(this);
         this.triangleBig = new MyTriangleBig(this);
         this.circle = new MyCircle(this, 2, 0, 0);
-        this.circle2 = new MyCircle(this, 3, 0, 0);
 
         //Objects connected to MyInterface
         this.displayAxis = true;
@@ -94,10 +93,8 @@ class MyScene extends CGFscene {
         if (this.displayTriangleBig)
             this.triangleBig.display();
 
-        if (this.displayCircle) {
+        if (this.displayCircle)
             this.circle.display();
-            this.circle2.display();
-        }
         // ---- END Primitive drawing section
     }
 }
