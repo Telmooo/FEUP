@@ -1,0 +1,47 @@
+\documentclass[a4paper]{article}
+% Hyperreferences
+\usepackage{hyperref}
+% Minted for Syntax Highlighting
+\usepackage{minted}
+% Graphics and images
+\usepackage{graphicx}
+\graphicspath{ {./} }
+% Encodings (to render letters with diacritics and special characters)
+\usepackage[utf8]{inputenc}
+% Language
+\usepackage[english]{babel}
+% Text Alignment
+\usepackage{ragged2e}
+% Color
+\usepackage{xcolor}
+% Math stuff
+\usepackage[mathscr]{euscript}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\newcommand{\expnumber}[2]{{#1}\mathrm{e}{#2}} % scientific notation
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+
+\newtheorem{theorem}{Theorem}
+
+% Document
+\begin{document}
+\begin{flushleft}
+\begin{Large}
+\begin{align*}
+&For ~~~ i = 0, 1, ..., n-1\\
+&\begin{cases}
+C_{used}^{(n-1-i)} = A^{(i)} ~~ \% ~~ C[n-1-i] \\
+A^{(i+1)} = A^{(i)} - C_{used}^{(n-1-i)} \times C[n-1-i]
+\end{cases}
+\end{align*}
+\end{Large}
+\end{flushleft}
+\end{document}
