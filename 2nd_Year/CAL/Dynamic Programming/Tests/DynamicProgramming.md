@@ -16,11 +16,16 @@ While having the same time complexity as the recursive counterpart, this solutio
 for the function.
 
 ## Change
-Let the coins available be stored in sequence:
-C = {c<sub>1</sub>, c<sub>2</sub>, ..., c<sub>n</sub>}
 
-Then the number of coins used for each can also be stored in a similiar sequence:
-C<sub>used</sub> = {0, 0, ..., 0} with initial values as 0.<br>
-And the amount left in each iteration has initial value A<sub>0</sub> = Total Amount.<br>
-Now we can apply the iterative step:<br>
-![](https://imgur.com/EmHHCso?raw=true)
+Data (input):<br>
+m: total change<br>
+**V** = {v<sub>1</sub>, v<sub>2</sub>, ..., v<sub>n</sub>}, |**V**| = n<br>
+
+Decisive variables:<br>
+**X** = {x<sub>1</sub>, x<sub>2</sub>, ..., x<sub>n</sub>}, |**X**| = n<br>
+
+Function goal:<br>
+min ∑<sup>n</sup><sub>i=1</sub> x<sub>i</sub>
+
+Restrictions:<br>
+∑<sup>n</sup><sub>i=1</sub> x<sub>i</sub> * v<sub>i</sub> = m
