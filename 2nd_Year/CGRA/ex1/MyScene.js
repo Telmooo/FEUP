@@ -26,7 +26,14 @@ class MyScene extends CGFscene {
         this.parallelogram = new MyParallelogram(this);
         this.triangleSmall = new MyTriangleSmall(this);
         this.triangleBig = new MyTriangleBig(this);
-        this.circle = new MyCircle(this, 2, 0, 0);
+        this.circle = new MyCircle(this, 2, 0, 0, 0);
+
+        // Phineas
+        this.phineas = new MyPhineas(this);
+        this.leftEye = new MyCircle(this, 1.5, 10, 1, -0.3);
+        this.leftPupil = new MyCircle(this, 0.4, 10.5, 1.1, -0.2);
+        this.rightEye = new MyCircle(this, 1.8, 13, 1.4, 0.3);
+        this.rightPupil = new MyCircle(this, 0.4, 13.5, 1.3, 0.4);
 
         //Objects connected to MyInterface
         this.displayAxis = true;
@@ -36,7 +43,7 @@ class MyScene extends CGFscene {
         this.displayParallelogram = false;
         this.displayTriangleSmall = false;
         this.displayTriangleBig = false;
-        this.displayCircle = true;
+        this.displayCircle = false;
     }
     initLights() {
         this.lights[0].setPosition(15, 2, 5, 1);
@@ -48,7 +55,7 @@ class MyScene extends CGFscene {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
     }
     setDefaultAppearance() {
-        this.setAmbient(0.2, 0.4, 0.8, 1.0);
+        this.setAmbient(1, 1, 1, 1.0);
         this.setDiffuse(0.2, 0.4, 0.8, 1.0);
         this.setSpecular(0.2, 0.4, 0.8, 1.0);
         this.setShininess(10.0);
@@ -95,6 +102,25 @@ class MyScene extends CGFscene {
 
         if (this.displayCircle)
             this.circle.display();
+
+        this.setAmbient(0.9960, 0.8627, 0.7647, 1.0);
+        this.setDiffuse(0.9960, 0.8627, 0.7647, 1.0);
+        this.setSpecular(0.9960, 0.8627, 0.7647, 1.0);
+        this.setShininess(10.0);
+        this.phineas.display();
+        this.setAmbient(1.0, 1.0, 1.0, 1.0);
+        this.setDiffuse(1.0, 1.0, 1.0, 1.0);
+        this.setSpecular(1.0, 1.0, 1.0, 1.0);
+        this.setShininess(10.0);
+        this.leftEye.display();
+        this.rightEye.display();
+        this.setAmbient(0.0549, 0.28235, 0.4314, 1.0);
+        this.setDiffuse(0.0549, 0.28235, 0.4314, 1.0);
+        this.setSpecular(0.0549, 0.28235, 0.4314, 1.0);
+        this.setShininess(10.0);
+        this.leftPupil.display();
+        this.rightPupil.display();
+
         // ---- END Primitive drawing section
     }
 }

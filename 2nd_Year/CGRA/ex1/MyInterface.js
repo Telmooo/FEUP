@@ -23,22 +23,22 @@ class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'scaleFactor', 0.1, 5).name('Scale Factor');
 
         // Checkbox element in GUI for diamond display
-        this.gui.add(this.scene, 'displayDiamond', 0.1, 5).name('Display Diamond');
+        this.gui.add(this.scene, 'displayDiamond').name('Display Diamond');
 
         // Checkbox element in GUI for triangle display
-        this.gui.add(this.scene, 'displayTriangle', 0.1, 5).name('Display Triangle');
+        this.gui.add(this.scene, 'displayTriangle').name('Display Triangle');
 
         // Checkbox element in GUI for parallelogram display
-        this.gui.add(this.scene, 'displayParallelogram', 0.1, 5).name('Display Parallelogram');
+        this.gui.add(this.scene, 'displayParallelogram').name('Display Parallelogram');
 
         // Checkbox element in GUI for small triangle display
-        this.gui.add(this.scene, 'displayTriangleSmall', 0.1, 5).name('Display Small Triangle');
+        this.gui.add(this.scene, 'displayTriangleSmall').name('Display Small Triangle');
 
         // Checkbox element in GUI for big triangle display
-        this.gui.add(this.scene, 'displayTriangleBig', 0.1, 5).name('Display Big Triangle');
+        this.gui.add(this.scene, 'displayTriangleBig').name('Display Big Triangle');
 
         // Checkbox element in GUI for big triangle display
-        this.gui.add(this.scene, 'displayCircle', 0.1, 5).name('Display Circle');
+        this.gui.add(this.scene, 'displayCircle').name('Display Circle');
 
         return true;
     }
