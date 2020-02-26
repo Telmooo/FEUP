@@ -40,6 +40,8 @@ class MyInterface extends CGFinterface {
         // Checkbox element in GUI for big triangle display
         this.gui.add(this.scene, 'displayCircle').name('Display Circle');
 
+        this.gui.add(this.scene, 'displayPhineas').name('Display Phineas');
+
         return true;
     }
 }
