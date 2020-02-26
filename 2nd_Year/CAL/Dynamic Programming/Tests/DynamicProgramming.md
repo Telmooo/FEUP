@@ -17,6 +17,7 @@ for the function.
 
 ## Change
 
+#### Formalization
 Data (input):<br>
 m: total change<br>
 **V** = {v<sub>1</sub>, v<sub>2</sub>, ..., v<sub>n</sub>}, |**V**| = n<br>
@@ -29,3 +30,11 @@ min ∑<sup>n</sup><sub>i=1</sub> x<sub>i</sub>
 
 Restrictions:<br>
 ∑<sup>n</sup><sub>i=1</sub> x<sub>i</sub> * v<sub>i</sub> = m
+
+#### Recursive functions
+
+minCoins(i, k) =
+
+| i | v |   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+| - | - | -- | - | - | - | - | - | - | - | - | - | - |
+| 0 | 0 | minCoins(i, k)<br>lastCoin(i, k) | 0<br>- | ∞
