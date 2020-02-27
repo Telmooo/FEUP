@@ -23,13 +23,18 @@ class MyScene extends CGFscene {
         this.axis = new CGFaxis(this);
         this.tangram = new MyTangram(this);
         this.unitCube = new MyUnitCube(this);
+        this.quad = new MyQuad(this);
+        this.unitCubeQ = new MyUnitCubeQuad(this);
 
         //Objects connected to MyInterface
         this.displayAxis = true;
         this.scaleFactor = 1;
         this.displayTangram = false;
         this.displayUnitCube = false;
-        this.displayComposition = true;
+        this.displayComposition = false;
+        this.displayQuad = false;
+        this.displayUnitCubeQ = false;
+        this.displayCompositionQ = true;
     }
     initLights() {
         this.lights[0].setPosition(15, 2, 5, 1);
@@ -75,20 +80,20 @@ class MyScene extends CGFscene {
             this.tangram.display();
 
         if (this.displayUnitCube) {
-            this.pushMatrix();
-            this.translate(-0.5, -0.5, -0.5);
             this.unitCube.display();
-            this.popMatrix();
         }
 
         if (this.displayComposition) {
             this.pushMatrix();
             // ---- Rotate and Translate to put composition parallel to xOz and upper left vertice on the origin
+            this.translate(5, 0.1, 5);
+            this.rotate(-Math.PI/2, 1, 0, 0);
             // ----
+            this.pushMatrix();
 
             // ---- Translate and Scale to create base
             this.scale(10, 10, 1);
-            this.translate(-0.5, -0.5, -1.05);
+            this.translate(0, 0, -0.51);
             // ----
 
             // ---- White Color
@@ -100,6 +105,40 @@ class MyScene extends CGFscene {
             this.unitCube.display();
             this.popMatrix();
             this.tangram.display();
+            this.popMatrix();
+        }
+
+        if (this.displayQuad) {
+            this.quad.display();
+        }
+
+        if (this.displayUnitCubeQ) {
+            this.unitCubeQ.display();
+        }
+
+        if (this.displayCompositionQ) {
+            this.pushMatrix();
+            // ---- Rotate and Translate to put composition parallel to xOz and upper left vertice on the origin
+            this.translate(5, 0.1, 5);
+            this.rotate(-Math.PI/2, 1, 0, 0);
+            // ----
+            this.pushMatrix();
+
+            // ---- Translate and Scale to create base
+            this.scale(10, 10, 1);
+            this.translate(0, 0, -0.51);
+            // ----
+
+            // ---- White Color
+            this.setAmbient(1.0, 1.0, 1.0, 1.0);
+    		this.setDiffuse(1.0, 1.0, 1.0, 1.0);
+    		this.setSpecular(1.0, 1.0, 1.0, 1.0);
+    		this.setShininess(10.0);
+            // ----
+            this.unitCubeQ.display();
+            this.popMatrix();
+            this.tangram.display();
+            this.popMatrix();
         }
 
         // ---- END Primitive drawing section

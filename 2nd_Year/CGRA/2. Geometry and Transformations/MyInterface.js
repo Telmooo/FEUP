@@ -24,9 +24,15 @@ class MyInterface extends CGFinterface {
 
         this.gui.add(this.scene, 'displayTangram').name('Display Tangram');
 
-        this.gui.add(this.scene, 'displayUnitCube').name('Display Unit Cube');
+        this.gui.add(this.scene, 'displayUnitCube').name('Display UCube');
 
-        this.gui.add(this.scene, 'displayComposition').name('Display Composition');
+        this.gui.add(this.scene, 'displayComposition').name('Display Comp');
+
+        this.gui.add(this.scene, 'displayQuad').name('Display Quad');
+
+        this.gui.add(this.scene, 'displayUnitCubeQ').name('Display UCubeQ');
+
+        this.gui.add(this.scene, 'displayCompositionQ').name('Display CompQ');
 
         return true;
     }

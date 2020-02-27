@@ -37,6 +37,7 @@ serialInclude(['../lib/CGF.js','MyScene.js', 'MyInterface.js',
                     'MyTangram.js',
                     'MyUnitCube.js',
                     'MyQuad.js',
+                    'MyUnitCubeQuad.js',
 
 main=function() {
     var app = new CGFapplication(document.body);

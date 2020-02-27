@@ -12,14 +12,15 @@ class MyQuad extends CGFobject {
         /*
             D - - - C
             |       |
+			|	0	|
             |       |
-         0->A - - - B
+            A - - - B
         */
 		this.vertices = [
-			0, 0, 0,	// A (0)
-			1, 0, 0,	// B (1)
-			1, 1, 0,	// C (2)
-			0, 1, 0		// D (3)
+			-0.5, -0.5, 0,	// A (0)
+			0.5, -0.5, 0,	// B (1)
+			0.5, 0.5, 0,	// C (2)
+			-0.5, 0.5, 0	// D (3)
 		];
 
 		// Counter-clockwise reference of vertices
