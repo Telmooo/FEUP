@@ -30,16 +30,6 @@ class MyScene extends CGFscene {
 
         // Phineas
         this.phineas = new MyPhineas(this);
-        this.ear = new MyCircle(this, 1.4, 18, -3, 0);
-        this.leftEye = new MyCircle(this, 1.5, 10, 1, -0.3);
-        this.leftPupil = new MyCircle(this, 0.4, 10.5, 1.1, -0.2);
-        this.rightEye = new MyCircle(this, 1.8, 13, 1.4, 0.3);
-        this.rightPupil = new MyCircle(this, 0.4, 13.5, 1.3, 0.4);
-        this.hair = new MyHair(this);
-        this.teeth = new MyTeeth(this);
-        this.mouth = new MyMouth(this);
-        this.tongue = new MyTongue(this);
-        this.eyebrows = new MyEyebrows(this);
 
         //Objects connected to MyInterface
         this.displayAxis = false;
@@ -92,64 +82,56 @@ class MyScene extends CGFscene {
         this.multMatrix(sca);
 
         // ---- BEGIN Primitive drawing section
-        if (this.displayDiamond)
+        if (this.displayDiamond) {
+            this.setAmbient(0.0039, 0.9960, 0.0039, 1.0);
+            this.setDiffuse(0.0039, 0.9960, 0.0039, 1.0);
+            this.setSpecular(0.0039, 0.9960, 0.0039, 1.0);
+            this.setShininess(10.0);
             this.diamond.display();
+        }
 
-        if (this.displayTriangle)
+        if (this.displayTriangle) {
+            this.setAmbient(1, 0.6078, 0.8117, 1.0);
+            this.setDiffuse(1, 0.6078, 0.8117, 1.0);
+            this.setSpecular(1, 0.6078, 0.8117, 1.0);
+            this.setShininess(10.0);
             this.triangle.display();
+        }
 
-        if (this.displayParallelogram)
+        if (this.displayParallelogram) {
+            this.setAmbient(0.9960, 0.9960, 0.0039, 1.0);
+            this.setDiffuse(0.9960, 0.9960, 0.0039, 1.0);
+            this.setSpecular(0.9960, 0.9960, 0.0039, 1.0);
+            this.setShininess(10.0);
             this.parallelogram.display();
+        }
 
-        if (this.displayTriangleSmall)
+        if (this.displayTriangleSmall) {
+            this.setAmbient(1, 0.1058, 0.1058, 1.0);
+            this.setDiffuse(1, 0.1058, 0.1058, 1.0);
+            this.setSpecular(1, 0.1058, 0.1058, 1.0);
+            this.setShininess(10.0);
             this.triangleSmall.display();
+        }
 
-        if (this.displayTriangleBig)
+        if (this.displayTriangleBig) {
+            this.setAmbient(0.0039, 0.6039, 0.9960, 1.0);
+            this.setDiffuse(0.0039, 0.6039, 0.9960, 1.0);
+            this.setSpecular(0.0039, 0.6039, 0.9960, 1.0);
+            this.setShininess(10.0);
             this.triangleBig.display();
+        }
 
-        if (this.displayCircle)
-            this.circle.display();
-
-        if (this.displayPhineas) {
+        if (this.displayCircle) {
             this.setAmbient(0.9960, 0.8627, 0.7647, 1.0);
             this.setDiffuse(0.9960, 0.8627, 0.7647, 1.0);
             this.setSpecular(0.9960, 0.8627, 0.7647, 1.0);
             this.setShininess(10.0);
+            this.circle.display();
+        }
+
+        if (this.displayPhineas) {
             this.phineas.display();
-            this.ear.display();
-            this.setAmbient(1.0, 1.0, 1.0, 1.0);
-            this.setDiffuse(1.0, 1.0, 1.0, 1.0);
-            this.setSpecular(1.0, 1.0, 1.0, 1.0);
-            this.setShininess(10.0);
-            this.leftEye.display();
-            this.rightEye.display();
-            this.setAmbient(0.0549, 0.28235, 0.4314, 1.0);
-            this.setDiffuse(0.0549, 0.28235, 0.4314, 1.0);
-            this.setSpecular(0.0549, 0.28235, 0.4314, 1.0);
-            this.setShininess(10.0);
-            this.leftPupil.display();
-            this.rightPupil.display();
-            this.setAmbient(0.9333, 0.3686, 0.2745, 1.0);
-            this.setDiffuse(0.9333, 0.3686, 0.2745, 1.0);
-            this.setSpecular(0.9333, 0.3686, 0.2745, 1.0);
-            this.setShininess(10.0);
-            this.hair.display();
-            this.eyebrows.display();
-            this.setAmbient(1.0, 1.0, 1.0, 1.0);
-            this.setDiffuse(1.0, 1.0, 1.0, 1.0);
-            this.setSpecular(1.0, 1.0, 1.0, 1.0);
-            this.setShininess(10.0);
-            this.teeth.display();
-            this.setAmbient(0.7255, 0.2039, 0.1294, 1.0);
-            this.setDiffuse(0.7255, 0.2039, 0.1294, 1.0);
-            this.setSpecular(0.7255, 0.2039, 0.1294, 1.0);
-            this.setShininess(10.0);
-            this.mouth.display();
-            this.setAmbient(0.9254, 0.5882, 0.4901, 1.0);
-            this.setDiffuse(0.9254, 0.5882, 0.4901, 1.0);
-            this.setSpecular(0.9254, 0.5882, 0.4901, 1.0);
-            this.setShininess(10.0);
-            this.tongue.display();
         }
 
 
