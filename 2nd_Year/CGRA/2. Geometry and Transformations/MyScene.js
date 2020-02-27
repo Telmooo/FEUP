@@ -82,7 +82,24 @@ class MyScene extends CGFscene {
         }
 
         if (this.displayComposition) {
+            this.pushMatrix();
+            // ---- Rotate and Translate to put composition parallel to xOz and upper left vertice on the origin
+            // ----
 
+            // ---- Translate and Scale to create base
+            this.scale(10, 10, 1);
+            this.translate(-0.5, -0.5, -1.05);
+            // ----
+
+            // ---- White Color
+            this.setAmbient(1.0, 1.0, 1.0, 1.0);
+    		this.setDiffuse(1.0, 1.0, 1.0, 1.0);
+    		this.setSpecular(1.0, 1.0, 1.0, 1.0);
+    		this.setShininess(10.0);
+            // ----
+            this.unitCube.display();
+            this.popMatrix();
+            this.tangram.display();
         }
 
         // ---- END Primitive drawing section
