@@ -165,8 +165,7 @@ class MyTangram extends CGFobject {
 								  	   		-1.0, -1.0, 0.0, 1.0
 								       		];
 		this.scene.multMatrix(yellow_parallelogram_transl);
-		this.scene.multMatrix(y_axis_reflection);
-		this.scene.multMatrix(z_axis_cpi_rotation);
+		this.scene.multMatrix(z_axis_ccpi_rotation);
 		this.yellow.apply();
 		this.parallelogram.display();
 		// ----

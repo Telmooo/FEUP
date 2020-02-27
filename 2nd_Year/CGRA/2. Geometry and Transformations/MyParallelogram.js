@@ -10,20 +10,20 @@ class MyParallelogram extends CGFobject {
     }
     initBuffers() {
         /*
-                D - - - C
-              / |   | /
-          0->A - - - B
+            C - F - - B
+              \ |     | \
+                D - - E - A <- 0
         */
         this.vertices = [
             0, 0, 0,    // A (0)
-            2, 0, 0,    // B (1)
-            3, 1, 0,    // C (2)
-            1, 1, 0     // D (3)
+            -1, 1, 0,    // B (1)
+            -3, 1, 0,    // C (2)
+            -2, 0, 0    // D (3)
         ];
         // Counter-clockwise reference of vertices
         this.indices = [
-            0, 1, 3,
-            1, 2, 3
+            0, 1, 2,
+            0, 2, 3
         ];
 
         this.primitiveType = this.scene.gl.TRIANGLES;

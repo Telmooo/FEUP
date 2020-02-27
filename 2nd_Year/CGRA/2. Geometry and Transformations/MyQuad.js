@@ -1,9 +1,9 @@
 /**
- * MyQuadrilateral
+ * MyQuad
  * @constructor
  * @param scene - Reference to MyScene object
  */
-class MyQuadrilateral extends CGFobject {
+class MyQuad extends CGFobject {
 	constructor(scene) {
 		super(scene);
 		this.initBuffers();

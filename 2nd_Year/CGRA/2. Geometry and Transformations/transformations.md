@@ -19,7 +19,7 @@ So to obtain the triangle needed for the tangram we need to rotate the triangle 
 ## Blue Triangle
 Similiar to the orange triangle, but now we rotate in clockwise direction, this is an angle of rotation of -90º (-π/2). After that we translate the triangle from the origin to **(x, y, z)**: (-1, -1, 0) -> **dx** = (-1, -1, 0).  
 ## Yellow Parallelogram
-To obtain the parallelogram needed for the tangram we can rotate the parallelogram by 90º in clockwise direction, this is an angle of rotation of -90º (-π/2). Followed by a reflection on the **y** axis with the center of the parallelogram still on the origin. And finally, a translation from the origin to **(x, y, z)**: (-1, -1, 0) -> **dx** = (-1, -1, 0).
+The parallelogram needed for the tangram is inverted, so we first modified the parallelogram and switched the vertices on the object itself, as the original parallelogram won't ever obtain the parallelogram needed. After that we need to apply a rotation of 90º in counter-clockwise direction, this is an angle of rotation of +90º (π/2). And finally, a translation from the origin to **(x, y, z)**: (-1, -1, 0) -> **dx** = (-1, -1, 0).
 ## Green Diamond
 To obtain the diamond it's just needed a translation from the origin to **(x, y, z)**: (1, -2, 0) -> **dx** = (1, -2, 0).
 ## Purple Triangle
