@@ -1,6 +1,9 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
+#include <fstream>
+#include <chrono>
+
 //#include "Defs.h"
 #include "Factorial.h"
 #include "Change.h"
@@ -38,15 +41,31 @@ TEST(CAL_FP01, CalcChangeTest) {
 	EXPECT_EQ("4;4;",calcChange(8, numCoins3, coinValues3));
 }
 
-
+*/
 TEST(CAL_FP01, CalcSumArrayTest) {
 	int sequence[5] = {4,7,2,8,1};
 	int sequence2[9] = {6,1,10,3,2,6,7,2,4};
 
 	EXPECT_EQ("1,4;9,1;11,2;18,1;22,0;",calcSum(sequence, 5));
 	EXPECT_EQ("1,1;5,3;11,3;16,1;20,3;24,3;31,1;35,1;41,0;",calcSum(sequence2, 9));
-}
 
+    ofstream outFile("../data/output_sumarray.csv");
+	for (int size = 1000; size <= 20000; size += 1000) {
+	    int *seq = (int*)malloc(sizeof(int) * size);
+
+        for (int i = 0; i < size; i++) {
+            seq[i] = rand() % (10 * size);
+        }
+
+        auto start = chrono::high_resolution_clock::now();
+        calcSum(seq, size);
+        auto finish = chrono::high_resolution_clock::now();
+        auto milli = chrono::duration_cast<chrono::milliseconds>(finish - start).count();
+        outFile << size << "," << milli << "\n";
+        free(seq);
+	}
+}
+/*
 
 TEST(CAL_FP01, PartitioningTest) {
 	EXPECT_EQ(3025,s_recursive(9,3));
