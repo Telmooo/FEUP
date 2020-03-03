@@ -1,4 +1,4 @@
-#include <termios.h>
+0#include <termios.h>
 #include <string.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -10,16 +10,16 @@ int main(void) {
     struct termios term, old_term;
 
     const char NULL_CHAR = 0x00;
-    const char DELETE = 0x7F;
     const char BACKSPACE = 0x08;
     const char NEW_LINE = 0x0A;
     const char SPACE = 0x20;
+    const char DELETE = 0x7F;
 
     char password[MAX_LENGTH + 1], ch, echo = '*';
 
     tcgetattr(STDOUT_FILENO, &old_term);
     term = old_term;
-    term.c_lflag &= ~ (ECHO | ECHOE | ECHOK | ECHONL | ICANON);
+    term.c_lflag &= ~ (ECHO | ECHOE| ECHOK | ECHONL | ICANON );
     tcsetattr(STDOUT_FILENO, TCSAFLUSH, &term);
 
     int i = 0;
