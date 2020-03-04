@@ -1,27 +1,23 @@
-#include <sys/types.h>
-#include <sys/stat.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <termios.h>
 #include <errno.h>
+#include <string.h>
+
+#define BUFFER_SIZE 256
 
 int main(int argc, char *argv[]) {
 
-    struct termios term, old_term;
-
-    tcgetattr(STDOUT_FILENO, &old_term);
-    term = old_term;
-    term.c_lflag &= ~( ECHO | ECHOE | ECHOK | ECHONL | ICANON );
-    tcsetattr(STDOUT_FILENO, TCSAFLUSH, &term);
-
-    if (argc != 3) {
-        perror("Error: Wrong number of arguments\n"
-                             "Program usage: ./copy file1 file2 -> copies from file1 (source) to file2 (destination)");
-
+    if (argc != 2 && argc != 3) {
+        char error_msg[BUFFER_SIZE];
+        sprintf(error_msg,  "Error: Wrong number of arguments\n"
+                            "Program usage: %s <source> <destination> -> copies from source to destination\n"
+                            "               %s <source> -> shows content from source file\n" , argv[0], argv[0]);
+        write(STDOUT_FILENO, error_msg, strlen(error_msg));
         return EPERM;
     }
 
-    const char DEFAULT_MODE = 0644;
+    const int DEFAULT_MODE = 0644;
 
     int filedes1 = open(argv[1], O_RDONLY);
 
@@ -30,11 +26,42 @@ int main(int argc, char *argv[]) {
         return ENOENT;
     }
 
-    int filedes2 = open(argv[2], O_WRONLY, DEFAULT_MODE);
+    int filedes2;
+    if (argc == 3) {
+        filedes2 = open(argv[2], O_WRONLY | O_CREAT, DEFAULT_MODE);
 
-    if (filedes2 == -1) {
-        perror("Error: destination file isn't a valid path");
-        return ENOENT;
+        if (filedes2 == -1) {
+            close(filedes1);
+            perror("Error: destination file isn't a valid path");
+            return ENOENT;
+        }
+    } else {
+        filedes2 = dup(STDOUT_FILENO);
+    }
+
+    char buffer[BUFFER_SIZE];
+    int ch_read, ch_write;
+
+    while ((ch_read = read(filedes1, buffer, BUFFER_SIZE)) > 0) {
+        if ((ch_write = write(filedes2, buffer, ch_read)) <= 0 || ch_write != ch_read) {
+            if (close(filedes1)) perror("Error: couldn't close source file correctly");
+            if (argc == 3)
+                if (close(filedes2)) perror("Error: coudln't close destination file correctly");
+            return EINTR;
+        }
+    }
+
+    if (close(filedes1)) {
+        perror("Error: couldn't close source file correctly");
+        if (argc == 3)
+            if (close(filedes2)) perror("Error: coudln't close destination file correctly");
+        return EINTR;
+    }
+    if (argc == 3) {
+        if (close(filedes2)) {
+            perror("Error: coudln't close destination file correctly");
+            return EINTR;
+        }
     }
 
     return 0;
