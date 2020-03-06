@@ -34,6 +34,14 @@ class MyInterface extends CGFinterface {
 
         this.gui.add(this.scene, 'displayCompositionQ').name('Display CompQ');
 
+        this.gui.add(this.scene, 'displayCylinder').name('Display Cylinder');
+
+        this.gui.add(this.scene, 'displayCylinderVert').name('Display CylinderV');
+
+        this.gui.add(this.scene, 'displaySphere').name('Display Sphere');
+
+        this.gui.add(this.scene, 'displayRoom').name('Display Room');
+
         return true;
     }
 }

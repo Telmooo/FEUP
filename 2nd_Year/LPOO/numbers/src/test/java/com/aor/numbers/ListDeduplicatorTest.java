@@ -84,7 +84,8 @@ public class ListDeduplicatorTest {
 
         List<Integer> expected = initializeList(MODE_SEQUENTIAL, 1, 2, 4, 5);
 
-        ListDeduplicator deduplicator = new ListDeduplicator(list);
+        //ListDeduplicator deduplicator = new ListDeduplicator(list);
+        ListDeduplicator deduplicator = Mockito.mock(ListDeduplicator.class);
         ListSorter sorter = new ListSorter(list);
         List<Integer> distinct = deduplicator.deduplicate(sorter);
 

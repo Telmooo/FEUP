@@ -25,6 +25,10 @@ class MyScene extends CGFscene {
         this.unitCube = new MyUnitCube(this);
         this.quad = new MyQuad(this);
         this.unitCubeQ = new MyUnitCubeQuad(this);
+        this.cylinder = new MyCylinder(this, 100, 1, 0, 0, 0, 2);
+        this.cylinderVert = new MyCylinderVert(this, 100, 3, 0, 0, 0, 5);
+        this.sphere = new MySphere(this, 50, 50, 1, 0, 0, 0);
+        this.room = new MyRoom(this);
 
         //Objects connected to MyInterface
         this.displayAxis = true;
@@ -34,7 +38,11 @@ class MyScene extends CGFscene {
         this.displayComposition = false;
         this.displayQuad = false;
         this.displayUnitCubeQ = false;
-        this.displayCompositionQ = true;
+        this.displayCompositionQ = false;
+        this.displayCylinder = false;
+        this.displayCylinderVert = false;
+        this.displaySphere = true;
+        this.displayRoom = false;
     }
     initLights() {
         this.lights[0].setPosition(15, 2, 5, 1);
@@ -80,6 +88,7 @@ class MyScene extends CGFscene {
             this.tangram.display();
 
         if (this.displayUnitCube) {
+            this.setDefaultAppearance();
             this.unitCube.display();
         }
 
@@ -109,10 +118,12 @@ class MyScene extends CGFscene {
         }
 
         if (this.displayQuad) {
+            this.setDefaultAppearance();
             this.quad.display();
         }
 
         if (this.displayUnitCubeQ) {
+            this.setDefaultAppearance();
             this.unitCubeQ.display();
         }
 
@@ -139,6 +150,25 @@ class MyScene extends CGFscene {
             this.popMatrix();
             this.tangram.display();
             this.popMatrix();
+        }
+
+        if (this.displayCylinder) {
+            this.setDefaultAppearance();
+            this.cylinder.display();
+        }
+
+        if (this.displayCylinderVert) {
+            this.setDefaultAppearance();
+            this.cylinderVert.display();
+        }
+
+        if (this.displaySphere) {
+            this.setDefaultAppearance();
+            this.sphere.display();
+        }
+
+        if (this.displayRoom) {
+            this.room.display();
         }
 
         // ---- END Primitive drawing section
