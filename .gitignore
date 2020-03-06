@@ -1,7 +1,11 @@
+# ----Ignore all files without extensions
 *
 !*.*
 !*/
 
+# ----
+
+# ----
 out/
 build/
 .gradle/
@@ -9,3 +13,5 @@ build/
 *.iml
 *.o
 cmake-build-debug/
+
+# ----
