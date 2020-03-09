@@ -12,23 +12,21 @@ class MyCylinder extends CGFobject {
         this.centerBY = centerBY;
         this.centerBZ = centerBZ;
         this.height = height;
-        this.circle = new MyCircle(this.scene, this.nVertices, this.radius, this.centerBX, this.centerBY, this.centerBZ);
+        this.circle = new MyCircle(this.scene, this.nVertices, this.radius, 0, 0, 0);
         this.quad = new MyQuad(this.scene);
     }
 
     display() {
-        //this.scene.rotate(-Math.PI/2, 1, 0, 0);
         this.scene.pushMatrix();
         // ---- Base
-        this.scene.rotate(Math.PI, 1, 0, 0);
-        this.scene.translate(0, this.height/2, 0);
-        this.scene.rotate(-Math.PI/2, 1, 0, 0);
+        this.scene.translate(this.centerBX, this.centerBY - this.height/2, this.centerBZ);
+        this.scene.rotate(Math.PI/2, 1, 0, 0);
         this.circle.display();
         // ----
         this.scene.popMatrix();
         this.scene.pushMatrix();
         // ---- Cover
-        this.scene.translate(0, this.height/2, 0);
+        this.scene.translate(this.centerBX, this.centerBY + this.height/2, this.centerBZ);
         this.scene.rotate(-Math.PI/2, 1, 0, 0);
         this.circle.display();
         // ----

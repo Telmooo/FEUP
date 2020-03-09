@@ -25,9 +25,9 @@ class MyScene extends CGFscene {
         this.unitCube = new MyUnitCube(this);
         this.quad = new MyQuad(this);
         this.unitCubeQ = new MyUnitCubeQuad(this);
-        this.cylinder = new MyCylinder(this, 100, 1, 0, 0, 0, 2);
+        this.cylinder = new MyCylinder(this, 100, 1, 1, 1, 1, 2);
         this.cylinderVert = new MyCylinderVert(this, 100, 3, 0, 0, 0, 5);
-        this.sphere = new MySphere(this, 50, 50, 1, 0, 0, 0);
+        this.sphere = new MySphere(this, 50, 50, 1, -1, 1, -1);
         this.room = new MyRoom(this);
 
         //Objects connected to MyInterface
