@@ -121,3 +121,89 @@ another relation for a key for R
 
 ---
 ## **SQL - Structured Query Language**
+
+### Determination of Type affinities in SQLite
+If the declared type contains:
+1. "INT" : **INTEGER** affinity
+2. "CHAR", "CLOB", "TEXT" : **TEXT** affinity
+3. "BLOB" or no type specified: **BLOB** affinity
+4. "REAL", "FLOA", "DOUB" : **REAL** affinity
+5. Otherwise: **NUMERIC** affinity
+
+Rules should be assessed by the above order.
+
+#### TEXT affinity
+Storage classes: NULL, TEXT or BLOB  
+Numerical data is converted to text when inserted on a TEXT affinity column
+
+#### NUMERIC affinity
+All storage classes  
+Text data is converted into INTEGER or REAL if conversion is lossless and converted to TEXT otherwise
+
+#### INTEGER affinity
+Similar to numeric affinity
+
+#### REAL affinity
+Similar to numeric affinity but INTEGER data is converted to float point representation
+
+#### BLOB affinity
+No attempt to coerce data from one storage class to another (data is stored as it is)
+
+```
+BLOBs are always stored as BLOBs no matter the column affinity
+NULLs aren't affected by affinity as well
+```
+
+### SQLite
+
+#### Table declarations
+```sql
+CREATE TABLE <table_name> {
+    <column_name> <data_type>,
+    ...,
+    <column_name> <data_type>
+};
+
+CREATE TABLE Example {
+    var1    INT,
+    var2    CHAR(30),
+    var3    VARCHAR(255),
+    var4    CHAR(1),
+    var5    DATE
+}
+```
+
+#### Modifying Relation Schemas
+##### To remove an entire table and all its tuples
+```sql
+DROP TABLE <table_name>;
+```
+##### To mofify the schema of an existing relation
+```sql
+ALTER TABLE <table_name> ADD <column_name> <data_type>;
+ALTER TABLE <table_name> DROP <column_name;
+```
+#### Default Values
+```sql
+CREATE TABLE <table_name> {
+    <column_name> <data_type> DEFAULT <default_value>,
+    ...,
+    <column_name> <data_type>
+};
+```
+Default default value is `NULL`
+
+
+### Constraints
+Uses of constrains:
+- Data-entry errors (inserts)
+- Correctness criteria (updates)
+- Enforce consistency
+- Tell system about data -store, query processing
+
+#### Classification of constraints
+- Non-null constraints
+- Key constraints
+- Attribute-based and tuple-based constraints
+- Referential integrity (foreign key) - if active prevents inserting data that doesn't exist on the table that is being pointed to
+- General assertions

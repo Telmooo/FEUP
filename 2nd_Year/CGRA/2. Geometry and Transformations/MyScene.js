@@ -35,13 +35,13 @@ class MyScene extends CGFscene {
         this.scaleFactor = 1;
         this.displayTangram = false;
         this.displayUnitCube = false;
-        this.displayComposition = false;
+        this.displayComposition = true;
         this.displayQuad = false;
         this.displayUnitCubeQ = false;
         this.displayCompositionQ = false;
         this.displayCylinder = false;
         this.displayCylinderVert = false;
-        this.displaySphere = true;
+        this.displaySphere = false;
         this.displayRoom = false;
     }
     initLights() {
