@@ -31,13 +31,9 @@ class MyUnitCube extends CGFobject {
 			if (((i + 1) % 4) < 2) y *= -1;
 			if (i < 4) z *= -1;
 
-			this.vertices.push(x, y, z); // X normal
-			this.vertices.push(x, y, z); // Y normal
-			this.vertices.push(x, y, z); // Z normal
-
-			this.normals.push(((x < 0) ? -1 : 1), 0, 0); // X normal
-			this.normals.push(0, ((y < 0) ? -1 : 1), 0); // Y normal
-			this.normals.push(0, 0, ((z < 0) ? -1 : 1)); // Z normal
+			this.vertices.push(x, y, z); this.normals.push(((x < 0) ? -1 : 1), 0, 0); // X normal
+			this.vertices.push(x, y, z); this.normals.push(0, ((y < 0) ? -1 : 1), 0); // Y normal
+			this.vertices.push(x, y, z); this.normals.push(0, 0, ((z < 0) ? -1 : 1)); // Z normal
 		}
 
 		/*
