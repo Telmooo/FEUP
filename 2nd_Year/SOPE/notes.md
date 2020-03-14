@@ -1,5 +1,6 @@
 # Notes
----
+--------------------------------------------------------------------------------
+
 ## Programming in Unix
 - Programs request services from the OS through system calls.
 - A __system call__ is a direct entry point into the kernel.
@@ -9,8 +10,8 @@
 ## Manual pages
 The manual pages cna be consulted with the `man` command.
 ```sh
-man [section] keyword # manual for command keyword
-man -k keyword # search for keyword
+man [section] keyword # manual keyword
+man -k keyword # search manpages with keyword
 ```
 
 ## System calls and C library functions
@@ -194,7 +195,9 @@ The number of ticks per second can be determined using `sysconf()`:
 ```c
 ticks_seg = sysconf(_SC_CLK_TCK);
 ```
----
+
+--------------------------------------------------------------------------------
+
 ## Console, Files and Directories
 ### Files
 File-related system calls allow to manipulate flat files, directories and special files, including:
@@ -271,5 +274,243 @@ Change of console features in Unix:
 ```c
 #include <termios.h>
 
-int tcgetattr()
+int tcgetattr(int filedes, struct termios *termptr);
+int tcsetattr(int filedes, int opt, const struct termios *termptr);
+```
+- `tcgetattr()` - fills a `termios` structure whose address is passed in `termptr` with the characteristics of the console component whose descriptor is `filedes`
+- `tcsetattr()` - modifies the characteristics of the console component whose descriptor is `filedes`, with the values previously placed in `termios` whose address is passed in `termptr`
+  - `opt` indicates when the modification will occur:
+    - `TCSANOW` → immediately
+    - `TCSADRAIN` → after the output buffer is emptied
+    - `TCSAFLUSH` → after the output buffer is emptied, in addition, empties the input buffer
+
+```c
+struct termios {
+    tcflag_t c_iflag;       /* input flags */
+    tcflag_t c_oflag;       /* output flags */
+    tcflag_t c_cflag;       /* control flags */
+    tcflag_t c_lflag;       /* local flags */
+    cc_t     c_cc[NCCS];    /* control characters */
+}
+```
+`c_iflag`, `c_oflag`, `c_cflag`, `c_lflag`:
+- fields consisting of flags of 1 or more bits that allow the control of the characteristics of the console
+
+`c_cc[]`:
+- array where the special characters that are processed by the console when it is operating in canonical mode are defined
+  - ex:
+  ```c
+  mytermios.cc[VERASE] = 8; /* 8 → ASCII code of <ctrl-H> */
+  ```
+- The shell command `stty -a` allows you to see the `termios` structure settings
+- If an error occurs that causes a program that changed the characteristics of the console to end unexpectedly, it may happen that it is in a state that makes it impossible to interact with the user
+- To try to restore the "normal" state, there are several alternatives:
+  1. `stty sane` followed by `return` or `ctrl-J`
+  2. `stty -g > save_stty` followed by `return` or `ctrl-J`  
+      ... (run the program)  
+      `stty $(cat save_stty)` `return` or `ctrl-J`
+  3. close the current console and open another one
+
+## Creating/Opening files
+```c
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+int open(const char *pathname, int oflag, ... /*, mode_t mode */);
+
+// Returns: file descriptor if OK, -1 if error occurs
+```
+- `pathname` → file name
+- `oflag` → combination of multiple opening flags
+  - `O_RDONLY` &emsp;       → read-only opening &nbsp;&nbsp;&nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; |
+  - `O_WRONLY` &emsp;       → write-only opening &nbsp;&nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; |← only one of these 3
+  - `O_RDWR`   &emsp;&emsp; → opening for reading and writing &nbsp;&nbsp;&nbsp;&nbsp;|
+  - `O_APPEND` &emsp;       → to add at the end of the file
+  - `O_CREAT`  &emsp;&ensp; → to create the file if it doesn't exist; requires `mode`
+  - `O_EXCL`   &emsp;&emsp; → causes an error if the file exists and `O_CREAT` is activated
+  - `O_TRUNC`  &emsp;&ensp; → if file exists length 0
+  - `O_SYNC`   &emsp;&emsp; → only returns after the data has been physically written to the file
+  - ...
+- `mode` → permissions associated with the file
+  - should only be indicated when creating a new file
+  - can be the bitwise `OR` (`|`) of several of the following constants:
+    - `S_IRUSR` - user read
+    - `S_IWUSR` - user write
+    - `S_IXUSR` - user execute
+    - `S_IRGRP` - group read
+    - `S_IWGRP` - group write
+    - `S_IXGRP` - group execute
+    - `S_IROTH` - others read
+    - `S_IWOTH` - others write
+    - `S_IXOTH` - others execute
+
+  - Alternative way:
+  | owner   | group   | other   |
+  | :---    | :---    | :---    |
+  | __rwx__ | __rwx__ | __rwx__ |
+  | 111     | 101     | 000     |
+  | 7       | 5       | 0       |
+
+    `mode` (octal): `#define MODE 0750`  
+    (normally when creating files the mode `0644` is used)
+
+**Notes**:
+- actual permissions maybe not be exactly as specified, depending on the value of the "file creating mask" (specified with the `umask` call)
+- the default value of this mask is often `022` (octal) which means to cancel write permissions except for the owner
+
+## Duplicating a descriptor
+Can be done with the functions `dup` or `dup2`
+```c
+#include <unistd.h>
+int dup(int filedes);
+int dup2(int filedes, int filedes2);
+
+// Returns: new descriptor if OK, -1 if error occurs
+```
+- `dup`:
+  - look for the descriptor with the lowest number and point it to the same file as `filedes`
+- `dup2`:
+  - close `fildes2` if it is currently open and set `fildes2` to point to the same file as `filedes`
+    - if `filedes` == `fildes2`, returns `filedes2` without closing it
+  - example:
+  ```c
+  dup2(fd, STDIN_FILENO);
+  // redirects standard input (keyboard) to the file whose descriptor is fd
+  ```
+
+## Reading a file
+```c
+#include <unistd.h>
+ssize_t read(int filedes, void *buff, size_t, nbytes);
+
+// Returns: number of bytes read, 0 if at the end of the file, -1 if error occurs
+```
+- `filedes` - file descriptor
+- `buff` - pointer to buffer where the values read will be stored
+- `nbytes` - number of bytes to read
+
+This function has non of the `scanf()` formatting capabilities
+
+## Writing to a file
+```c
+#include <unistd.h>
+ssize_t write(int filedes, const void *buff, size_t nbytes);
+// Returns: number of bytes written, -1 if error occurs
+```
+- `filedes` - file descriptor
+- `buff` - pointer to buffer where the values to be written must be placed
+- `nbytes` - number of bytes to write
+- If the `O_APPEND` flag was specified when opening the file, the file pointer is pointed to the end of the file before the write operation is performed
+
+This function has none of the formatting capabilities of `printf()`
+
+## Moving the file pointer
+```c
+#include <sys/types.h>
+#include <unistd.h>
+off_t lseek(int filedes, off_t offset, int whence);
+
+// Returns: the new value of the pointer if OK, -1 if error occurs
+```
+- `fildes` - file descriptor
+- `offset` - offset (can be positive or negative)
+- `whence` - the interpretation given to the offset depends on the value of this argument:
+  - `SEEK_SET` - the offset is counted from the beginning of the file
+  - `SEEK_CURR` - the offset is counted from the current position of the pointer
+  - `SEEK_END` - the offset is counted from the end of the file
+- To determine the current position of the file pointer we can do:
+  ```c
+  curr_pos = lseek(fd, 0, SEEK_CURR);
+  ```
+
+## Closing a file
+```c
+#include <unistd.h>
+int close(int filedes);
+
+// Returns: 0 if OK, -1 if error occurs
+```
+- `filedes` - file descriptor
+- Closing a descriptor that has already been closed results in an error
+- When a process ends, all open file are automatically closed by the kernel
+- If `filedes` is the last descriptor associated with an open file, the kernel releases the resources associated with that file when invoking `close()`
+
+## Deleting a file
+```c
+#include <unistd.h>
+int unlink(const char *pathname);
+
+// Returns: 0 if OK, -1 if error occurs
+```
+- `pathname` - file name
+- To delete a file, you must have permission to write and execute it in the directory where the file is located
+- The file will, in fact, only be deleted:
+  - when it is closed, if it is open during the unlink call
+  - when the number of links in the file reaches 0
+
+## Other calls
+- `umask` - modifies the mask (mode parameter of the open call) for creating files and directories
+- `stat`, `fstat`, `lstat`
+  - return a `struct` with various information about a file
+    - type of permissions, size, number of links, last modified time, ...
+  - there is a set of macros (`S_ISREG()`, `S_ISDIR()`, ...) that allow determining the type of file, from a field of that struct
+- `mkdir` - creates a new directory
+- `rmdir` - delete a directory
+- `opendir`/`closedir` - open/close a directory
+- `readdir` - reads the next entry in the directory and moves forward automatically.
+- `rewinddir` - makes the next reading the first entry
+- `getcwd` - get the current directory name
+- `chdir`- change the current directory
+
+## Other calls (C library)
+```c
+FILE* fopen(filename, mode);
+int fprintf(FILE *stream, const char *format, ...);
+int fscanf(FILE *stream, const char *format, ...);
+int fputs(const char *s, FILE* stream);
+char* fgets(char *s, int size, FILE *stream);
+size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
+size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream);
+int feof(FILE *stream);
+int ferror(FILE *stream);
+int fclose(FILE *stream);
+FILE* fdopen(int fd, const char* mode); // get a FILE* from a file descriptor
+int fileno(FILE* stream); // get file descriptor from FILE*
+```
+
+--------------------------------------------------------------------------------
+
+## Creation and Termination of Processes
+
+### Creation of new processes
+- The way for an existing process (parent process) to create a new process (child process) is to invoke `fork()` function  
+  The only exception is special processes created by the kernel
+- The init process (PID = 1) is a special process, created by the kernel
+- This process is responsible for creating other system processes and for triggering the user login process
+
+```sh
+                        +------+
+                  +-----| init |-----+
+                  |     +------+     |   fork
+                  ↓        |         ↓   one for each terminal
+                           ↓
+                       +------+
+                       | init |
+                       +------+
+                           |
+                           ↓
+                       +-------+
+                       | getty |     opens the descriptors 0, 1 and 2
+                       +-------+     reads the username
+                           |
+                           ↓
+                       +-------+
+                       | getty |     reads and verifies the password
+                       +-------+
+                           |
+                           ↓
+                       +-------+
+                       | getty |     reads and executes commands
+                       +-------+
 ```
