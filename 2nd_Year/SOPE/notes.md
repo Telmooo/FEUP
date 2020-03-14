@@ -484,7 +484,7 @@ int fileno(FILE* stream); // get file descriptor from FILE*
 ## Creation and Termination of Processes
 
 ### Creation of new processes
-- The way for an existing process (parent process) to create a new process (child process) is to invoke `fork()` function  
+- The way for an existing process (parent process) to create a new process (child process) is to invoke ``fork()`` function  
   The only exception is special processes created by the kernel
 - The init process (PID = 1) is a special process, created by the kernel
 - This process is responsible for creating other system processes and for triggering the user login process
