@@ -3,26 +3,20 @@ include=function(){function f(){var a=this.readyState;(!a||/ded|te/.test(a))&&(c
 serialInclude=function(a){var b=console,c=serialInclude.l;if(a.length>0)c.splice(0,0,a);else b.log("Done!");if(c.length>0){if(c[0].length>1){var d=c[0].splice(0,1);b.log("Loading "+d+"...");include(d,function(){serialInclude([]);});}else{var e=c[0][0];c.splice(0,1);e.call();};}else b.log("Finished.");};serialInclude.l=new Array();
 
 serialInclude(['../lib/CGF.js',
-                '../myLib/helpers.js',
-                '../myLib/MyCircle.js',
-                '../myLib/MyCylinder.js',
-                '../myLib/MyCylinderVert.js',
-                '../myLib/MySphere.js',
-                '../myLib/MyQuad.js',
-                'MyScene.js',
-                'MyInterface.js',
-                'MyPlane.js',
-                'MyCone.js',
-                'MyPyramid.js',
-                'MyDiamond.js',
-                'MyTriangleSmall.js',
-                'MyTriangleBig.js',
-                'MyTriangle.js',
-                'MyParallelogram.js',
-                'MyTangram.js',
-                'MyUnitCube.js',
+               '../myLib/helpers.js',
+               '../myLib/MyQuad.js',
+               'MyPyramid.js',
+               'MyDiamond.js',
+               'MyTriangleSmall.js',
+               'MyTriangleBig.js',
+               'MyTriangle.js',
+               'MyParallelogram.js',
+               'MyTangram.js',
+               'MyScene.js',
+               'MyInterface.js',
 
-main=function() {
+main=function()
+{
     var app = new CGFapplication(document.body);
     var myScene = new MyScene();
     var myInterface = new MyInterface();
