@@ -27,7 +27,7 @@ class MyCircle extends CGFobject {
             x = this.centerX + Math.cos(angle) * this.radius;
             y = this.centerY + Math.sin(angle) * this.radius;
 
-            this.vertices.push(x); this.vertices.push(y); this.vertices.push(this.centerZ);
+            this.vertices.push(x, y, this.centerZ);
 
             angle += dangle;
         }
@@ -35,10 +35,14 @@ class MyCircle extends CGFobject {
         this.indices = [
         ];
 
+        this.normals = [
+        ];
+
         for (var i = 1; i <= this.nVertices; i++) {
             this.indices.push(i);
             this.indices.push(1 + i % this.nVertices);
             this.indices.push(0); // center
+            this.normals.push(0, 0, 1);
         }
 
         this.primitiveType = this.scene.gl.TRIANGLES;

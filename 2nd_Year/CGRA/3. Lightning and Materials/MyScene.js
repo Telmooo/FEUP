@@ -27,8 +27,8 @@ class MyScene extends CGFscene {
         this.pyramid = new MyPyramid(this, 3, 1);
         this.tangram = new MyTangram(this);
         this.unitCube = new MyUnitCube(this);
-        this.cylinder = new MyCylinder(this);
-        this.sphere = new MySphere(this);
+        this.cylinder = new MyCylinder(this, 100, 1, 0, 0, 0, 1);
+        this.sphere = new MySphere(this, 50, 50, 1, 0, 0, 0);
 
         this.objects = [this.plane, this.pyramid, this.cone, this.tangram, this.unitCube, this.cylinder, this.sphere];
 

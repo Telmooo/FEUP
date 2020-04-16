@@ -23,6 +23,8 @@ class MySphere extends CGFobject {
         this.normals = [
         ];
 
+        this.texCoords = [];
+
         var dlon = (Math.PI * 2)/this.lonDivisions, lon = 0;
         var dlat = Math.PI/this.latDivisions, lat = 0;
         var x, y, z;
@@ -33,9 +35,13 @@ class MySphere extends CGFobject {
                 y = this.centerY + this.radius * Math.sin(lon) * Math.sin(lat);
                 z = this.centerZ + this.radius * Math.cos(lat);
 
-                this.vertices.push(x); this.vertices.push(y); this.vertices.push(z);
+                this.vertices.push(x, y, z);
 
-                this.normals.push(x); this.normals.push(y); this.normals.push(z);
+                let norm = Math.sqrt(x * x + y * y + z * z);
+
+                this.normals.push(x/norm, y/norm, z/norm);
+
+                this.texCoords.push(j/this.lonDivisions, i/this.latDivisions);
             }
         }
 

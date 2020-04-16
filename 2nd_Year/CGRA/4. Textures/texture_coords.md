@@ -1,4 +1,7 @@
-# Transformations
+# Textures
+
+## Tangram
+![Tangram](images/87.png)
 
 ## Original Shapes
 ![Original Shapes](images/original_shapes_1.png)
@@ -53,7 +56,7 @@ this.texCoords = [
 this.texCoords = [
     1.0, 1.0,
     0.75, 0.75,
-    0.25, 0.75
+    0.25, 0.75,
     0.5, 1.0
 ];
 ```
@@ -62,7 +65,7 @@ this.texCoords = [
 this.texCoords = [
     0.0, 0.5,
     0.25, 0.75,
-    0.5, 0.5
+    0.5, 0.5,
     0.25, 0.25
 ];
 ```

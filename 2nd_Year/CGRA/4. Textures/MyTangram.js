@@ -59,6 +59,12 @@ class MyTangram extends CGFobject {
 									0.0, 3.0, 0.0, 1.0
 									];
 		this.scene.multMatrix(red_triangle_transl);
+		this.triangleSmall.updateTexCoords([
+									    0.25, 0.75,
+									    0.75, 0.75,
+									    0.5, 0.5
+									]);
+
 		this.texture.apply();
 		this.triangleSmall.display();
 		// ----
@@ -74,6 +80,12 @@ class MyTangram extends CGFobject {
 									];
 		this.scene.multMatrix(pink_triangle_transl);
 		this.scene.multMatrix(z_axis_cpi_rotation);
+		this.triangle.updateTexCoords([
+										0.0, 1.0,
+										0.5, 1.0,
+										0.0, 0.5
+									]);
+
 		this.texture.apply();
 		this.triangle.display();
 		// ----
@@ -89,6 +101,12 @@ class MyTangram extends CGFobject {
 								       ];
 	   	this.scene.multMatrix(orange_triangle_transl);
 		this.scene.multMatrix(z_axis_ccpi_rotation);
+		this.triangleBig.updateTexCoords([
+										1.0, 1.0,
+										1.0, 0.0,
+										0.5, 0.5
+									]);
+
 		this.texture.apply();
 		this.triangleBig.display();
 		// ----
@@ -104,6 +122,12 @@ class MyTangram extends CGFobject {
 								       ];
 		this.scene.multMatrix(blue_triangle_transl);
 		this.scene.multMatrix(z_axis_cpi_rotation);
+		this.triangleBig.updateTexCoords([
+										1.0, 0.0,
+										0.0, 0.0,
+										0.5, 0.5
+									]);
+
 		this.texture.apply();
 		this.triangleBig.display();
 		// ----
@@ -119,6 +143,13 @@ class MyTangram extends CGFobject {
 								       		];
 		this.scene.multMatrix(yellow_parallelogram_transl);
 		this.scene.multMatrix(z_axis_ccpi_rotation);
+		this.parallelogram.updateTexCoords([
+										1.0, 1.0,
+										0.75, 0.75,
+										0.25, 0.75,
+										0.5, 1.0
+									]);
+
 		this.texture.apply();
 		this.parallelogram.display();
 		// ----
@@ -133,6 +164,13 @@ class MyTangram extends CGFobject {
 								  	 1.0, -2.0, 0.0, 1.0
 								     ];
 		this.scene.multMatrix(green_diamond_transl);
+		this.diamond.updateTexCoords([
+										0.0, 0.5,
+										0.25, 0.75,
+										0.5, 0.5,
+										0.25, 0.25
+									]);
+
 		this.texture.apply();
 		this.diamond.display();
 		// ----
@@ -148,6 +186,12 @@ class MyTangram extends CGFobject {
 									   ];
 		this.scene.multMatrix(purple_triangle_transl);
 		this.scene.multMatrix(z_axis_ccpi_rotation);
+		this.triangleSmall.updateTexCoords([
+										0.0, 0.0,
+										0.0, 0.5,
+										0.25, 0.25
+									]);
+
 		this.texture.apply();
 		this.triangleSmall.display();
 		// ----

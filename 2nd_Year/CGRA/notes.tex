@@ -1,0 +1,511 @@
+	\documentclass[a4paper]{article}
+% Hyperreferences
+\usepackage{hyperref}
+% Minted for Syntax Highlighting
+\usepackage{minted}
+% Graphics and images
+\usepackage{graphicx}
+\graphicspath{ {./} }
+% Encodings (to render letters with diacritics and special characters)
+\usepackage[utf8]{inputenc}
+% Language
+\usepackage[english]{babel}
+% Text Alignment
+\usepackage{ragged2e}
+% Color
+\usepackage{xcolor}
+% Math stuff
+\usepackage[mathscr]{euscript}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\newcommand{\expnumber}[2]{{#1}\mathrm{e}{#2}} % scientific notation
+
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+
+\newtheorem{theorem}{Theorem}
+
+\title{CGRA}
+\author{Telmo Baptista}
+
+% Document
+\begin{document}
+\maketitle
+\begin{flushleft}
+\newpage
+\section{Geometric Transformations}
+\subsection{2D Geometric Transformations}
+Transformations:
+\begin{itemize}
+	\item Translation
+	\item Scaling
+	\item Rotation
+\end{itemize}
+
+\subsubsection{Translation}
+\begin{equation}
+\begin{cases}
+	x_T = x + T_x \\
+	y_T = y + T_y
+\end{cases}
+\end{equation}
+
+Matricial form:  
+\begin{equation}
+\begin{bmatrix}
+	x_T \\
+	y_T
+\end{bmatrix}
+=
+\begin{bmatrix}
+	1 & 0 & T_x \\
+	0 & 1 & T_y \\
+	0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+	x \\
+	y \\
+	1
+\end{bmatrix}
+\end{equation}
+
+\subsubsection{Scaling}
+Regarding the origin:
+\begin{equation}
+\begin{cases}
+	x_S = x \times S_x \\
+	y_S = y \times S_y
+\end{cases}
+\end{equation}
+
+Matricial form:
+\begin{equation}
+\begin{bmatrix}
+	x_S \\
+	y_S
+\end{bmatrix}
+=
+\begin{bmatrix}
+	S_x & 0 \\
+	0 & S_y
+\end{bmatrix}
+\begin{bmatrix}
+	x \\
+	y
+\end{bmatrix}
+\end{equation}
+
+Scaling factor:
+\begin{itemize}
+	\item $>1$ - increases the object
+	\item $<1$ - decreases the object
+	\item $S_x=S_y$ - uniform scaling factor $\rightarrow$ doesn't distort object
+\end{itemize}
+
+\subsubsection{Rotation}
+Around the origin:
+\begin{equation}
+\begin{cases}
+	x = R.cos(\alpha) \\
+	y = R.sin(\alpha)
+\end{cases}
+\end{equation}
+\begin{equation}
+\begin{cases}
+	x_R = R.cos(\alpha+\beta) = R.cos(\alpha).cos(\beta) - R.sin(\alpha).sin(\beta)= x.cos(\beta) - y.sin(\beta) \\
+	y_R = R.sin(\alpha+\beta) = R.cos(\alpha).sin(\beta) - R.sin(\alpha).cos(\beta)= x.sin(\beta) + y.cos(\beta)
+\end{cases}
+\end{equation}
+
+Matricial form:
+\begin{equation}
+\begin{bmatrix}
+	x_R \\
+	y_R
+\end{bmatrix}
+=
+\begin{bmatrix}
+	cos(\beta) & -sin(\beta) \\
+	sin(\beta) & cos(\beta)
+\end{bmatrix}
+\begin{bmatrix}
+	x \\
+	y
+\end{bmatrix}
+\end{equation}
+
+\subsection{3D Geometric Transformations}
+Transformations:
+\begin{itemize}
+	\item Translation
+	\item Scaling
+	\item Rotation
+\end{itemize}
+
+\begin{tabular}{ c c }
+ Rotation Axis & Positive Rotation Direction \\
+ $x$ & $y \rightarrow z$ \\ 
+ $y$ & $z \rightarrow x$ \\  
+ $z$ & $x \rightarrow y$
+\end{tabular}
+
+\subsubsection{Translation}
+\begin{equation}
+\begin{cases}
+	x_T = x + T_x \\
+	y_T = y + T_y \\
+	z_T = z + T_z
+\end{cases}
+\end{equation}
+
+Matricial form:
+\begin{equation}
+\begin{bmatrix}
+	x_T \\
+	y_T \\
+	z_T \\
+	1
+\end{bmatrix}
+=
+\begin{bmatrix}
+	1 & 0 & 0 & T_x \\
+	0 & 1 & 0 & T_y \\
+	0 & 0 & 1 & T_z \\
+	0 & 0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+	x \\
+	y \\
+	z \\
+	1
+\end{bmatrix}
+\end{equation}
+
+\subsubsection{Scaling}
+Regarding the origin:
+\begin{equation}
+\begin{cases}
+	x_S = x \times S_x \\
+	y_S = y \times S_y \\
+	z_S = z \times S_z
+\end{cases}
+\end{equation}
+
+Matricial form:
+\begin{equation}
+\begin{bmatrix}
+	x_S \\
+	y_S \\
+	z_S \\
+	1
+\end{bmatrix}
+=
+\begin{bmatrix}
+	S_x & 0 & 0 & 0 \\
+	0 & S_y & 0 & 0 \\
+	0 & 0 & S_z & 0 \\
+	0 & 0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+	x \\
+	y \\
+	z \\
+	1
+\end{bmatrix}
+\end{equation}
+
+Regarding an arbitrary point:
+\begin{equation}
+\begin{cases}
+	x_S = x \times S_x \\
+	y_S = y \times S_y \\
+	z_S = z \times S_z
+\end{cases}
+\end{equation}
+
+Matricial form:
+\begin{equation}
+T(x_F, y_F, z_F).S(S_x, S_y, S_z).T(-x_F, -y_F, -z_F) =
+\begin{bmatrix}
+	S_x & 0 & 0 & (1-S_x).x_F \\
+	0 & S_y & 0 & (1-S_y).y_F \\
+	0 & 0 & S_z & (1-S_z).z_F \\
+	0 & 0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+	x \\
+	y \\
+	z \\
+	1
+\end{bmatrix}
+\end{equation}
+
+\subsubsection{Rotation}
+Around the $z$ axis $\rightarrow$ $z$ constant
+
+\begin{equation}
+\begin{cases}
+	x_{Rz} = x.cos(\alpha)-y.sin(\alpha) \\
+	y_{Rz} = x.sin(\alpha)+y.cos(\alpha) \\
+	z_{Rz} = z
+\end{cases}
+\end{equation}
+
+Matricial form:
+\begin{equation}
+\begin{bmatrix}
+	x_{Rz} \\
+	y_{Rz} \\
+	z_{Rz} \\
+	1
+\end{bmatrix}
+=
+\begin{bmatrix}
+	cos(\alpha) & -sin(\alpha) & 0 & 0 \\
+	sin(\alpha) & cos(\alpha) & 0 & 0 \\
+	0 & 0 & 1 & 0 \\
+	0 & 0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+	x \\
+	y \\
+	z \\
+	1
+\end{bmatrix}
+\end{equation}
+
+Around the $x$ axis $\rightarrow$ $x$ constant
+
+\begin{equation}
+\begin{cases}
+	x_{Rz} = x \\
+	y_{Rz} = y.cos(\alpha)-z.sin(\alpha) \\
+	z_{Rz} = y.sin(\alpha)+z.cos(\alpha)
+\end{cases}
+\end{equation}
+
+Matricial form:
+\begin{equation}
+\begin{bmatrix}
+	x_{Rz} \\
+	y_{Rz} \\
+	z_{Rz} \\
+	1
+\end{bmatrix}
+=
+\begin{bmatrix}
+	1 & 0 & 0 & 0 \\
+	0 & cos(\alpha) & -sin(\alpha) & 0 \\
+	0 & sin(\alpha) & cos(\alpha) & 0  \\
+	0 & 0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+	x \\
+	y \\
+	z \\
+	1
+\end{bmatrix}
+\end{equation}
+
+Around the $y$ axis $\rightarrow$ $y$ constant
+
+\begin{equation}
+\begin{cases}
+	x_{Rz} = x.cos(\alpha)+y.sin(\alpha) \\
+	y_{Rz} = y \\
+	z_{Rz} = -x.sin(\alpha)+z.cos(\alpha) \\
+\end{cases}
+\end{equation}
+
+Matricial form:
+\begin{equation}
+\begin{bmatrix}
+	x_{Rz} \\
+	y_{Rz} \\
+	z_{Rz} \\
+	1
+\end{bmatrix}
+=
+\begin{bmatrix}
+	cos(\alpha) & 0 & sin(\alpha) & 0 \\
+	0 & 1 & 0 & 0 \\
+	-sin(\alpha) & 0 & cos(\alpha) & 0 \\
+	0 & 0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+	x \\
+	y \\
+	z \\
+	1
+\end{bmatrix}
+\end{equation}
+
+
+\section{Illumination Model}
+The lighting models express the lighting components that define the intensity of light reflected by a given surface, allowing the calculation of the color for each surface point of the objects contained in the image
+
+The incident light on the face is reflected in two ways:
+\begin{itemize}
+	\item Diffuse Reflection - light reflects in all directions, with an equal intensity value, due to the 		roughness of the reflecting surface
+	\item Specular Reflection - point sources of light produce over-lit areas on the reflecting surface
+\end{itemize}
+
+\subsection{Elementary Illumination Model}
+
+\subsubsection{Ambient Lighting}
+Corresponds to the diffuse lighting, whose light from numerous reflections
+
+\begin{equation}
+	I = k_a.I_a
+\end{equation}
+\begin{itemize}
+	\item $k_a$ - ambient (diffuse) reflection coefficient of the face, varies between $0$ and $1$
+	\item $I$ - observed intensity
+\end{itemize}
+The intensity $I_a$ is constant in all direction. If we only considered this component to define the light reflected by the object, then all faces would have the same luminous intensity\\
+The reflected light is uniform across the face and independent of the observer's position\\
+The edges are not distinguishable
+
+\subsubsection{Diffuse Reflection}
+The diffuse reflection due to a \textbf{point light source} is calculated according to Lambert's Law: the reflected light intensity depends on the angle of illumination\\
+The intensity observed on the object varies, depending on the orientation of the surface and the distance to the light source
+
+\textbf{Note}: The intensity of reflected light doesn't depend on the position of the observer. It depends on the angle of incidence of the light
+
+\begin{equation}
+	I = \frac{k_d.I_p}{d+d_0}cos(\theta)
+\end{equation}
+\begin{equation}
+	cos(\theta) = N.L
+\end{equation}
+
+Vectors are unitary:
+\begin{itemize}
+	\item $\theta$ - angle of incidence of the light source
+	\item $N$ - normal to the source (unit vector)
+	\item $L$ - direction of the illumination beam (incident radius)
+	\item $I_p$ - light source intensity
+	\item $K_d$ - diffuse reflection coefficient
+\end{itemize}
+
+\textbf{Adding the two components}:
+\begin{equation}
+	I = k_a.I_a + \frac{k_d.I_p}{d+d_0}N.L
+\end{equation}
+
+\subsubsection{Specular Reflection/Phong's Model}
+Observed reflection on polished surfaces
+\begin{itemize}
+	\item $R$ - maximum reflection direction
+	\item $\alpha$ - angle between $R$ and the direction of the observer $V$
+\end{itemize}
+\begin{equation}
+	I_s = \frac{k_s.I_p}{d+d_0}cos^n(\alpha)
+\end{equation}
+
+The specular reflection depends on the position of the observer\\
+$k_s$ is a constant that depends on the material, as well as the exponent $n$ (strictly speaking, one should use a function $W(\theta)$ instead of $k_s$)\\
+On an ideal surface (ideal mirror), the light reflected only in the $R$ direction\\
+On a non-ideal surface, the $R$ direction will have the greatest reflection intensity, the other directions will have lesser intensities\\
+The intensity of the specular reflection is proportional to $cos^n(\alpha)$, where $n$ depends on the characteristics of the surface (value 1 for unpolished surfaces and 200 for perfectly polished faces)\\
+
+If $V$ and $R$ are unitary vectors:
+\begin{equation}
+	I_s = \frac{k_s.I_p}{d+d_0}cos^n(\alpha) = \frac{k_s.I_p}{d+d_0}(V.R)^n
+\end{equation}
+
+\subsubsection{Elementary Model}
+The expression for the intensity results on:
+\begin{equation}
+	I = k_a.I_a + I_p [\frac{k_d}{d+d_0}N.L + \frac{k_s}{d+d_0}(R.V)^n]
+\end{equation}
+
+Reflection coefficients:
+\begin{itemize}
+	\item $k_a$ and $k_d$ are commonly the same 
+\end{itemize}
+
+Can be broken into components colored (RGB or other):
+\begin{itemize}
+	\item $I$, $I_a$, $I_p$
+	\item $k_a$, $k_d$
+	\item $k_s$
+	\item $n$
+\end{itemize}
+
+\subsubsection{Refraction (for modeling transparent objects)}
+When the object is transparent, it is necessary to predict the light that passes through a face, it is called transmitted light or refracted light\\
+Because the speed of light is different in different materials, the angle of refraction is different materials, the angle of refraction is different from the angle of incidence
+
+\begin{itemize}
+	\item $\eta_i$ - refractive index of air
+	\item $\eta_r$ - material refractive index
+	\item $\eta$ - is obtained for a given material as the ratio between the speed of light in the void and the speed in the material
+\end{itemize}
+
+\textbf{Snell's Law}:
+\begin{equation}
+	sin(\theta_r) = \frac{\eta_i}{\eta_r}sin(\theta_i)
+\end{equation}
+
+\subsubsection{Calculation of Vector R is complex...}
+\begin{equation}
+	\vec{L} + \vec{R} = \vec{N}.2.\vert\vec{R}\vert.cos(\theta)
+\end{equation}
+\begin{equation}
+	\vec{R} = 2.\vec{N}.(\vec{N}.\vec{L})-\vec{L}
+\end{equation}
+
+\section{Shading and Textures}
+
+\subsection{Shading \& Smooth Shading}
+\textbf{Objective}: Calculate the color of each point of the visible surface
+
+Solution \textbf{brute-force}: calculate the normal at each point and apply the desired illumination model
+
+\textbf{Different methods}:
+\begin{itemize}
+	\item Constant Shading
+	\item Interpolated Shading = Smooth Shading
+	\begin{itemize}
+		\item Gouraud Method
+		\item Phong Method
+	\end{itemize}
+\end{itemize}
+
+\subsubsection{Constant Shading}
+The color is calculated only for one point of the polygon and replicated in all other points of the same polygon\\
+This method is equivalent to the following conditions:
+\begin{itemize}
+	\item the light source is at infinity, so that $N.L$ is constant at any point of the polygon (parallel rays)
+	\item the observer is at infinity so that $R.V$ is constant at any point of the polygon
+	\item the face is the flat surface of the model itself and is not an approximation of a curved surface
+\end{itemize}
+
+\textbf{The polygonal mesh is noticeable} - Mach Band Effect, with discontinuity of the light function
+
+\subsubsection{Interpolated Shading or Smooth Shading}
+In the previous solution, when approaching a curved surface by a polygonal mesh, we found discontinuity in color between adjacent polygons (Mach Band effect, with discontinuity of illumination function)\\
+The following solutions will surpass this problem by determining the color of a point based on a interpolation from the vertices of the polygon
+
+\textbf{Requires}: Normals, on the vertices, to the original surface
+\begin{enumerate}
+	\item Analytical solution - analytical expression of the surface
+	\item Approximate solution - Interpolation of the normals of neighbouring polygons
+\end{enumerate}
+
+\subsubsection*{Gouraud Method}
+\begin{enumerate}
+	\item Calculate the color of each vertex using the desired illumination model
+	\item Calculate the color of the remaining points of the polygon by bi-linear interpolation
+\end{enumerate}
+
+\end{flushleft}
+\end{document}

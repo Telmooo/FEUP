@@ -1,7 +1,7 @@
 # Notes
 --------------------------------------------------------------------------------
 
-## Programming in Unix
+## 1. Programming in Unix
 - Programs request services from the OS through system calls.
 - A __system call__ is a direct entry point into the kernel.
 - The __kernel__ is a set of software modules that they perform in privileged way, meaning that they have full control over the system resources.
@@ -198,7 +198,7 @@ ticks_seg = sysconf(_SC_CLK_TCK);
 
 --------------------------------------------------------------------------------
 
-## Console, Files and Directories
+## 2. Console, Files and Directories
 ### Files
 File-related system calls allow to manipulate flat files, directories and special files, including:
 - files on disk
@@ -481,10 +481,10 @@ int fileno(FILE* stream); // get file descriptor from FILE*
 
 --------------------------------------------------------------------------------
 
-## Creation and Termination of Processes
+## 3. Creation and Termination of Processes
 
 ### Creation of new processes
-- The way for an existing process (parent process) to create a new process (child process) is to invoke ``fork()`` function  
+- The way for an existing process (parent process) to create a new process (child process) is to invoke `fork()` function  
   The only exception is special processes created by the kernel
 - The init process (PID = 1) is a special process, created by the kernel
 - This process is responsible for creating other system processes and for triggering the user login process
@@ -514,3 +514,200 @@ int fileno(FILE* stream); // get file descriptor from FILE*
                        | getty |     reads and executes commands
                        +-------+
 ```
+
+### `fork()` function
+- The `fork()` function is called once but returns twice
+- After calling `fork()` the parent and child execute the same code
+
+```c
+#include <sys/types.h>
+#include <unistd.h>
+pid_t fork(void);
+
+/*
+Returns:
+            0 - for the child process
+  child's PID - for the parent process
+           -1 - if error occurs
+*/
+```
+```sh
+                        +-------------------+
+                        |  initial process  |
+                        |  (parent process) |
+                        +-------------------+
+                                  |
+                                  ↓
+                             +----------+
+                             |  fork()  |
+                             +----------+
+                                |    |
+                       +--------+    +--------+
+                       |                      |
+                       ↓                      ↓
+                return childPID            return 0
+                       |                      |
+                       ↓                      ↓
+            +------------------+      +-----------------+
+            | original process |      |   new process   |
+            |     continues    |      | (child process) |
+            +------------------+      +-----------------+
+```
+
+- In general, it will be inteded that father and son execute different sequences of instructions
+- This is achieved using conditional statements, since the return value of `fork()` is different for parent and child
+- Often the child process replaces your code by a new code invoking one of the `exec()` functions
+
+```sh
+                        +-------------------+
+                        |  initial process  |
+                        |  (parent process) |
+                        +-------------------+
+                                  |
+                                  ↓
+                             +----------+
+                             |  fork()  |
+                             +----------+
+                                |    |
+                       +--------+    +--------+
+                       |                      |
+                       ↓                      ↓
+                return childPID            return 0
+                       |                      |
+                       ↓                      ↓                             +---------------------------+
+            +------------------+      +-----------------+     +--------+    |  the child process code   |
+            | original process |      |   new process   |----→| exec() |---→| is replaced with a proram |
+            |     continues    |      | (child process) |     +--------+    |   code that is on disk    |
+            +------------------+      +-----------------+                   +---------------------------+
+```
+
+- The child is a copy of the parent with a copy of the data segment, heap and stack
+- In some systems the copy is only made if one of the processes tries to modify one of these segments
+- The text segment is often shared by both
+- After `fork()`, in general, it is not known who starts to execute first (the father or the son)
+- If synchronization is necessary, appropriate mechanisms must be used
+
+#### `getpid()` and `getppid()` functions
+- A process can obtain its PID and its parent's PID using the following functions, respectively:
+
+```c
+#include <sys/types.h>
+#include <unistd.h>
+pid_t getpid(void);   /* Get own process PID */
+pid_t getppid(void);  /* Get the parent process PID */
+
+/*
+Notes:
+    These functions are always successful
+    The PID of the parent process of process 1 is 1
+*/
+```
+
+### `fork()` function
+- Some properties of the parent that are inherited by the child:
+  - open files
+  - ID's (real user, real group, effective user, effective group)
+  - process group ID
+  - control terminal
+  - current working directory
+  - root directory
+  - resource limits
+  - ...
+- Some differences between parent and child:
+  - the value return by `fork()`
+  - the process ID
+  - the parent process ID's for each of them
+  - pending alarms are cleared for the child
+  - the set of pending signs for the child is emptied
+- `fork()` may fail when:
+  - the total number of processes in the system is too high (constant `MAXPID` in `sys/param.h`)
+  - the total number of processes is too high (constant `CHILD_MAX` in `limits.h`)
+- Uses of `fork()`:
+  - when a process wants to duplicate itself in such a way that the parent and child execute different sections of code at the same time
+    - ex: Network server
+      - the parent waits for a service request from a customer
+      - when the order arrives, it forks and lets the child handle the order
+      - the father waits again for the next order
+  - when a process wants to the a different program
+    - ex: shells
+      - the child executes (from the command `exec()`) after returning from the `fork`
+
+### Terminating a process
+Ways of terminating a process:
+- Normal:
+  - Executes `return` in the main function
+  - Invokes the `exit()` function - C library
+    - __Exit handlers__, defined with `atexit()` calls, are executed
+    - Standart I/O streams are closed
+  - Invokes the `_exit()` function - System call
+- Abnormal:
+  - Invokes `abort()`
+  - Receives certain signals generated by:
+    - process itself
+    - another process
+    - kernel
+
+#### `exit()` and `_exit()` functions
+Regardless of how a process ends (normal/abnormal), some kernel code will eventually be executed, code that:
+- close descriptors opened by the process
+- free the memory the process used
+- ...
+
+**Normal Termination**:
+- the argument of the exit functions (the __exit status__) tells the parent process how the child process ended (__termination status__)
+
+**Abnormal Termination**:
+- the __termination status__ of the process is generated by the kernel
+
+The parent process can obtain the value of the termination status through the `wait` or `waitpid` functions
+
+## Orphan Processes
+- if the parent ends before the child, the child is automatically adopted by `init` (process with PID=1)
+- it is thus guaranteed that any process has a parent
+- when a process ends (in this case the parent) the kernel goes through all the active processes to see if any of them are children of the process that ended  
+  If there are any in these conditions, the PID of the parent of that process becomes **1**
+
+## Zombie Processes
+- a process that ends cannot leave the system until its parent accepts its return code, by executing a `wait`/`waitpid` call
+- **Zombie** - a process that has ended but whose parent has not yet executed one of the `wait`'s  
+  (in general, in the output of the `ps` command the status of these processes appears as `Z`)
+- **Exception**:  
+  when a process that was adopted by `init` finishes it doesn't become zombie, because `init` executes one of the `wait`'s to get its termination status
+- information about the child cannot disappear completely
+- the kernel maintains this information (process PID, termination status, CPU time used, ...) so that it is available when the parent executes one of the `wait`'s
+- the rest of the memory used by the child is released
+- files are closed
+
+## `wait` and `waitpid` functions
+- a parent can wait for one of their children to finish and then accept their termination status by performing one of these functions
+- when a process ends (normally or abnormally) the kernel notifies its parent by sending a signal (`SIGCHILD`)
+- the parent can:
+  - ignore the signal
+    - if the process indicates that you want to ignore the signal, the children will not be zombies
+  - have a signal handler
+    - in general, the handler will be able to execute one of the `wait`'s to obtain the child's PID and termination status
+
+```c
+#include <sys/wait.h>
+pid_t wait(int *statloc);
+pid_t waitpid(pid_t pid, int *statloc, int options);
+
+/*
+Returns:
+Process's PID - if OK
+           -1 - if error occurs
+*/
+
+int waitid(idtype_t idtype, id_t id, siginfo_t *infop, int options); // wait for a child process to change state
+```
+
+A process that invokes `wait` or `waitpid` can:
+- **block** if none of their children have finished yet
+- **return immediately with the termination status of a child** if a child has finished and is waiting to return his termination status (zombie child)
+- **return immediately with an error** if it has no childs
+
+Differences between `wait` and `waitpid`:
+- `wait` can block the process that invokes it until any child finishes
+- `waitpid` has an option that prevents blocking (useful when you just want to get the child's termination status)
+- `waitpid` does not wait for the first child to finish, has options to indicate the process by which one wants to wait
+

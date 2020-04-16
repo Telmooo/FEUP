@@ -48,4 +48,14 @@ class MyCylinder extends CGFobject {
         // ----
         this.scene.popMatrix();
     }
+
+    enableNormalViz() {
+        this.circle.enableNormalViz();
+        this.quad.enableNormalViz();
+    }
+
+    disableNormalViz() {
+        this.circle.disableNormalViz();
+        this.quad.disableNormalViz();
+    }
 }

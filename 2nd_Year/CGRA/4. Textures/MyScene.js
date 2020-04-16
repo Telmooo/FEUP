@@ -25,11 +25,12 @@ class MyScene extends CGFscene {
         this.axis = new CGFaxis(this);
         this.quad = new MyQuad(this);
         this.tangram = new MyTangram(this);
+        this.unitCube = new MyUnitCubeQuad(this);
 
-        this.objects = [this.quad, this.tangram];
+        this.objects = [this.quad, this.tangram, this.unitCube];
 
         // Labels and ID's for object selection on MyInterface
-        this.objectIDs = { 'Quad': 0 , 'Tangram': 1 };
+        this.objectIDs = { 'Quad': 0 , 'Tangram': 1, 'UnitCube': 2 };
 
         //------ Applied Material
         this.quadMaterial = new CGFappearance(this);
@@ -39,6 +40,30 @@ class MyScene extends CGFscene {
         this.quadMaterial.setShininess(10.0);
         this.quadMaterial.loadTexture('images/default.png');
         this.quadMaterial.setTextureWrap('REPEAT', 'REPEAT');
+
+        this.mineBottom = new CGFappearance(this);
+        this.mineBottom.setAmbient(0.1, 0.1, 0.1, 1);
+        this.mineBottom.setDiffuse(0.9, 0.9, 0.9, 1);
+        this.mineBottom.setSpecular(0.1, 0.1, 0.1, 1);
+        this.mineBottom.setShininess(10.0);
+        this.mineBottom.loadTexture('images/mineBottom.png');
+        this.mineBottom.setTextureWrap('REPEAT', 'REPEAT');
+
+        this.mineTop = new CGFappearance(this);
+        this.mineTop.setAmbient(0.1, 0.1, 0.1, 1);
+        this.mineTop.setDiffuse(0.9, 0.9, 0.9, 1);
+        this.mineTop.setSpecular(0.1, 0.1, 0.1, 1);
+        this.mineTop.setShininess(10.0);
+        this.mineTop.loadTexture('images/mineTop.png');
+        this.mineTop.setTextureWrap('REPEAT', 'REPEAT');
+
+        this.mineSide = new CGFappearance(this);
+        this.mineSide.setAmbient(0.1, 0.1, 0.1, 1);
+        this.mineSide.setDiffuse(0.9, 0.9, 0.9, 1);
+        this.mineSide.setSpecular(0.1, 0.1, 0.1, 1);
+        this.mineSide.setShininess(10.0);
+        this.mineSide.loadTexture('images/mineSide.png');
+        this.mineSide.setTextureWrap('REPEAT', 'REPEAT');
         //------
 
         //------ Textures
@@ -48,10 +73,12 @@ class MyScene extends CGFscene {
         //-------
 
         //-------Objects connected to MyInterface
-        this.selectedObject = 0;
+        this.selectedObject = 2;
         this.displayAxis = true;
         this.scaleFactor = 5;
         this.selectedTexture = -1;
+        this.selectedFilter = 0;
+        this.cubeMineTex = false;
         this.wrapS = 0;
         this.wrapT = 0;
 
@@ -60,6 +87,7 @@ class MyScene extends CGFscene {
         this.wrappingMethods = ['REPEAT', 'CLAMP_TO_EDGE', 'MIRRORED_REPEAT'];
 
         this.textureIds = { 'Board': 0, 'Floor': 1, 'Window': 2 };
+        this.texFilterIds = { 'Linear': 0, 'Nearest': 1 };
         this.wrappingS = { 'Repeat': 0, 'Clamp to edge': 1, 'Mirrored repeat': 2 };
         this.wrappingT = { 'Repeat': 0, 'Clamp to edge': 1, 'Mirrored repeat': 2 };
 
@@ -98,6 +126,28 @@ class MyScene extends CGFscene {
         this.quad.updateTexCoords(this.texCoords);
     }
 
+    updateCubeMineTexture() {
+        if (this.cubeMineTex) {
+            if (this.selectedObject == this.objectIDs['UnitCube']) {
+                this.unitCube.changeMaterial(0, this.mineBottom); // change bottom material
+                this.unitCube.changeMaterial(1, this.mineTop); // change top material
+                this.unitCube.changeMaterial(2, this.mineSide); // change side material
+                this.unitCube.changeMaterial(3, this.mineSide); // change side material
+                this.unitCube.changeMaterial(4, this.mineSide); // change side material
+                this.unitCube.changeMaterial(5, this.mineSide); // change side material
+            }
+        } else {
+            for (let i = 0; i < 6; i++) {
+                this.unitCube.changeMaterial(i, undefined);
+            }
+        }
+    }
+
+    updateTextureFiltering() {
+        if (typeof this.objects[this.selectedObject].changeFilter == "function")
+            this.objects[this.selectedObject].changeFilter(this.selectedFilter);
+    }
+
     display() {
 
         // ---- BEGIN Background, camera and axis setup
@@ -119,16 +169,10 @@ class MyScene extends CGFscene {
         this.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
 
         // ---- BEGIN Primitive drawing section
-
         this.quadMaterial.apply();
 
-        // Default texture filtering in WebCGF is LINEAR.
-        // Uncomment next line for NEAREST when magnifying, or
-        // add a checkbox in the GUI to alternate in real time
-
-        // this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
-
         this.objects[this.selectedObject].display();
+
 
         // ---- END Primitive drawing section
     }

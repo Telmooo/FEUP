@@ -122,12 +122,29 @@ another relation for a key for R
 ---
 ## **SQL - Structured Query Language**
 
+- Data Definition Language (DDL)
+  - Define relational schemata
+  - Create/alter/delete tables and their attributes
+- Data Manipulation Language (DML)
+  - Insert/delete/modify tuples in tables
+  - Query one or more tables
+
+### Data Types in SQL - Text
+- `CHAR(n)`
+  - stores fixed-length string of up to n characters
+  - normally, shorter strings are padded by trailing blanks to makes n characters
+
+- `VARCHAR(n)`
+  - stores variable-length string of up to n characters
+
+### Data Types in SQL - Numeric values
+
 ### Determination of Type affinities in SQLite
 If the declared type contains:
-1. "INT" : **INTEGER** affinity
-2. "CHAR", "CLOB", "TEXT" : **TEXT** affinity
-3. "BLOB" or no type specified: **BLOB** affinity
-4. "REAL", "FLOA", "DOUB" : **REAL** affinity
+1. `INT` : **INTEGER** affinity
+2. `CHAR`, `CLOB`, `TEXT` : **TEXT** affinity
+3. `BLOB` or no type specified: **BLOB** affinity
+4. `REAL`, `FLOA`, `DOUB` : **REAL** affinity
 5. Otherwise: **NUMERIC** affinity
 
 Rules should be assessed by the above order.

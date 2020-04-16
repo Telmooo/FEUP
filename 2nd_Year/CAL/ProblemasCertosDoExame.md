@@ -19,3 +19,7 @@
         2. Positiva
         3. Estritamente decrescente
     Assim é possivel provar que acaba uma vez que sendo descrescente obrigatorimente atinge 0 (ultimo valor positivo).
+
+- [x] A ordenaçao topoloigica so funciona em DAG's
+- [x] É possivel ter mais que uma ordenaçao topologica num grafo DAG
+  - vista profundidade (DFS), a pós ordem dá uma ordenaçao topologica inversa
