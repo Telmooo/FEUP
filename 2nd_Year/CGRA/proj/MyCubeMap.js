@@ -1,128 +1,156 @@
 /**
- * MyUnitCube
+ * MyCubeMap
  * @constructor
  * @param scene - Reference to MyScene object
  */
 class MyCubeMap extends CGFobject {
 	constructor(scene) {
 		super(scene);
-		this.initBuffers();
-        this.initNormalVizBuffers();
+        this.quad = new MyQuad(this.scene);
+		this.filter = this.scene.gl.LINEAR;
 	}
-	initBuffers() {
-        /*
-               H---------G
-             / |        /|                      y
-            /  |       / |                      |
-            E--------F   |                      |
-            |  |  0  |   |                      |
-            |  D-----|---C                      |------x
-            | /      |  /                      /
-            |/       | /                      /
-         0->A--------B                       z
-        */
 
-		this.vertices = [];
-		this.normals = [];
+    display() {
+    /*    this.scene.pushMatrix();
 
-		for (let i = 0; i < 8; i++) {
-			let x = 0.5, y = 0.5, z = 0.5;
-			if (((i + 1) % 4) < 2) x *= -1;
-			if (i < 4) y *= -1;
-			if ((i % 4) >= 2) z *= -1;
-
-			this.vertices.push(x, y, z); this.normals.push(((x > 0) ? -1 : 1), 0, 0); // X normal
-			this.vertices.push(x, y, z); this.normals.push(0, ((y > 0) ? -1 : 1), 0); // Y normal
-			this.vertices.push(x, y, z); this.normals.push(0, 0, ((z > 0) ? -1 : 1)); // Z normal
-
-            /*
-    			Vertices (A=0, B=1, ..., H=7) to get the real vertice on the array multiply by 3
-    			Access vertice with X normal with offset=0
-    			Access vertice with Y normal with offset=1
-    			Access vertice with Z normal with offset=2
-            */
+        // ---- Bottom Face
+        this.scene.translate(0, 0, -0.5);
+		if (typeof this.bottomMaterial != "undefined") {
+			this.bottomMaterial.apply();
 		}
-		this.indices = [
-            // Interior faces
-            // ---- Left face (x normal) (negative)
-            0, 9, 21, // A->D->H
-            0, 21, 12, // A->H->E
+		this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.filter);
+        this.quad.display();
+        // ----
 
-            // ---- Right face (x normal) (positive)
-            15, 18, 6, // F->G->C
-            15, 6, 3, // F->C->B
+        this.scene.popMatrix();
+        this.scene.pushMatrix();
 
-			// ---- Bottom face (y normal) (negative)
-            1, 4, 7, // A->B->C
-            1, 7, 10, // A->C->D
+        // ---- Upper Face
+        this.scene.translate(0, 0, 0.5);
+        this.scene.rotate(Math.PI, 0, 1, 0);
+		if (typeof this.upperMaterial != "undefined") {
+			this.upperMaterial.apply();
+		}
+		this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.filter);
+        this.quad.display();
+        // ----
 
-            // ---- Upper face (y normal) (positive)
-            13, 19, 16, // E->G->F
-            13, 22, 19, // E->H->G
+        this.scene.popMatrix();
+        this.scene.pushMatrix();
 
-            // ---- Back face (z normal) (negative)
-            11, 8, 20, // D->C->G
-            11, 20, 23, // D->G->H
+        // ---- Front Face
+        this.scene.translate(0.5, 0, 0);
+        this.scene.rotate(-Math.PI/2, 0, 1, 0);
+		if (typeof this.frontMaterial != "undefined") {
+			this.frontMaterial.apply();
+		}
+		this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.filter);
+        this.quad.display();
+        // ----
 
-            // ---- Front face (z normal) (positive)
-            2, 14, 17,  // A->E->F
-            2, 17, 5 // A->F->B
-		];
+        this.scene.popMatrix();
+        this.scene.pushMatrix();
 
-        this.texCoords = [
-			// A
-            0.0, 2/3,  // X normal
-            0.25, 1.0,  // Y normal
-            1.0, 2/3,  // Z normal
+        // ---- Back Face
+        this.scene.translate(-0.5, 0, 0);
+        this.scene.rotate(Math.PI/2, 0, 1, 0);
+		if (typeof this.backMaterial != "undefined") {
+			this.backMaterial.apply();
+		}
+		this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.filter);
+        this.quad.display();
+        // ----
 
-            // B
-            0.75, 2/3, // X normal
-            0.5, 1.0,   // Y normal
-            0.75, 2/3, // Z normal
+        this.scene.popMatrix();*/
+        this.scene.pushMatrix();
 
+        // ---- Left Face
+    	this.scene.translate(0, -0.5, 0);
+        this.scene.rotate(-Math.PI/2, 1, 0, 0);
+		if (typeof this.leftMaterial != "undefined") {
+			this.leftMaterial.apply();
+		}
+		this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.filter);
+        this.quad.display();
+        // ----
 
-            // C
-            0.5, 2/3,  // X normal
-            0.5, 2/3,  // Y normal
-            0.5, 2/3,  // Z normal
+        this.scene.popMatrix();/*
+        this.scene.pushMatrix();
 
+        // ---- Right Face
+    /*    this.scene.translate(0, 0.5, 0);
+        this.scene.rotate(-Math.PI/2, 1, 0, 0);
+		if (typeof this.rightMaterial != "undefined") {
+			this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.filter);
+			this.rightMaterial.apply();
+		}
+        this.quad.display();
+        // ----
 
-            // D
-            0.25, 2/3, // X normal
-            0.25, 2/3, // Y normal
-            0.25, 2/3, // Z normal
+        this.scene.popMatrix();*/
+    }
 
+	/**
+	 * @method changeMaterial
+	 * Changes material of face specified
+	 * 			Faces:
+	 *				0 - Bottom
+	 *				1 - Upper
+	 *				2 - Front
+	 *				3 - Back
+	 *				4 - Left
+	 *				5 - Right
+	 *			Material:
+	 *				CGFappearance object
+	 *				To remove material pass material as undefined
+	 * @param face - Face to change material
+	 * @param material - Material to set to
+	 */
+	changeMaterial(face, material) {
+		switch (face) {
+			case 0:
+				this.bottomMaterial = material;
+				break;
+			case 1:
+				this.upperMaterial = material;
+				break;
+			case 2:
+				this.frontMaterial = material;
+				break;
+			case 3:
+				this.backMaterial = material;
+				break;
+			case 4:
+				this.leftMaterial = material;
+				break;
+			case 5:
+				this.rightMaterial = material;
+				break;
+			default:
+				return;
+		}
+	}
 
-            // E
-            0.0, 1/3,  // X normal
-            0.25, 0.0,  // Y normal
-            1.0, 1/3,  // Z normal
-
-
-            // F
-            0.75, 1/3, // X normal
-            0.5, 0.0,   // Y normal
-            0.75, 1/3, // Z normal
-
-
-            // G
-            0.5, 1/3,  // X normal
-            0.5, 1/3,  // Y normal
-            0.5, 1/3,  // Z normal
-
-
-            // H
-            0.25, 1/3, // X normal
-            0.25, 1/3, // Y normal
-            0.25, 1/3, // Z normal
-
-
-        ];
-
-		// The defined indices (and corresponding vertices)
-		// will be read in groups of three to draw triangles
-		this.primitiveType = this.scene.gl.TRIANGLES;
-
-		this.initGLBuffers();
+	/**
+	 * @method changeFilter
+	 * Changes filter
+	 * 			Filter:
+	 *				0 - Linear
+	 *				1 - Nearest
+	 * @param face - Face to change material
+	 * @param material - Material to set to
+	 */
+	changeFilter(filter) {
+		switch (filter) {
+			case '0':
+				this.filter = this.scene.gl.LINEAR;
+				break;
+			case '1':
+				this.filter = this.scene.gl.NEAREST;
+				break;
+			default:
+				this.filter = this.scene.gl.LINEAR;
+				break;
+		}
 	}
 }

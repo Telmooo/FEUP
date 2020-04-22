@@ -8,13 +8,19 @@
 
 void* thrfunc(void * arg) {
     sleep(1);
+    /*
+    // Can also be used via syscall (OS dependent)
     int tid;
     #ifdef SYS_gettid
     tid = syscall(SYS_gettid);
     #else
     tid = *(int*)arg;
     #endif
+    */
+    fprintf(stderr, "tid: %lu - number of order: %d\n", pthread_self(), *(int*)arg);
+    /**
     fprintf(stderr, "tid: %d - number of order: %d\n", tid, *(int*)arg);
+    **/
     void *ret = malloc(sizeof(int));
     *(int*)ret = *(int*)arg;
     return ret;
