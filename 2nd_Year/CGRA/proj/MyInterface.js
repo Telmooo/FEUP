@@ -27,9 +27,14 @@ class MyInterface extends CGFinterface {
 
         this.gui.add(this.scene, 'selectedTexture', this.scene.textureList).name('Texture').onChange(this.scene.updateAppliedTexture.bind(this.scene));
 
-        this.gui.add(this.scene, 'applyBackground').name("Apply Background");
+        var background_folder = this.gui.addFolder("Background Properties");
 
-        this.gui.add(this.scene, 'selectedBackground', this.scene.backgroundList).name('Background');
+        background_folder.add(this.scene, 'applyBackground').name("Apply Background");
+
+        background_folder.add(this.scene, 'selectedBackground', this.scene.backgroundList).name('Background').onChange(this.scene.updateBackgroundTexture.bind(this.scene));
+
+        //Dropdown for texture filtering
+        background_folder.add(this.scene, 'selectedFilter', this.scene.backgroundFilterIds).name('Selected Filter').onChange(this.scene.updateBackgroundFiltering.bind(this.scene));
 
         var vehicle_folder = this.gui.addFolder("Vehicle Properties");
 

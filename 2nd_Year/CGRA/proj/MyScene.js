@@ -55,9 +55,17 @@ class MyScene extends CGFscene {
         ];
 
         this.backgrounds = [
-            new CGFtexture(this, 'images/cubemap.png'),
-            new CGFtexture(this, 'images/cubemap2.png'),
-            new CGFtexture(this, 'images/purple_space.jpg')
+            [
+                null, null, null, null, null, null
+            ],
+            [
+                new CGFtexture(this, 'images/split_cubemap/bottom.png'),
+                new CGFtexture(this, 'images/split_cubemap/top.png'),
+                new CGFtexture(this, 'images/split_cubemap/front.png'),
+                new CGFtexture(this, 'images/split_cubemap/back.png'),
+                new CGFtexture(this, 'images/split_cubemap/left.png'),
+                new CGFtexture(this, 'images/split_cubemap/right.png')
+            ]
         ];
 
         this.textureList = {
@@ -67,10 +75,12 @@ class MyScene extends CGFscene {
         };
 
         this.backgroundList = {
-            'Cloudy Day': 0,
-            'Clear Night': 1,
-            'Purple Space': 2
+            'None': 0,
+            'Cloudy Day': 1
         };
+
+
+        this.backgroundFilterIds = { 'Linear': 0, 'Nearest': 1 };
         //-------
 
         //------ Applied Material
@@ -87,6 +97,7 @@ class MyScene extends CGFscene {
         this.selectedTexture = 0;
         this.applyBackground = false;
         this.selectedBackground = 0;
+        this.selectedFilter = 0;
         this.applyMaterial = false;
         this.displayNormals = false;
 
@@ -119,12 +130,14 @@ class MyScene extends CGFscene {
         this.setShininess(10.0);
     }
 
-    setBackgroundAppearance() {
-        this.setAmbient(1.0, 1.0, 1.0, 1.0);
-        this.setDiffuse(0.0, 0.0, 0.0, 1.0);
-        this.setSpecular(0.0, 0.0, 0.0, 1.0);
-        this.setShininess(10.0);
+    updateBackgroundTexture() {
+        this.cubemap.loadTexture(this.backgrounds[this.selectedBackground]);
     }
+
+    updateBackgroundFiltering() {
+            this.cubemap.changeFilter(this.selectedFilter);
+    }
+
     // called periodically (as per setUpdatePeriod() in init())
     update(t){
         this.checkKeys();
@@ -188,16 +201,8 @@ class MyScene extends CGFscene {
             this.pushMatrix();
             this.lights[1].enable();
             this.lights[1].update();
-            this.setBackgroundAppearance();
-            this.backgrounds[this.selectedBackground].bind();
-            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
-            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
-            //this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR_MIPMAP_LINEAR);
-            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
             this.scale(50, 50, 50);
             this.cubemap.display();
-            this.backgrounds[this.selectedBackground].unbind();
-
             this.lights[1].disable();
             this.lights[1].update();
             this.popMatrix();
