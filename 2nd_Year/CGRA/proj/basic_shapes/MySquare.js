@@ -64,10 +64,10 @@ class MySquare extends CGFobject {
 			1, 0,	// Top Right 	(C)
 			0, 0,	// Top Left 	(D)
             // Back Face
-            1, 1,	// Bottom Right (A)
-			0, 1,	// Bottom Left  (B)
-			0, 0,	// Top Left 	(C)
-			1, 0,	// Top Right 	(D)
+            0, 1,	// Bottom Right (A')
+			1, 1,	// Bottom Left  (B')
+			1, 0,	// Top Left 	(C')
+			0, 0,	// Top Right 	(D')
 		];
 
 		// The defined indices (and corresponding vertices)

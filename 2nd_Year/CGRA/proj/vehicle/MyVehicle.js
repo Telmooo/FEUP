@@ -25,8 +25,12 @@ class MyVehicle extends CGFobject {
         this.bodyTex.setDiffuse(0.9, 0.9, 0.9, 1);
         this.bodyTex.setSpecular(0.1, 0.1, 0.1, 1);
         this.bodyTex.setShininess(10.0);
-        this.bodyTex.loadTexture('images/vehicle/body.png');
+        this.bodyTex.loadTexture('images/vehicle/body/body.jpg');
         this.bodyTex.setTextureWrap('REPEAT', 'REPEAT');
+
+        this.rudderTop = new CGFtexture(this.scene, 'images/vehicle/rudder/rudder_top.jpg');
+        this.rudderBot = new CGFtexture(this.scene, 'images/vehicle/rudder/rudder_bot.jpg');
+        this.rudderSide = new CGFtexture(this.scene, 'images/vehicle/rudder/rudder_side.jpg');
     }
 
     display() {
@@ -61,6 +65,7 @@ class MyVehicle extends CGFobject {
         this.scene.rotate(Math.PI/2, 1, 0, 0);
         this.scene.rotate(Math.PI/2, 0, 1, 0);
         this.scene.scale(0.7, 0.7, 0.7);
+        this.rudder.setBaseTexture(this.rudderTop);
         this.rudder.display();
         this.scene.popMatrix();
         // --
@@ -72,6 +77,7 @@ class MyVehicle extends CGFobject {
         this.scene.rotate(Math.PI/2, 1, 0, 0);
         this.scene.rotate(-Math.PI/2, 0, 1, 0);
         this.scene.scale(0.7, 0.7, 0.7);
+        this.rudder.setBaseTexture(this.rudderBot);
         this.rudder.display();
         this.scene.popMatrix();
         // --
@@ -81,6 +87,7 @@ class MyVehicle extends CGFobject {
         this.scene.translate(0.7, 0, -2);
         this.scene.rotate(Math.PI/2, 1, 0, 0);
         this.scene.scale(0.7, 0.7, 0.7);
+        this.rudder.setBaseTexture(this.rudderSide);
         this.rudder.display();
         this.scene.popMatrix();
         // --
@@ -91,6 +98,7 @@ class MyVehicle extends CGFobject {
         this.scene.rotate(Math.PI/2, 1, 0, 0);
         this.scene.rotate(Math.PI, 0, 1, 0);
         this.scene.scale(0.7, 0.7, 0.7);
+        this.rudder.setBaseTexture(this.rudderSide);
         this.rudder.display();
         this.scene.popMatrix();
         // --
@@ -105,6 +113,40 @@ class MyVehicle extends CGFobject {
 
     disableNormalViz() {
         this.body.disableNormalViz();
+    }
+
+    enterPilotMode(speed, angular_speed) {
+        this.speed = speed;
+        this.rotationSpeed = angular_speed;
+    }
+
+    getX() {
+        return this.x;
+    }
+
+    getY() {
+        return this.y;
+    }
+
+    getZ() {
+        return this.z;
+    }
+
+    getSpeed() {
+        return this.speed;
+    }
+
+    getOrientation() {
+        return this.orientation;
+    }
+
+    /**
+     * As translations are from center of the body, the radius from the center to the bottom of the gondola is defined by
+     * Radius = |translationY_gondola| + |scaleY_gondola| * radius_gondola
+     * For the values used to determine the radius, see translations and scales of gondola
+     */
+    getRadiusFromCenterToBottom() {
+        return 1.1 + 0.25 * this.gondola.getGondolaBodyRadius();
     }
 
     /**
@@ -193,7 +235,7 @@ class MyGondola extends CGFobject {
     constructor(scene) {
         super(scene);
         this.gondolaBody = new MyCylinder(this.scene, 32);
-        this.gondolaExtremes = new MySphere(this.scene, 16, 8);
+        this.gondolaExtremes = new MySphere(this.scene, 32, 8);
         this.helice = new MyHeliceSupport(this.scene);
         this.initMaterials();
     }
@@ -204,8 +246,24 @@ class MyGondola extends CGFobject {
         this.gondolaBodyTex.setDiffuse(0.9, 0.9, 0.9, 1);
         this.gondolaBodyTex.setSpecular(0.1, 0.1, 0.1, 1);
         this.gondolaBodyTex.setShininess(10.0);
-        this.gondolaBodyTex.loadTexture('images/vehicle/gondola.png');
+        this.gondolaBodyTex.loadTexture('images/vehicle/gondola/gondola3.jpg');
         this.gondolaBodyTex.setTextureWrap('REPEAT', 'REPEAT');
+
+        this.gondolaFrontTex = new CGFappearance(this.scene);
+        this.gondolaFrontTex.setAmbient(0.1, 0.1, 0.1, 1);
+        this.gondolaFrontTex.setDiffuse(0.9, 0.9, 0.9, 1);
+        this.gondolaFrontTex.setSpecular(0.1, 0.1, 0.1, 1);
+        this.gondolaFrontTex.setShininess(10.0);
+        this.gondolaFrontTex.loadTexture('images/vehicle/gondola/gondola_extremes3.jpg');
+        this.gondolaFrontTex.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
+
+        this.gondolaBackTex = new CGFappearance(this.scene);
+        this.gondolaBackTex.setAmbient(0.1, 0.1, 0.1, 1);
+        this.gondolaBackTex.setDiffuse(0.9, 0.9, 0.9, 1);
+        this.gondolaBackTex.setSpecular(0.1, 0.1, 0.1, 1);
+        this.gondolaBackTex.setShininess(10.0);
+        this.gondolaBackTex.loadTexture('images/vehicle/gondola/gondola_extremes4.jpg');
+        this.gondolaBackTex.setTextureWrap('REPEAT', 'REPEAT');
     }
 
     display() {
@@ -216,13 +274,14 @@ class MyGondola extends CGFobject {
         this.scene.scale(1, 4, 1);
         this.gondolaBodyTex.apply();
         this.gondolaBody.display();
-        this.scene.material.apply();
         this.scene.popMatrix();
         // ----
 
         // ---- Front Extreme
         this.scene.pushMatrix();
         this.scene.translate(0, 0, 2);
+        this.scene.rotate(Math.PI/2, 1, 0, 0);
+        this.gondolaFrontTex.apply();
         this.gondolaExtremes.display();
         this.scene.popMatrix();
         // ----
@@ -230,10 +289,12 @@ class MyGondola extends CGFobject {
         // ---- Back Extreme
         this.scene.pushMatrix();
         this.scene.translate(0, 0, -2);
+        this.scene.rotate(-Math.PI/2, 1, 0, 0);
+        this.gondolaBackTex.apply();
         this.gondolaExtremes.display();
         this.scene.popMatrix();
         // ----
-
+        this.scene.material.apply();
         // ---- Left Helice
         this.scene.pushMatrix();
         this.scene.translate(-1.2, 0, -2.2);
@@ -247,6 +308,13 @@ class MyGondola extends CGFobject {
         this.helice.display();
         this.scene.popMatrix();
         // ----
+    }
+
+    /**
+     * The radius of the cylinder isn't changed, only the height
+     */
+    getGondolaBodyRadius() {
+        return 1;
     }
 
     update(speed, absolute_max_speed) {
@@ -279,17 +347,24 @@ class MyHeliceSupport extends CGFobject {
     }
 
     initMaterials() {
-
+        this.heliceSupportTex = new CGFappearance(this.scene);
+        this.heliceSupportTex.setAmbient(0.1, 0.1, 0.1, 1);
+        this.heliceSupportTex.setDiffuse(0.9, 0.9, 0.9, 1);
+        this.heliceSupportTex.setSpecular(0.1, 0.1, 0.1, 1);
+        this.heliceSupportTex.setShininess(10.0);
+        this.heliceSupportTex.loadTexture('images/vehicle/helice/helice_support.jpg');
+        this.heliceSupportTex.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
     }
 
     display() {
         // ---- Support
         this.scene.pushMatrix();
         this.scene.scale(0.3, 0.4, 1);
+        this.heliceSupportTex.apply();
         this.support.display();
         this.scene.popMatrix();
         // ----
-
+        this.scene.material.apply();
         // ---- Helice
         this.scene.pushMatrix();
         this.scene.translate(0, 0, -1);
@@ -326,6 +401,25 @@ class MyHelice extends CGFobject {
         this.defaultRotationSpeed = 0.08;
         this.MAX_ROTATION_SPEED = 0.8;
         this.angle = 0;
+        this.initMaterials();
+    }
+
+    initMaterials() {
+        this.heliceTex = new CGFappearance(this.scene);
+        this.heliceTex.setAmbient(0.1, 0.1, 0.1, 1);
+        this.heliceTex.setDiffuse(0.9, 0.9, 0.9, 1);
+        this.heliceTex.setSpecular(0.1, 0.1, 0.1, 1);
+        this.heliceTex.setShininess(10.0);
+        this.heliceTex.loadTexture('images/vehicle/helice/helice.jpg');
+        this.heliceTex.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
+
+        this.jointTex = new CGFappearance(this.scene);
+        this.jointTex.setAmbient(0.1, 0.1, 0.1, 1);
+        this.jointTex.setDiffuse(0.9, 0.9, 0.9, 1);
+        this.jointTex.setSpecular(0.1, 0.1, 0.1, 1);
+        this.jointTex.setShininess(10.0);
+        this.jointTex.loadTexture('images/vehicle/helice/joint.jpg');
+        this.jointTex.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
     }
 
     display() {
@@ -337,6 +431,7 @@ class MyHelice extends CGFobject {
         this.scene.rotate(-Math.PI/4, 0, 0, 1);
         this.scene.translate(0, 1, 0);
         this.scene.scale(0.25, 1, 1);
+        this.heliceTex.apply();
         this.helice.display();
         this.scene.popMatrix();
         // ----
@@ -353,9 +448,11 @@ class MyHelice extends CGFobject {
         // ---- Helice Joint
         this.scene.pushMatrix();
         this.scene.scale(0.1, 0.1, 0.1);
+        this.jointTex.apply();
         this.heliceJoint.display();
         this.scene.popMatrix();
         // ----
+        this.scene.material.apply();
     }
 
     update(speed, absolute_max_speed) {
@@ -394,7 +491,6 @@ class MyRudder extends CGFobject {
         this.rudderBaseTex.setDiffuse(0.9, 0.9, 0.9, 1);
         this.rudderBaseTex.setSpecular(0.1, 0.1, 0.1, 1);
         this.rudderBaseTex.setShininess(10.0);
-        this.rudderBaseTex.loadTexture('images/vehicle/rudder_base.png');
         this.rudderBaseTex.setTextureWrap('REPEAT', 'REPEAT');
 
         this.rudderConnectorTex = new CGFappearance(this.scene);
@@ -402,7 +498,7 @@ class MyRudder extends CGFobject {
         this.rudderConnectorTex.setDiffuse(0.9, 0.9, 0.9, 1);
         this.rudderConnectorTex.setSpecular(0.1, 0.1, 0.1, 1);
         this.rudderConnectorTex.setShininess(10.0);
-        this.rudderConnectorTex.loadTexture('images/vehicle/rudder_connector.png');
+        this.rudderConnectorTex.loadTexture('images/vehicle/rudder/rudder_connector.jpg');
         this.rudderConnectorTex.setTextureWrap('REPEAT', 'REPEAT');
     }
 
@@ -430,5 +526,9 @@ class MyRudder extends CGFobject {
     disableNormalViz() {
         this.rudderBase.disableNormalViz();
         this.rudderConnector.disableNormalViz();
+    }
+
+    setBaseTexture(texture) {
+        this.rudderBaseTex.setTexture(texture);
     }
 }

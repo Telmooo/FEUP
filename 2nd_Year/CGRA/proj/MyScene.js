@@ -40,7 +40,8 @@ class MyScene extends CGFscene {
             new MyGondola(this),
             new MyRudder(this),
             new MyPlane(this, 10),
-            new MyTerrain(this, 10, 4)
+            new MyTerrain(this, 10, 4),
+            new MySupply(this)
 		];
 
 		// Object interface variables
@@ -55,7 +56,8 @@ class MyScene extends CGFscene {
             'Gondola': 7,
             'Rudder': 8,
             'Plane': 9,
-            'Terrain': 10
+            'Terrain': 10,
+            'Supply': 11
 		};
 
         //------ Textures
@@ -144,6 +146,20 @@ class MyScene extends CGFscene {
         this.ORBIT_ANGULAR_SPEED = (Math.PI * 2) / this.ORBIT_PERIOD;
         this.ORBIT_SPEED = this.ORBIT_ANGULAR_SPEED * this.ORBIT_RADIUS; // v = w * r
         this.reset = ()=>this.vehicle.reset();
+
+        // Supplies
+        this.RELOADING_TIME = 1000;
+        this.reloading = false;
+        this.time_reloading = 0;
+        this.supplies = [
+            new MySupply(this),
+            new MySupply(this),
+            new MySupply(this),
+            new MySupply(this),
+            new MySupply(this),
+        ];
+        this.supplyCounter = 0;
+        // ----
     }
     initLights() {
         this.lights[0].setPosition(15, 2, 5, 1);
@@ -154,7 +170,7 @@ class MyScene extends CGFscene {
         this.lights[1].setPosition(0, 0, 0, 0);
         this.lights[1].setAmbient(1.0, 1.0, 1.0, 1.0);
 
-        this.lights[2].setPosition(15, 2, -5, 1);
+        this.lights[2].setPosition(-15, 2, -5, 1);
         this.lights[2].setDiffuse(1.0, 1.0, 1.0, 1.0);
         this.lights[2].enable();
         this.lights[2].update();
@@ -181,11 +197,29 @@ class MyScene extends CGFscene {
     update(t){
         this.checkKeys();
 
-        if (this.showVehicle) {
-            this.vehicle.update(Physics.millisToSec(t - this.lastFrameTime), this.MAX_SPEED, this.MAX_ANGULAR_SPEED);
-        }
+        this.updateElements(t);
 
         this.lastFrameTime = t;
+    }
+
+    updateElements(t) {
+        let elapsed_secs = Physics.millisToSec(t - this.lastFrameTime);
+
+        if (this.showVehicle) {
+            this.vehicle.update(elapsed_secs, this.MAX_SPEED, this.MAX_ANGULAR_SPEED);
+        }
+
+        for (let i = 0; i < this.supplies.length; i++) {
+            this.supplies[i].update(elapsed_secs, this.scaleFactor * this.supplies[i].getFaceSize() / 2);
+        }
+
+        if (this.reloading) {
+            this.time_reloading -= (t - this.lastFrameTime);
+            if (this.time_reloading <= 0) {
+                this.time_reloading = 0;
+                this.reloading = false;
+            }
+        }
     }
 
     updateAppliedTexture() {
@@ -199,18 +233,14 @@ class MyScene extends CGFscene {
         if (this.gui.isKeyPressed("KeyP") && !this.keyP_pressed) {
             this.keyP_pressed = true;
             this.automatic_pilot = !this.automatic_pilot;
+
+            if (this.automatic_pilot) this.vehicle.enterPilotMode(this.ORBIT_SPEED, this.ORBIT_ANGULAR_SPEED);
         } else {
             this.keyP_pressed = false;
         }
 
-        if (this.automatic_pilot) {
-            // TODO: REFACTOR THIS
-            this.vehicle.speed = 0;
-            this.vehicle.rotationSpeed = 0;
-            this.vehicle.accelerate(this.ORBIT_SPEED, 0, 999999, 0);
-            this.vehicle.accelerate_rotation(this.ORBIT_ANGULAR_SPEED, 0, 99999, 0);
 
-        } else {
+        if (!this.automatic_pilot) {
             if (this.gui.isKeyPressed("KeyW")) {
                 acc_direction += 1;
             }
@@ -231,10 +261,42 @@ class MyScene extends CGFscene {
             }
         }
         if (this.gui.isKeyPressed("KeyR")) {
-            if (this.showVehicle)
-                this.vehicle.reset();
+            this.resetElements();
         }
 
+        if (this.gui.isKeyPressed("KeyL")) {
+            this.dropSupply();
+        }
+    }
+
+    dropSupply() {
+        if (this.supplyCounter < this.supplies.length && !this.reloading) {
+            for (let i = 0; i < this.supplies.length; i++) {
+                if (this.supplies[i].isInactive()) {
+                    // To drop from bottom of the vehicle, there's a need to lower the Y value by the radius of the vehicle from the center to the bottom
+                    // and also lower by half of the supply size
+                    let y_thrown = this.vehicle.getY() - (this.vehicle.getRadiusFromCenterToBottom() + this.supplies[i].getFaceSize() / 2) * this.scaleFactor;
+                    this.supplies[i].drop(this.vehicle.getX(), y_thrown, this.vehicle.getZ(), this.vehicle.getOrientation(), 0.4 * this.vehicle.getSpeed(), 0);
+                    this.supplyCounter++;
+                    this.time_reloading = this.RELOADING_TIME;
+                    this.reloading = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    resetElements() {
+        if (this.showVehicle)
+            this.vehicle.reset();
+
+        for (let i = 0; i < this.supplies.length; i++) {
+            this.supplies[i].reset();
+        }
+
+        this.reloading = false;
+        this.time_reloading = 0;
+        this.supplyCounter = 0;
     }
 
 
@@ -258,7 +320,7 @@ class MyScene extends CGFscene {
             this.lights[1].enable();
             this.lights[1].update();
             this.pushMatrix();
-            this.translate(0, 25, 0);
+            this.translate(0, 24.999, 0);
             this.scale(50, 50, 50);
             this.cubemap.display();
             this.popMatrix();
@@ -292,6 +354,20 @@ class MyScene extends CGFscene {
             this.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
             this.vehicle.display();
             this.popMatrix();
+
+        }
+        for (let i = 0; i < this.supplies.length; i++) {
+            if (!this.supplies[i].isInactive()) {
+                if (this.displayNormals)
+                    this.supplies[i].enableNormalViz();
+                else
+                    this.supplies[i].disableNormalViz();
+
+                this.pushMatrix();
+                this.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
+                this.supplies[i].display();
+                this.popMatrix();
+            }
         }
 
         // ---- END Primitive drawing section

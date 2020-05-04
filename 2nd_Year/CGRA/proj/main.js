@@ -22,6 +22,7 @@ serialInclude([ '../lib/CGF.js',
 
                 // ---- Vehicle
                 './vehicle/MyVehicle.js',
+                './vehicle/supply/MySupply.js',
                 // ----
 
                 // ---- Additional Libraries
