@@ -4,30 +4,32 @@
  * @param scene - Reference to MyScene object
  */
 class MyCircle extends CGFobject {
-    constructor(scene, nVertices, radius, centerX, centerY, centerZ) {
+    constructor(scene, nVertices) {
         super(scene);
         this.nVertices = nVertices;
-        this.radius = radius;
-        this.centerX = centerX;
-        this.centerY = centerY;
-        this.centerZ = centerZ;
         this.initBuffers();
     }
 
     initBuffers() {
 
         this.vertices = [
-            this.centerX, this.centerY, this.centerZ
+            0, 0, 0
         ];
+
+
+        this.normals = [ 0, 0, 1 ];
+        this.texCoords = [ 0.5, 0.5 ];
 
         var dangle = (Math.PI * 2)/this.nVertices, angle = 0;
         var x, y;
 
         for (var i = 0; i < this.nVertices; i++) {
-            x = this.centerX + Math.cos(angle) * this.radius;
-            y = this.centerY + Math.sin(angle) * this.radius;
+            x = Math.cos(angle);
+            y = Math.sin(angle);
 
-            this.vertices.push(x, y, this.centerZ);
+            this.vertices.push(x, y, 0);
+            this.normals.push(0, 0, 1);
+            this.texCoords.push(0.5 + x / 2, 0.5 + y / 2);
 
             angle += dangle;
         }
@@ -35,14 +37,10 @@ class MyCircle extends CGFobject {
         this.indices = [
         ];
 
-        this.normals = [
-        ];
-
         for (var i = 1; i <= this.nVertices; i++) {
             this.indices.push(i);
             this.indices.push(1 + i % this.nVertices);
             this.indices.push(0); // center
-            this.normals.push(0, 0, 1);
         }
 
         this.primitiveType = this.scene.gl.TRIANGLES;

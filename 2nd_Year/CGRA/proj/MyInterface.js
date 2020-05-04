@@ -50,6 +50,8 @@ class MyInterface extends CGFinterface {
 
         vehicle_folder.add(this.scene, 'reset').name("Reset Vehicle");
 
+        vehicle_folder.open();
+
         this.initKeys();
 
         return true;
