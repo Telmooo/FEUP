@@ -277,8 +277,8 @@ class MyVehicle extends CGFobject {
 class MyGondola extends CGFobject {
     constructor(scene) {
         super(scene);
-        this.gondolaBody = new MyCylinder(this.scene, 32);
-        this.gondolaExtremes = new MySphere(this.scene, 32, 8);
+        this.gondolaBody = new MyCylinder(this.scene, 16);
+        this.gondolaExtremes = new MySphere(this.scene, 16, 8);
         this.helice = new MyHeliceSupport(this.scene);
         this.initMaterials();
     }
