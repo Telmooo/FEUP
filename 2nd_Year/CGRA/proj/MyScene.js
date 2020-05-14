@@ -178,6 +178,24 @@ class MyScene extends CGFscene {
         this.ORBIT_SPEED = this.ORBIT_ANGULAR_SPEED * this.ORBIT_RADIUS; // v = w * r
         this.reset = ()=>this.vehicle.reset();
 
+        this.flags = [
+            undefined,
+            new CGFtexture(this, 'images/vehicle/flag/heman.jpg'),
+            new CGFtexture(this, 'images/vehicle/flag/doge.jpg'),
+            new CGFtexture(this, 'images/vehicle/flag/spongebob.jpg')
+        ];
+
+        this.flagsIds = {
+            'None': 0,
+            'Heman': 1,
+            'Doggo': 2,
+            'Spongebob': 3
+        };
+
+        this.selectedFlag = 1;
+
+        this.updateFlag();
+
         // Supplies
         this.RELOADING_TIME = 1000;
         this.reloading = false;
@@ -265,6 +283,10 @@ class MyScene extends CGFscene {
                 this.reloading = false;
             }
         }
+    }
+
+    updateFlag() {
+        this.vehicle.setFlagTexture(this.flags[this.selectedFlag]);
     }
 
     updateAppliedTexture() {

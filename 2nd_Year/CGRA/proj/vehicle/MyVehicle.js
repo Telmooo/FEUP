@@ -155,6 +155,10 @@ class MyVehicle extends CGFobject {
 		this.flag.setLineMode();
 	};
 
+    setFlagTexture(texture) {
+		this.flag.setFlagTexture(texture);
+	}
+
     enterPilotMode(speed, angular_speed) {
         this.speed = speed;
         this.rotationSpeed = angular_speed;

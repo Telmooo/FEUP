@@ -60,6 +60,8 @@ class MyInterface extends CGFinterface {
 
         vehicle_folder.add(this.scene, 'showVehicle').name("Show Vehicle");
 
+        vehicle_folder.add(this.scene, 'selectedFlag', this.scene.flagsIds).name("Select Flag").onChange(this.scene.updateFlag.bind(this.scene));
+
         vehicle_folder.add(this.scene, 'speedFactor', 0.1, 3).step(0.1).name("Speed Factor");
 
         vehicle_folder.add(this.scene, 'rotSpeedFactor', 0.1, 5).step(0.1).name("Rotation Speed Factor");

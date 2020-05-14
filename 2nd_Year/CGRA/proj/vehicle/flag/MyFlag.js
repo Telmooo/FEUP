@@ -18,15 +18,12 @@ class MyFlag extends CGFobject{
 	}
 
     initMaterials() {
-		this.flagTex = new CGFtexture(this.scene, "images/vehicle/flag/heman.jpg");
-
 		this.flagMat = new CGFappearance(this.scene);
         this.flagMat.setAmbient(0.1, 0.1, 0.1, 1);
         this.flagMat.setDiffuse(0.9, 0.9, 0.9, 1);
         this.flagMat.setSpecular(0.1, 0.1, 0.1, 1);
         this.flagMat.setShininess(10.0);
         this.flagMat.setTextureWrap('REPEAT', 'REPEAT');
-		this.flagMat.loadTexture('images/vehicle/flag/heman.jpg');
 
 		this.flagWireTex = new CGFappearance(this.scene);
         this.flagWireTex.setAmbient(0.1, 0.1, 0.1, 1);
@@ -84,6 +81,10 @@ class MyFlag extends CGFobject{
 		this.scene.setActiveShader(this.scene.defaultShader);
         // ----
     }
+
+	setFlagTexture(texture) {
+		this.flagMat.setTexture(texture);
+	}
 
     enableNormalViz() {
         this.flag.enableNormalViz();
