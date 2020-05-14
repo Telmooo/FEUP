@@ -1,7 +1,7 @@
 /**
  * MyCubeMap
  * @constructor
- * @param scene - Reference to MyScene object
+ * @param {CGFscene} scene - Reference to MyScene object
  */
 class MyCubeMap extends CGFobject {
 	constructor(scene) {
@@ -153,4 +153,12 @@ class MyCubeMap extends CGFobject {
 				break;
 		}
 	}
+
+	setFillMode() {
+		this.quad.setFillMode();
+	}
+
+	setLineMode() {
+		this.quad.setLineMode();
+	};
 }

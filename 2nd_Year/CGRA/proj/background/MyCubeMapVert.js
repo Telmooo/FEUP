@@ -1,7 +1,7 @@
 /**
  * MyCubeMapVert
  * @constructor
- * @param scene - Reference to MyScene object
+ * @param {CGFscene} scene - Reference to MyScene object
  */
 class MyCubeMapVert extends CGFobject {
 	constructor(scene) {
@@ -184,4 +184,12 @@ class MyCubeMapVert extends CGFobject {
 				break;
 		}
 	}
+
+	setFillMode() {
+		this.primitiveType=this.scene.gl.TRIANGLES;
+	}
+
+	setLineMode() {
+		this.primitiveType=this.scene.gl.LINES;
+	};
 }

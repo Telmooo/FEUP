@@ -1,4 +1,8 @@
-
+/**
+ * MyFlag - vehicle animated flag
+ * @constructor
+ * @param {CGFscene} scene - Reference to MyScene object
+ */
 class MyFlag extends CGFobject{
 	constructor(scene) {
         super(scene);
@@ -90,4 +94,14 @@ class MyFlag extends CGFobject{
         this.flag.disableNormalViz();
 		this.flag_wire.disableNormalViz();
     }
+
+	setFillMode() {
+		this.flag.setFillMode();
+		this.flag_wire.setFillMode();
+	}
+
+	setLineMode() {
+		this.flag.setLineMode();
+		this.flag_wire.setLineMode();
+	};
 }

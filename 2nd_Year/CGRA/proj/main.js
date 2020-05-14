@@ -18,7 +18,6 @@ serialInclude([ '../lib/CGF.js',
 
                 // ---- Background
                 './background/MyCubeMap.js',
-                './background/MyCubeMapVert.js',
                 './background/MyTerrain.js',
                 './background/MyBillboard.js',
                 // ----

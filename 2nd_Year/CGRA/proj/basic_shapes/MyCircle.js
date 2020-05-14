@@ -1,7 +1,7 @@
 /**
- * MyCircle
+ * MyCircle - double faced circle
  * @constructor
- * @param scene - Reference to MyScene object
+ * @param {CGFscene} scene - Reference to MyScene object
  */
 class MyCircle extends CGFobject {
     constructor(scene, nVertices) {
@@ -10,6 +10,9 @@ class MyCircle extends CGFobject {
         this.initBuffers();
     }
 
+    /**
+     * Initialize vertices, normals, texture coordinates and indices of the circle
+     */
     initBuffers() {
 
         this.vertices = [ ];
@@ -48,4 +51,12 @@ class MyCircle extends CGFobject {
 
         this.initGLBuffers();
     }
+
+    setFillMode() {
+		this.primitiveType=this.scene.gl.TRIANGLES;
+	}
+
+	setLineMode() {
+		this.primitiveType=this.scene.gl.LINES;
+	};
 }

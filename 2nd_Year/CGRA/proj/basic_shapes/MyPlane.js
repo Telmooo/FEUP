@@ -1,5 +1,12 @@
-
-/** Represents a plane with nrDivs divisions along both axis, with center at (0,0) */
+/**
+ * MyPlane - Represents a plane with nrDivs divisions along both axis, with center at (0,0)
+ *
+ * For double faced:
+ * @see MyDoubleFacedPlane
+ *
+ * @constructor
+ * @param {CGFscene} scene - Reference to MyScene object
+ */
 class MyPlane extends CGFobject{
 	constructor(scene, nrDivs, minS, maxS, minT, maxT) {
 		super(scene);
@@ -15,6 +22,9 @@ class MyPlane extends CGFobject{
 		this.w = (this.maxT - this.minT) / this.nrDivs;
 		this.initBuffers();
 	}
+	/**
+     * Initialize vertices, normals, texture coordinates and indices of the circle
+     */
 	initBuffers() {
 		// Generate vertices, normals, and texCoords
 		this.vertices = [];
@@ -54,8 +64,7 @@ class MyPlane extends CGFobject{
 		this.primitiveType=this.scene.gl.TRIANGLE_STRIP;
 	}
 
-	setLineMode()
-	{
+	setLineMode() {
 		this.primitiveType=this.scene.gl.LINES;
 	};
 }

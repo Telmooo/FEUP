@@ -1,15 +1,17 @@
 /**
- * MySupply
- * @constructor
- * @param scene - Reference to MyScene object
+ * Possible states for vehicle supplies
  */
-
 const SupplyStates = {
      INACTIVE: 0,
      FALLING: 1,
      LANDED: 2
 };
 
+/**
+ * MySupply - vehicle supply box
+ * @constructor
+ * @param {CGFscene} scene - Reference to MyScene object
+ */
 class MySupply extends CGFobject {
 
     constructor(scene) {
@@ -218,4 +220,12 @@ class MySupply extends CGFobject {
     disableNormalViz() {
         this.quad.disableNormalViz();
     }
+
+    setFillMode() {
+        this.quad.setFillMode();
+	}
+
+	setLineMode() {
+		this.quad.setLineMode();
+	};
 }

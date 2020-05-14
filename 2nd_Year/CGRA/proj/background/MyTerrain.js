@@ -1,7 +1,7 @@
 /**
  * MyTerrain
  * @constructor
- * @param scene - Reference to MyScene object
+ * @param {CGFscene} scene - Reference to MyScene object
  */
 class MyTerrain extends CGFobject {
 	constructor(scene, width, height) {
@@ -52,4 +52,12 @@ class MyTerrain extends CGFobject {
 	disableNormalViz() {
 		this.terrain.disableNormalViz();
 	}
+
+	setFillMode() {
+		this.terrain.setFillMode();
+	}
+
+	setLineMode() {
+		this.terrain.setLineMode();
+	};
 }

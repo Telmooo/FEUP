@@ -1,6 +1,7 @@
 /**
-* MyVehicle
+* MyVehicle - zepplin
 * @constructor
+* @param {CGFscene} scene - Reference to MyScene object
 */
 class MyVehicle extends CGFobject {
     constructor(scene) {
@@ -133,6 +134,20 @@ class MyVehicle extends CGFobject {
         this.flag.disableNormalViz();
     }
 
+    setFillMode() {
+        this.body.setFillMode();
+        this.gondola.setFillMode();
+        this.rudder.setFillMode();
+		this.flag.setFillMode();
+	}
+
+	setLineMode() {
+        this.body.setLineMode();
+        this.gondola.setLineMode();
+        this.rudder.setLineMode();
+		this.flag.setLineMode();
+	};
+
     enterPilotMode(speed, angular_speed) {
         this.speed = speed;
         this.rotationSpeed = angular_speed;
@@ -248,9 +263,10 @@ class MyVehicle extends CGFobject {
 }
 
 /**
-* MyGondola
-* @constructor
-*/
+ * MyGondola - zone of the zepplin where passengers sit
+ * @constructor
+ * @param {CGFscene} scene - Reference to MyScene object
+ */
 class MyGondola extends CGFobject {
     constructor(scene) {
         super(scene);
@@ -352,12 +368,25 @@ class MyGondola extends CGFobject {
         this.gondolaExtremes.disableNormalViz();
         this.helice.disableNormalViz();
     }
+
+    setFillMode() {
+        this.gondolaBody.setFillMode();
+        this.gondolaExtremes.setFillMode();
+		this.helice.setFillMode();
+	}
+
+	setLineMode() {
+        this.gondolaBody.setLineMode();
+        this.gondolaExtremes.setLineMode();
+		this.helice.setLineMode();
+	};
 }
 
 /**
-* MyHelice
-* @constructor
-*/
+ * MyHeliceSupport - component that supports the helice
+ * @constructor
+ * @param {CGFscene} scene - Reference to MyScene object
+ */
 class MyHeliceSupport extends CGFobject {
     constructor(scene) {
         super(scene);
@@ -407,12 +436,23 @@ class MyHeliceSupport extends CGFobject {
         this.support.disableNormalViz();
         this.helice.disableNormalViz();
     }
+
+    setFillMode() {
+        this.support.setFillMode();
+        this.helice.setFillMode();
+	}
+
+	setLineMode() {
+        this.support.setLineMode();
+        this.helice.setLineMode();
+	};
 }
 
 /**
-* MyHelice
-* @constructor
-*/
+ * MyHelice - vehicle helice
+ * @constructor
+ * @param {CGFscene} scene - Reference to MyScene object
+ */
 class MyHelice extends CGFobject {
     constructor(scene) {
         super(scene);
@@ -491,12 +531,23 @@ class MyHelice extends CGFobject {
         this.helice.disableNormalViz();
         this.heliceJoint.disableNormalViz();
     }
+
+    setFillMode() {
+        this.helice.setFillMode();
+        this.heliceJoint.setFillMode();
+	}
+
+	setLineMode() {
+        this.helice.setLineMode();
+        this.heliceJoint.setLineMode();
+	};
 }
 
 /**
-* MyRudder
-* @constructor
-*/
+ * MyRudder - vehicle rudder
+ * @constructor
+ * @param {CGFscene} scene - Reference to MyScene object
+ */
 class MyRudder extends CGFobject {
     constructor(scene) {
         super(scene);
@@ -547,6 +598,16 @@ class MyRudder extends CGFobject {
         this.rudderBase.disableNormalViz();
         this.rudderConnector.disableNormalViz();
     }
+
+    setFillMode() {
+        this.rudderBase.setFillMode();
+        this.rudderConnector.setFillMode();
+	}
+
+	setLineMode() {
+        this.rudderBase.setLineMode();
+        this.rudderConnector.setLineMode();
+	};
 
     setBaseTexture(texture) {
         this.rudderBaseTex.setTexture(texture);

@@ -1,7 +1,7 @@
 /**
  * MyQuad
  * @constructor
- * @param scene - Reference to MyScene object
+ * @param {CGFscene} scene - Reference to MyScene object
  */
 class MyQuad extends CGFobject {
 	constructor(scene) {
@@ -60,13 +60,11 @@ class MyQuad extends CGFobject {
 		this.initGLBuffers();
 	}
 
-	/**
-	 * @method updateTexCoords
-	 * Updates the list of texture coordinates of the quad
-	 * @param {Array} coords - Array of texture coordinates
-	 */
-	updateTexCoords(coords) {
-		this.texCoords = [...coords];
-		this.updateTexCoordsGLBuffers();
+	setFillMode() {
+		this.primitiveType=this.scene.gl.TRIANGLES;
 	}
+
+	setLineMode() {
+		this.primitiveType=this.scene.gl.LINES;
+	};
 }

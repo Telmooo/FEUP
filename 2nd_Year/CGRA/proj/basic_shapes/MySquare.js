@@ -1,7 +1,9 @@
 /**
- * MySquare
+ * MySquare - double faced quad
+ *
+ * @see MyQuad
  * @constructor
- * @param scene - Reference to MyScene object
+ * @param {CGFscene} scene - Reference to MyScene object
  */
 class MySquare extends CGFobject {
 	constructor(scene) {
@@ -86,4 +88,12 @@ class MySquare extends CGFobject {
 		this.texCoords = [...coords];
 		this.updateTexCoordsGLBuffers();
 	}
+
+	setFillMode() {
+        this.primitiveType=this.scene.gl.TRIANGLES;
+    }
+
+    setLineMode() {
+        this.primitiveType=this.scene.gl.LINES;
+    };
 }

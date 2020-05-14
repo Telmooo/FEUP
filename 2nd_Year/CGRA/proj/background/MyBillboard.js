@@ -1,4 +1,8 @@
-
+/**
+ * MyBillboard - supply counter board
+ * @constructor
+ * @param {CGFscene} scene - Reference to MyScene object
+ */
 class MyBillboard extends CGFobject{
 	constructor(scene) {
         super(scene);
@@ -118,4 +122,18 @@ class MyBillboard extends CGFobject{
         this.progressBar.disableNormalViz();
         this.post.disableNormalViz();
     }
+
+	setFillMode() {
+		this.billboard.setFillMode();
+        this.back.setFillMode();
+        this.progressBar.setFillMode();
+        this.post.setFillMode();
+	}
+
+	setLineMode() {
+		this.billboard.setLineMode();
+        this.back.setLineMode();
+        this.progressBar.setLineMode();
+        this.post.setLineMode();
+	};
 }

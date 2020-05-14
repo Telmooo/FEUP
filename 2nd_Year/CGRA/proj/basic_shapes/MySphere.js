@@ -16,7 +16,6 @@ class MySphere extends CGFobject {
   /**
    * @method initBuffers
    * Initializes the sphere buffers
-   * TODO: DEFINE TEXTURE COORDINATES
    */
   initBuffers() {
     this.vertices = [];
@@ -75,4 +74,12 @@ class MySphere extends CGFobject {
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();
   }
+
+  setFillMode() {
+      this.primitiveType=this.scene.gl.TRIANGLES;
+  }
+
+  setLineMode() {
+      this.primitiveType=this.scene.gl.LINES;
+  };
 }

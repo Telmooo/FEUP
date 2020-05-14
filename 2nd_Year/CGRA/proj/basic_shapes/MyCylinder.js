@@ -1,7 +1,7 @@
 /**
- * MyCylinderVert
+ * MyCylinder
  * @constructor
- * @param scene - Reference to MyScene object
+ * @param {CGFscene} scene - Reference to MyScene object
  */
 class MyCylinder extends CGFobject {
     constructor(scene, slices) {
@@ -10,6 +10,9 @@ class MyCylinder extends CGFobject {
         this.initBuffers();
     }
 
+    /**
+     * Initialize vertices, normals, texture coordinates and indices of the circle
+     */
     initBuffers() {
         this.vertices = [];
         this.indices = [];
@@ -47,4 +50,12 @@ class MyCylinder extends CGFobject {
 
         this.initGLBuffers();
     }
+
+    setFillMode() {
+		this.primitiveType=this.scene.gl.TRIANGLES;
+	}
+
+	setLineMode() {
+		this.primitiveType=this.scene.gl.LINES;
+	};
 }
