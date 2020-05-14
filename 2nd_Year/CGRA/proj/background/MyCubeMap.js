@@ -107,6 +107,14 @@ class MyCubeMap extends CGFobject {
 		this.quad.disableNormalViz();
 	}
 
+	setFillMode() {
+		this.quad.setFillMode();
+	}
+
+	setLineMode() {
+		this.quad.setLineMode();
+	};
+
 	/**
 	 * @method changeMaterial
 	 * Changes texture of faces
@@ -153,12 +161,4 @@ class MyCubeMap extends CGFobject {
 				break;
 		}
 	}
-
-	setFillMode() {
-		this.quad.setFillMode();
-	}
-
-	setLineMode() {
-		this.quad.setLineMode();
-	};
 }

@@ -21,20 +21,25 @@ class MyInterface extends CGFinterface {
 
         general_folder.add(this.scene, 'displayAxis').name('Display Axis');
 
-        general_folder.add(this.scene, 'selectedObject', this.scene.objectList).name('Object Type');
-
-        general_folder.add(this.scene, 'displayNormals').name("Display normals");
+        general_folder.add(this.scene, 'displayNormals').name("Display normals").onChange(this.scene.onNormalsChanged.bind(this.scene));
 
         general_folder.add(this.scene, 'wireframe').name('Display wireframe').onChange(this.scene.onWireframeChanged.bind(this.scene));
 
+        general_folder.open();
         // ---- Single Objects configuration
         var objects_folder = this.gui.addFolder("Single Objects Configuration");
 
         objects_folder.add(this.scene, 'selectedObject', this.scene.objectList).name('Object Type');
 
-        objects_folder.add(this.scene, 'applyMaterial').name("Apply Material");
+        // -- Object material
+        var material_folder = objects_folder.addFolder('Material');
 
-        objects_folder.add(this.scene, 'selectedTexture', this.scene.textureList).name('Texture').onChange(this.scene.updateAppliedTexture.bind(this.scene));
+        material_folder.addColor(this.scene.materialValues,'Ambient').onChange(this.scene.updateMaterial.bind(this.scene));
+        material_folder.addColor(this.scene.materialValues,'Diffuse').onChange(this.scene.updateMaterial.bind(this.scene));
+        material_folder.addColor(this.scene.materialValues,'Specular').onChange(this.scene.updateMaterial.bind(this.scene));
+        material_folder.add(this.scene.materialValues,'Shininess', 0, 100).onChange(this.scene.updateMaterial.bind(this.scene));
+        material_folder.add(this.scene, 'selectedTexture', this.scene.textureList).name('Texture').onChange(this.scene.updateMaterial.bind(this.scene));
+        // --
         // ----
 
         // ---- Background configuration

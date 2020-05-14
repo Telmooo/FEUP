@@ -131,12 +131,17 @@ class MyScene extends CGFscene {
         //-------
 
         //------ Applied Material
+
+        this.materialValues = {
+            'Ambient': '#0000ff',
+            'Diffuse': '#ff0000',
+            'Specular': '#000000',
+            'Shininess': 10
+        }
         this.material = new CGFappearance(this);
-        this.material.setAmbient(0.1, 0.1, 0.1, 1);
-        this.material.setDiffuse(0.9, 0.9, 0.9, 1);
-        this.material.setSpecular(0.1, 0.1, 0.1, 1);
-        this.material.setShininess(10.0);
         this.material.setTextureWrap('REPEAT', 'REPEAT');
+
+        this.updateMaterial();
 
         //Objects connected to MyInterface
         this.displayAxis = true;
@@ -211,6 +216,15 @@ class MyScene extends CGFscene {
         this.setShininess(10.0);
     }
 
+    updateMaterial() {
+        var rgba;
+
+        this.material.setAmbient(...hexToRgbA(this.materialValues['Ambient']));
+        this.material.setDiffuse(...hexToRgbA(this.materialValues['Diffuse']));
+        this.material.setSpecular(...hexToRgbA(this.materialValues['Specular']));
+        this.material.setShininess(this.materialValues['Shininess']);
+    };
+
     updateBackgroundTexture() {
         this.cubemap.loadTexture(this.backgrounds[this.selectedBackground]);
     }
@@ -256,6 +270,27 @@ class MyScene extends CGFscene {
     updateAppliedTexture() {
         this.material.setTexture(this.textures[this.selectedTexture]);
     }
+
+    onNormalsChanged() {
+		if (this.displayNormals) {
+            if (this.selectedObject > 0)
+                this.objects[this.selectedObject].enableNormalViz();
+
+            this.vehicle.enableNormalViz();
+            this.cubemap.enableNormalViz();
+            this.terrain.enableNormalViz();
+            this.billboard.enableNormalViz();
+        }
+		else {
+            if (this.selectedObject > 0)
+                this.objects[this.selectedObject].disableNormalViz();
+
+            this.vehicle.disableNormalViz();
+            this.cubemap.disableNormalViz();
+            this.terrain.disableNormalViz();
+            this.billboard.disableNormalViz();
+        }
+	}
 
 	onWireframeChanged() {
 		if (this.wireframe) {
@@ -398,22 +433,12 @@ class MyScene extends CGFscene {
 
         // ---- BEGIN Primitive drawing section
 
-        this.material.apply();
-
         if (this.selectedObject > 0) {
-            if (this.displayNormals)
-                this.objects[this.selectedObject].enableNormalViz();
-            else
-                this.objects[this.selectedObject].disableNormalViz();
-
+            this.material.apply();
             this.objects[this.selectedObject].display();
         }
 
         if (this.showVehicle) {
-            if (this.displayNormals)
-                this.vehicle.enableNormalViz();
-            else
-                this.vehicle.disableNormalViz();
             this.pushMatrix();
             this.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
             this.vehicle.display();
@@ -422,11 +447,6 @@ class MyScene extends CGFscene {
         }
         for (let i = 0; i < this.supplies.length; i++) {
             if (!this.supplies[i].isInactive()) {
-                if (this.displayNormals)
-                    this.supplies[i].enableNormalViz();
-                else
-                    this.supplies[i].disableNormalViz();
-
                 this.pushMatrix();
                 this.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
                 this.supplies[i].display();

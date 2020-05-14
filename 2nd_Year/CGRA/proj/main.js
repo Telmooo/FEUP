@@ -30,6 +30,7 @@ serialInclude([ '../lib/CGF.js',
 
                 // ---- Additional Libraries
                 './lib/Physics.js',
+                './lib/helpers.js',
                 // ----
 
 main=function()
