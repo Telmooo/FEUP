@@ -16,6 +16,6 @@ uniform float offset;
 
 void main() {
     vTextureCoord = aTextureCoord;
-    vec3 offset = vec3(0, 0, 1) * amplitude * sin(instantFactor * instant + lengthFactor * (offset + vTextureCoord.s));
+    vec3 offset = vec3(0, 0, 1) * amplitude * sin(instantFactor * instant + lengthFactor * (offset + (aVertexPosition.x + 0.5)));
     gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition + offset, 1.0);
 }

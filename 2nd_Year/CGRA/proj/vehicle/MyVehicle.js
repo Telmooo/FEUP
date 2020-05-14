@@ -31,8 +31,11 @@ class MyVehicle extends CGFobject {
         this.bodyTex.setTextureWrap('REPEAT', 'REPEAT');
 
         this.rudderTop = new CGFtexture(this.scene, 'images/vehicle/rudder/rudder_top.jpg');
+        this.rudderConnectorTop = new CGFtexture(this.scene, 'images/vehicle/rudder/rudder_connector_top.jpg');
         this.rudderBot = new CGFtexture(this.scene, 'images/vehicle/rudder/rudder_bot.jpg');
+        this.rudderConnectorBot = new CGFtexture(this.scene, 'images/vehicle/rudder/rudder_connector_bot.jpg');
         this.rudderSide = new CGFtexture(this.scene, 'images/vehicle/rudder/rudder_side.jpg');
+        this.rudderConnectorSide = this.rudderConnectorTop;
     }
 
     display() {
@@ -68,6 +71,7 @@ class MyVehicle extends CGFobject {
         this.scene.rotate(Math.PI/2, 0, 1, 0);
         this.scene.scale(0.7, 0.7, 0.7);
         this.rudder.setBaseTexture(this.rudderTop);
+        this.rudder.setConnectorTexture(this.rudderConnectorTop);
         this.rudder.display();
         this.scene.popMatrix();
         // --
@@ -80,6 +84,7 @@ class MyVehicle extends CGFobject {
         this.scene.rotate(-Math.PI/2, 0, 1, 0);
         this.scene.scale(0.7, 0.7, 0.7);
         this.rudder.setBaseTexture(this.rudderBot);
+        this.rudder.setConnectorTexture(this.rudderConnectorBot);
         this.rudder.display();
         this.scene.popMatrix();
         // --
@@ -90,6 +95,7 @@ class MyVehicle extends CGFobject {
         this.scene.rotate(Math.PI/2, 1, 0, 0);
         this.scene.scale(0.7, 0.7, 0.7);
         this.rudder.setBaseTexture(this.rudderSide);
+        this.rudder.setConnectorTexture(this.rudderConnectorSide);
         this.rudder.display();
         this.scene.popMatrix();
         // --
@@ -101,6 +107,7 @@ class MyVehicle extends CGFobject {
         this.scene.rotate(Math.PI, 0, 1, 0);
         this.scene.scale(0.7, 0.7, 0.7);
         this.rudder.setBaseTexture(this.rudderSide);
+        this.rudder.setConnectorTexture(this.rudderConnectorSide);
         this.rudder.display();
         this.scene.popMatrix();
         // --
@@ -110,7 +117,7 @@ class MyVehicle extends CGFobject {
         // -- Flag
         this.scene.pushMatrix();
         this.scene.rotate(this.horizontal_rudder_inclination, 0, 1, 0);
-        this.scene.translate(0, 0, -4.0);
+        this.scene.translate(0, 0, -4.3);
         this.scene.rotate(Math.PI/2, 0, 1, 0);
         this.scene.scale(2.5, 0.8, 1.0);
         this.flag.display();
@@ -191,8 +198,8 @@ class MyVehicle extends CGFobject {
         let x_speed = Math.sin(this.orientation) * this.speed;
         let z_speed = Math.cos(this.orientation) * this.speed;
 
-        //this.x += x_speed * delta_time;
-        //this.z += z_speed * delta_time;
+        this.x += x_speed * delta_time;
+        this.z += z_speed * delta_time;
 
         this.gondola.update(this.speed, absolute_max_speed);
 
@@ -244,11 +251,7 @@ class MyVehicle extends CGFobject {
             }
             this.speed = new_speed;
         } else if (this.speed < 0) {
-            new_speed = this.speed + friction_acc;
-            if (new_speed > -absolute_min_speed) {
-                new_speed = 0;
-            }
-            this.speed = new_speed;
+            this.speed = 0;
         }
     }
 
@@ -569,7 +572,6 @@ class MyRudder extends CGFobject {
         this.rudderConnectorTex.setDiffuse(0.9, 0.9, 0.9, 1);
         this.rudderConnectorTex.setSpecular(0.1, 0.1, 0.1, 1);
         this.rudderConnectorTex.setShininess(10.0);
-        this.rudderConnectorTex.loadTexture('images/vehicle/rudder/rudder_connector.jpg');
         this.rudderConnectorTex.setTextureWrap('REPEAT', 'REPEAT');
     }
 
@@ -611,5 +613,9 @@ class MyRudder extends CGFobject {
 
     setBaseTexture(texture) {
         this.rudderBaseTex.setTexture(texture);
+    }
+
+    setConnectorTexture(texture) {
+        this.rudderConnectorTex.setTexture(texture);
     }
 }

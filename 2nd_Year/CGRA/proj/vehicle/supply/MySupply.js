@@ -24,6 +24,7 @@ class MySupply extends CGFobject {
         this.x = 0;
         this.y = 0;
         this.z = 0;
+        this.g = 0;
         this.exploded = false;
         this.EXPLOSION_RADIUS = 4;
 
@@ -45,7 +46,7 @@ class MySupply extends CGFobject {
 
     update(delta_time, yLimit) {
         if (this.state == SupplyStates.FALLING) {
-            this.fallingSpeed += -Physics.g * delta_time;
+            this.fallingSpeed += -this.g * delta_time;
 
             let x_speed = Math.sin(this.orientation) * this.speed;
             let z_speed = Math.cos(this.orientation) * this.speed;
@@ -58,13 +59,14 @@ class MySupply extends CGFobject {
         }
     }
 
-    drop(x, y, z, orientation, speed, fallingSpeed) {
+    drop(x, y, z, orientation, speed, acceleration) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.orientation = orientation;
+        this.g = acceleration;
         this.speed = speed;
-        this.fallingSpeed = fallingSpeed;
+        this.fallingSpeed = 0;
         this.state = SupplyStates.FALLING;
     }
 
@@ -77,7 +79,7 @@ class MySupply extends CGFobject {
         this.fallingSpeed = 0;
         this.speed = 0;
 
-        if (full_speed >= Physics.g * 2) {
+        if (full_speed >= this.g * 2) {
             let ang = 0;
             for (let i = 0; i < 6; i++) {
                 let offsetRadius = Math.random() * this.EXPLOSION_RADIUS;

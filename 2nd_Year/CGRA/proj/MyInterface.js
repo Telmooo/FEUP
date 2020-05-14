@@ -16,18 +16,29 @@ class MyInterface extends CGFinterface {
 
         var obj = this;
 
-        //Checkbox element in GUI
-        this.gui.add(this.scene, 'displayAxis').name('Display Axis');
+        // ---- General Configurations
+        var general_folder = this.gui.addFolder("General Configuration");
 
-        this.gui.add(this.scene, 'selectedObject', this.scene.objectList).name('Object Type');
+        general_folder.add(this.scene, 'displayAxis').name('Display Axis');
 
-        this.gui.add(this.scene, 'displayNormals').name("Display normals");
+        general_folder.add(this.scene, 'selectedObject', this.scene.objectList).name('Object Type');
 
-        this.gui.add(this.scene, 'applyMaterial').name("Apply Material");
+        general_folder.add(this.scene, 'displayNormals').name("Display normals");
 
-        this.gui.add(this.scene, 'selectedTexture', this.scene.textureList).name('Texture').onChange(this.scene.updateAppliedTexture.bind(this.scene));
+        general_folder.add(this.scene, 'wireframe').name('Display wireframe').onChange(this.scene.onWireframeChanged.bind(this.scene));
 
-        var background_folder = this.gui.addFolder("Background Properties");
+        // ---- Single Objects configuration
+        var objects_folder = this.gui.addFolder("Single Objects Configuration");
+
+        objects_folder.add(this.scene, 'selectedObject', this.scene.objectList).name('Object Type');
+
+        objects_folder.add(this.scene, 'applyMaterial').name("Apply Material");
+
+        objects_folder.add(this.scene, 'selectedTexture', this.scene.textureList).name('Texture').onChange(this.scene.updateAppliedTexture.bind(this.scene));
+        // ----
+
+        // ---- Background configuration
+        var background_folder = this.gui.addFolder("Background Configuration");
 
         background_folder.add(this.scene, 'applyBackground').name("Apply Background");
 
@@ -36,7 +47,11 @@ class MyInterface extends CGFinterface {
         //Dropdown for texture filtering
         background_folder.add(this.scene, 'selectedFilter', this.scene.backgroundFilterIds).name('Selected Filter').onChange(this.scene.updateBackgroundFiltering.bind(this.scene));
 
-        var vehicle_folder = this.gui.addFolder("Vehicle Properties");
+        background_folder.open()
+        // ----
+
+        // ---- Vehicle configuration
+        var vehicle_folder = this.gui.addFolder("Vehicle Configuration");
 
         vehicle_folder.add(this.scene, 'showVehicle').name("Show Vehicle");
 
@@ -51,6 +66,7 @@ class MyInterface extends CGFinterface {
         vehicle_folder.add(this.scene, 'reset').name("Reset Vehicle");
 
         vehicle_folder.open();
+        // ----
 
         this.initKeys();
 

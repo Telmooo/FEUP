@@ -150,6 +150,9 @@ class MyScene extends CGFscene {
 
         this.keyP_pressed = false;
 
+
+		this.wireframe = false;
+
         // Vehicle Things
         this.showVehicle = true;
         this.MIN_SPEED = 0.05;
@@ -254,6 +257,27 @@ class MyScene extends CGFscene {
         this.material.setTexture(this.textures[this.selectedTexture]);
     }
 
+	onWireframeChanged() {
+		if (this.wireframe) {
+            if (this.selectedObject > 0)
+                this.objects[this.selectedObject].setLineMode();
+
+            this.vehicle.setLineMode();
+            this.cubemap.setLineMode();
+            this.terrain.setLineMode();
+            this.billboard.setLineMode();
+        }
+		else {
+            if (this.selectedObject > 0)
+                this.objects[this.selectedObject].setFillMode();
+
+            this.vehicle.setFillMode();
+            this.cubemap.setFillMode();
+            this.terrain.setFillMode();
+            this.billboard.setFillMode();
+        }
+	}
+
     checkKeys() {
         var acc_direction = 0;
         var rot_direction = 0;
@@ -304,7 +328,7 @@ class MyScene extends CGFscene {
                     // To drop from bottom of the vehicle, there's a need to lower the Y value by the radius of the vehicle from the center to the bottom
                     // and also lower by half of the supply size
                     let y_thrown = this.vehicle.getY() - (this.vehicle.getRadiusFromCenterToBottom() + this.supplies[i].getFaceSize() / 2) * this.scaleFactor;
-                    this.supplies[i].drop(this.vehicle.getX(), y_thrown, this.vehicle.getZ(), this.vehicle.getOrientation(), 0.4 * this.vehicle.getSpeed(), 0);
+                    this.supplies[i].drop(this.vehicle.getX(), y_thrown, this.vehicle.getZ(), this.vehicle.getOrientation(), 0.4 * this.vehicle.getSpeed(), Physics.freeFallingGravity(y_thrown, 3));
                     this.supplyCounter++;
                     this.billboard.updateShader(this.supplyCounter / this.supplies.length);
                     this.time_reloading = this.RELOADING_TIME;
