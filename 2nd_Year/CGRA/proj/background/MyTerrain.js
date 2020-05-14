@@ -10,30 +10,37 @@ class MyTerrain extends CGFobject {
 		this.width = width;
 		this.height = height;
         this.initShaders();
-		this.initTextures();
+		this.initMaterials();
 	}
 
     initShaders() {
         this.shader = new CGFshader(this.scene.gl, "shaders/terrain.vert", "shaders/terrain.frag");
 
-		this.shader.setUniformsValues({ uSampler2: 1, uSampler3: 2, maxHeight: this.height });
+		this.shader.setUniformsValues({ terrainTextureSampler: 0, terrainHeightMapSampler: 1, maxHeight: this.height });
     }
 
-	initTextures() {
+	initMaterials() {
 		this.terrainColor = new CGFtexture(this.scene, "images/terrain/terrain.jpg");
 		this.terrainHeightMap = new CGFtexture(this.scene, "images/terrain/heightmap.jpg");
+
+		this.terrainTex = new CGFappearance(this.scene);
+        this.terrainTex.setAmbient(0.9, 0.9, 0.9, 1);
+        this.terrainTex.setDiffuse(0.1, 0.1, 0.1, 1);
+        this.terrainTex.setSpecular(0.1, 0.1, 0.1, 1);
+        this.terrainTex.setShininess(10.0);
+        this.terrainTex.setTextureWrap('REPEAT', 'REPEAT');
+		this.terrainTex.setTexture(this.terrainColor);
 	}
 
     display() {
 		this.scene.pushMatrix();
+		this.terrainTex.apply();
 		this.scene.setActiveShader(this.shader);
-		this.terrainColor.bind(0);
-		this.terrainHeightMap.bind(2);
+		this.terrainHeightMap.bind(1);
 		this.scene.rotate(-Math.PI / 2, 1, 0, 0);
 		this.scene.scale(this.width, this.width, 1);
 		this.terrain.display();
-		this.terrainColor.unbind(0);
-		this.terrainHeightMap.unbind(2);
+		this.terrainHeightMap.unbind(1);
 		this.scene.setActiveShader(this.scene.defaultShader);
 		this.scene.popMatrix();
     }

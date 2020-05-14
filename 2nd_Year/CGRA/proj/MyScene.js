@@ -28,6 +28,7 @@ class MyScene extends CGFscene {
         this.vehicle = new MyVehicle(this, 4);
         this.cubemap = new MyCubeMap(this);
         this.terrain = new MyTerrain(this, 50, 8);
+        this.billboard = new MyBillboard(this);
 
         this.objects=[
             undefined,
@@ -41,7 +42,10 @@ class MyScene extends CGFscene {
             new MyRudder(this),
             new MyPlane(this, 10),
             new MyTerrain(this, 10, 4),
-            new MySupply(this)
+            new MySupply(this),
+            new MyDoubleFacedPlane(this, 2),
+            new MyFlag(this),
+            new MyBillboard(this)
 		];
 
 		// Object interface variables
@@ -57,36 +61,47 @@ class MyScene extends CGFscene {
             'Rudder': 8,
             'Plane': 9,
             'Terrain': 10,
-            'Supply': 11
+            'Supply': 11,
+            'Double Faced Plane' : 12,
+            'Flag': 13,
+            'Billboard': 14
 		};
 
         //------ Textures
         this.textures = [
             undefined,
             new CGFtexture(this, 'images/earth.jpg'),
-            new CGFtexture(this, 'images/cubemap.png'),
             new CGFtexture(this, 'images/texture_map_helper.png')
         ];
 
+        // cubemap
         this.backgrounds = [
             [
                 null, null, null, null, null, null
             ],
             [
-                new CGFtexture(this, 'images/split_cubemap/bottom.png'),
-                new CGFtexture(this, 'images/split_cubemap/top.png'),
-                new CGFtexture(this, 'images/split_cubemap/front.png'),
-                new CGFtexture(this, 'images/split_cubemap/back.png'),
-                new CGFtexture(this, 'images/split_cubemap/left.png'),
-                new CGFtexture(this, 'images/split_cubemap/right.png')
+                new CGFtexture(this, 'images/split_cubemap/cloudy_sky/bottom.png'),
+                new CGFtexture(this, 'images/split_cubemap/cloudy_sky/top.png'),
+                new CGFtexture(this, 'images/split_cubemap/cloudy_sky/front.png'),
+                new CGFtexture(this, 'images/split_cubemap/cloudy_sky/back.png'),
+                new CGFtexture(this, 'images/split_cubemap/cloudy_sky/left.png'),
+                new CGFtexture(this, 'images/split_cubemap/cloudy_sky/right.png')
             ],
             [
-                new CGFtexture(this, 'images/sky.png'),
-                new CGFtexture(this, 'images/sky.png'),
-                new CGFtexture(this, 'images/sky.png'),
-                new CGFtexture(this, 'images/sky.png'),
-                new CGFtexture(this, 'images/sky.png'),
-                new CGFtexture(this, 'images/sky.png')
+                new CGFtexture(this, 'images/split_cubemap/water/bottom.png'),
+                new CGFtexture(this, 'images/split_cubemap/water/top.png'),
+                new CGFtexture(this, 'images/split_cubemap/water/front.png'),
+                new CGFtexture(this, 'images/split_cubemap/water/back.png'),
+                new CGFtexture(this, 'images/split_cubemap/water/left.png'),
+                new CGFtexture(this, 'images/split_cubemap/water/right.png')
+            ],
+            [
+                new CGFtexture(this, 'images/split_cubemap/clear_sky/bottom.jpg'),
+                new CGFtexture(this, 'images/split_cubemap/clear_sky/top.jpg'),
+                new CGFtexture(this, 'images/split_cubemap/clear_sky/front.jpg'),
+                new CGFtexture(this, 'images/split_cubemap/clear_sky/back.jpg'),
+                new CGFtexture(this, 'images/split_cubemap/clear_sky/left.jpg'),
+                new CGFtexture(this, 'images/split_cubemap/clear_sky/right.jpg')
             ]
         ];
 
@@ -100,8 +115,16 @@ class MyScene extends CGFscene {
         this.backgroundList = {
             'None': 0,
             'Cloudy Day': 1,
-            'Sky': 2
+            'Ocean': 2,
+            'Clear Sky': 3
         };
+
+        this.backgroundSeaLevel = [
+            24.98,
+            24.98,
+            10.00,
+            24.98
+        ];
 
 
         this.backgroundFilterIds = { 'Linear': 0, 'Nearest': 1 };
@@ -139,7 +162,7 @@ class MyScene extends CGFscene {
         this.scaleFactor = 1.0;
         this.rotSpeedFactor = 0.5;
         this.frictionFactor = 0.01;
-        this.lastFrameTime = 0;
+        this.lastFrameTime = undefined;
         this.automatic_pilot = false;
         this.ORBIT_RADIUS = 5;
         this.ORBIT_PERIOD = 5;
@@ -176,7 +199,7 @@ class MyScene extends CGFscene {
         this.lights[2].update();
     }
     initCameras() {
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(30, 20, 30), vec3.fromValues(0, 5, 0));
     }
     setDefaultAppearance() {
         this.setAmbient(0.2, 0.4, 0.8, 1.0);
@@ -195,6 +218,11 @@ class MyScene extends CGFscene {
 
     // called periodically (as per setUpdatePeriod() in init())
     update(t){
+        if (this.lastFrameTime == undefined) {
+            this.lastFrameTime = t;
+            return;
+        }
+
         this.checkKeys();
 
         this.updateElements(t);
@@ -206,7 +234,7 @@ class MyScene extends CGFscene {
         let elapsed_secs = Physics.millisToSec(t - this.lastFrameTime);
 
         if (this.showVehicle) {
-            this.vehicle.update(elapsed_secs, this.MAX_SPEED, this.MAX_ANGULAR_SPEED);
+            this.vehicle.update(t, elapsed_secs, this.MAX_SPEED, this.MAX_ANGULAR_SPEED);
         }
 
         for (let i = 0; i < this.supplies.length; i++) {
@@ -253,6 +281,9 @@ class MyScene extends CGFscene {
             if (this.gui.isKeyPressed("KeyD")) {
                 rot_direction -= 1;
             }
+            if (this.gui.isKeyPressed("KeyL")) {
+                this.dropSupply();
+            }
 
             if (this.showVehicle) {
                 this.vehicle.accelerate(acc_direction * this.SPEED * this.speedFactor, this.frictionFactor, this.MAX_SPEED, this.MIN_SPEED);
@@ -264,9 +295,6 @@ class MyScene extends CGFscene {
             this.resetElements();
         }
 
-        if (this.gui.isKeyPressed("KeyL")) {
-            this.dropSupply();
-        }
     }
 
     dropSupply() {
@@ -278,6 +306,7 @@ class MyScene extends CGFscene {
                     let y_thrown = this.vehicle.getY() - (this.vehicle.getRadiusFromCenterToBottom() + this.supplies[i].getFaceSize() / 2) * this.scaleFactor;
                     this.supplies[i].drop(this.vehicle.getX(), y_thrown, this.vehicle.getZ(), this.vehicle.getOrientation(), 0.4 * this.vehicle.getSpeed(), 0);
                     this.supplyCounter++;
+                    this.billboard.updateShader(this.supplyCounter / this.supplies.length);
                     this.time_reloading = this.RELOADING_TIME;
                     this.reloading = true;
                     break;
@@ -297,6 +326,7 @@ class MyScene extends CGFscene {
         this.reloading = false;
         this.time_reloading = 0;
         this.supplyCounter = 0;
+        this.billboard.updateShader(0.0);
     }
 
 
@@ -316,18 +346,28 @@ class MyScene extends CGFscene {
             this.axis.display();
 
         if (this.applyBackground) {
-            this.pushMatrix();
+            // ---- Cubemap
             this.lights[1].enable();
             this.lights[1].update();
             this.pushMatrix();
-            this.translate(0, 24.999, 0);
+            this.translate(0, this.backgroundSeaLevel[this.selectedBackground], 0);
             this.scale(50, 50, 50);
             this.cubemap.display();
             this.popMatrix();
+            // ----
+
+            // ---- Terrain
+            this.pushMatrix();
+            this.translate(0, -0.01, 0);
             this.terrain.display();
             this.lights[1].disable();
             this.lights[1].update();
             this.popMatrix();
+            // ----
+
+            // ---- Billboard
+            this.billboard.display();
+            // ----
         }
 
         this.setDefaultAppearance();

@@ -1,0 +1,5 @@
+- 20x20 terrain é 20x20 no heigthmap ou 20x20 no render
+- Demorar 3s na caixa é demorar 3 segundos a partir do y = 10, ou de qualquer y?
+- Em autopiloto pode dropar supplies?
+- Texturas kinda meme lol
+- Tem de ser usado myplane? uma vez q teriamos q ter dois my planes para a bandeira, dado que deve ser vista dos dois lados

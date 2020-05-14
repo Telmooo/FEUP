@@ -8,7 +8,6 @@ class MyCubeMap extends CGFobject {
 		super(scene);
 	    this.quad = new MyQuad(this.scene);
 		this.filter = this.scene.gl.LINEAR;
-		this.textureLoaded = false;
 		this.initMaterials();
 	}
 
@@ -51,7 +50,8 @@ class MyCubeMap extends CGFobject {
 		this.scene.pushMatrix();
 
 		// ---- Front Face
-		this.scene.translate(0, 0, -0.5);
+		this.scene.translate(0, 0, 0.5);
+		this.scene.rotate(Math.PI, 0, 1, 0);
 		this.material.setTexture(this.frontTexture);
 		this.material.apply();
 		this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.filter);
@@ -63,8 +63,7 @@ class MyCubeMap extends CGFobject {
 		this.scene.pushMatrix();
 
 		// ---- Back Face
-		this.scene.translate(0, 0, 0.5);
-		this.scene.rotate(Math.PI, 0, 1, 0);
+		this.scene.translate(0, 0, -0.5);
 		this.material.setTexture(this.backTexture);
 		this.material.apply();
 		this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.filter);
@@ -76,8 +75,8 @@ class MyCubeMap extends CGFobject {
 		this.scene.pushMatrix();
 
 		// ---- Left Face
-		this.scene.translate(-0.5, 0, 0);
-		this.scene.rotate(Math.PI/2, 0, 1, 0);
+		this.scene.translate(0.5, 0, 0);
+		this.scene.rotate(-Math.PI/2, 0, 1, 0);
 		this.material.setTexture(this.leftTexture);
 		this.material.apply();
 		this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.filter);
@@ -89,8 +88,8 @@ class MyCubeMap extends CGFobject {
 		this.scene.pushMatrix();
 
 		// ---- Right Face
-		this.scene.translate(0.5, 0, 0);
-		this.scene.rotate(-Math.PI/2, 0, 1, 0);
+		this.scene.translate(-0.5, 0, 0);
+		this.scene.rotate(Math.PI/2, 0, 1, 0);
 		this.material.setTexture(this.rightTexture);
 		this.material.apply();
 		this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.filter);

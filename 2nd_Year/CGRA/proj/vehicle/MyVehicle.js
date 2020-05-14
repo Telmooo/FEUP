@@ -8,6 +8,7 @@ class MyVehicle extends CGFobject {
         this.body = new MySphere(this.scene, 32, 16);
         this.gondola = new MyGondola(this.scene);
         this.rudder = new MyRudder(this.scene);
+        this.flag = new MyFlag(this.scene);
         this.orientation = 0;
         this.speed = 0;
         this.rotationSpeed = 0;
@@ -104,15 +105,32 @@ class MyVehicle extends CGFobject {
         // --
         // ----
 
+        // ---- Flag
+        // -- Flag
+        this.scene.pushMatrix();
+        this.scene.rotate(this.horizontal_rudder_inclination, 0, 1, 0);
+        this.scene.translate(0, 0, -4.0);
+        this.scene.rotate(Math.PI/2, 0, 1, 0);
+        this.scene.scale(2.5, 0.8, 1.0);
+        this.flag.display();
+        this.scene.popMatrix();
+        // --
+
         this.scene.popMatrix();
     }
 
     enableNormalViz() {
         this.body.enableNormalViz();
+        this.gondola.enableNormalViz();
+        this.rudder.enableNormalViz();
+        this.flag.enableNormalViz();
     }
 
     disableNormalViz() {
         this.body.disableNormalViz();
+        this.gondola.disableNormalViz();
+        this.rudder.disableNormalViz();
+        this.flag.disableNormalViz();
     }
 
     enterPilotMode(speed, angular_speed) {
@@ -152,16 +170,18 @@ class MyVehicle extends CGFobject {
     /**
      * Update vehicle position
      */
-    update(delta_time, absolute_max_speed, absolute_max_rotation_speed) {
+    update(time, delta_time, absolute_max_speed, absolute_max_rotation_speed) {
         this.turn(this.rotationSpeed * delta_time);
 
         let x_speed = Math.sin(this.orientation) * this.speed;
         let z_speed = Math.cos(this.orientation) * this.speed;
 
-        this.x += x_speed * delta_time;
-        this.z += z_speed * delta_time;
+        //this.x += x_speed * delta_time;
+        //this.z += z_speed * delta_time;
 
         this.gondola.update(this.speed, absolute_max_speed);
+
+        this.flag.update(delta_time, this.speed);
 
         this.horizontal_rudder_inclination = (-this.rotationSpeed / absolute_max_speed) * this.MAX_HORIZONTAL_RUDDER_INCLINATION;
     }
@@ -255,7 +275,7 @@ class MyGondola extends CGFobject {
         this.gondolaFrontTex.setSpecular(0.1, 0.1, 0.1, 1);
         this.gondolaFrontTex.setShininess(10.0);
         this.gondolaFrontTex.loadTexture('images/vehicle/gondola/gondola_extremes3.jpg');
-        this.gondolaFrontTex.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
+        this.gondolaFrontTex.setTextureWrap('REPEAT', 'REPEAT');
 
         this.gondolaBackTex = new CGFappearance(this.scene);
         this.gondolaBackTex.setAmbient(0.1, 0.1, 0.1, 1);
@@ -353,7 +373,7 @@ class MyHeliceSupport extends CGFobject {
         this.heliceSupportTex.setSpecular(0.1, 0.1, 0.1, 1);
         this.heliceSupportTex.setShininess(10.0);
         this.heliceSupportTex.loadTexture('images/vehicle/helice/helice_support.jpg');
-        this.heliceSupportTex.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
+        this.heliceSupportTex.setTextureWrap('REPEAT', 'REPEAT');
     }
 
     display() {
@@ -411,7 +431,7 @@ class MyHelice extends CGFobject {
         this.heliceTex.setSpecular(0.1, 0.1, 0.1, 1);
         this.heliceTex.setShininess(10.0);
         this.heliceTex.loadTexture('images/vehicle/helice/helice.jpg');
-        this.heliceTex.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
+        this.heliceTex.setTextureWrap('REPEAT', 'REPEAT');
 
         this.jointTex = new CGFappearance(this.scene);
         this.jointTex.setAmbient(0.1, 0.1, 0.1, 1);
@@ -419,7 +439,7 @@ class MyHelice extends CGFobject {
         this.jointTex.setSpecular(0.1, 0.1, 0.1, 1);
         this.jointTex.setShininess(10.0);
         this.jointTex.loadTexture('images/vehicle/helice/joint.jpg');
-        this.jointTex.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
+        this.jointTex.setTextureWrap('REPEAT', 'REPEAT');
     }
 
     display() {

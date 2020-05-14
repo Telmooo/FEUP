@@ -13,16 +13,20 @@ serialInclude([ '../lib/CGF.js',
                 './basic_shapes/MyPlane.js',
                 './basic_shapes/MySphere.js',
                 './basic_shapes/MyCylinder.js',
+                './basic_shapes/MyDoubleFacedPlane.js',
                 // ----
 
                 // ---- Background
                 './background/MyCubeMap.js',
+                './background/MyCubeMapVert.js',
                 './background/MyTerrain.js',
+                './background/MyBillboard.js',
                 // ----
 
                 // ---- Vehicle
                 './vehicle/MyVehicle.js',
                 './vehicle/supply/MySupply.js',
+                './vehicle/flag/MyFlag.js',
                 // ----
 
                 // ---- Additional Libraries
